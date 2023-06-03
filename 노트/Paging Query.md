@@ -126,7 +126,38 @@ BooleanExpression을 사용하면 QueryDSL Repository의 표현을 좀더 직관
 
 이 코드가 정상적으로 작동하는지 테스트를 해보자.
 위와 같이 기본 repository로 조회하여 확인하면 된다.
-> [코드링크 첨부](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/master/src/test/java/springstudy/bookstore/repository/ItemRepositoryTest.java)
+> [테스트 코드 첨부](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/master/src/test/java/springstudy/bookstore/repository/ItemRepositoryTest.java)
+
+<br>
+
+만든 QueryDSL Repository를 사용하여 다음과 같이 컨트롤러에서 사용할 수 있게 되었다. <br>
+### 카테고리 컨트롤러
+![컨트롤러](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/a0c508ac-dd55-48aa-83b5-048b7a8e52f4)
++ @PathVariable 어노테이션을 이용해서 {카테고리 코드} 파라미터를 받는다.
++ Page<MainItemDto> results, PageDto pageDto를 변수로 선언하고, if() 조건문으로 상품 검색 여부를 판단한다.
++ 상품 검색 하지 않을 때,  "책" "음반" 중에서 선택한 카테고리로 페이징 처리를 한다.
++ 상품 검색을 하는 경우에는, 해당 카테고리 안에서 상품 이름 검색을 할 수 있도록 페이징 처리를 한다.
+
+`http://localhost:8080/bookstore/category/MUSIC?itemName=BAEK+HYUN` 를 요청했을 때 화면은 아래와 같다. <br><br>
+![카테고리별 검색 페이징 화면](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/f881bd62-dc34-46a4-b6dd-a08c54e539fd)
+
+ <br><br>
+ 
+### 메인홈 컨트롤러
+![메인 페이지 컨트롤러](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/b30f7988-abfd-4c3c-9fe1-57ea114b21b9)
++ `@RequestParam(required = false, name = "code") String code` 파라미터로 "높은/낮은 가격순" 필터 정보를 받는다.
++ "required=false" 이므로 파라미터를 받지 않는 경우는 검색정렬페이징 처리한다.
++ 높은 가격순 요청경우:`http://localhost:8080/bookstore/home?code=DESC`
++ 낮은 가격순 요청경우: `http://localhost:8080/bookstore/home?code=ASC`
+ 
+`http://localhost:8080/bookstore/home?itemName=Anne+`를 요청했을 때 화면은 아래와 같다. <br><br>
+ ![검색 페이징 화면](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/9b491579-4509-4de6-ba4d-43dacaa7edc1) <br><br>
+메인홈 페이지에서 상품 이름 "Anne"를 검색하면 화면과 같이 조횐된다.  <br>
+> 다음에는 "높은가격" 선택한 상태인 경우 "Anne" 이름을 검색했을 때는 높은 가격순으로 페이징처리 되도록 해봐야겠다.
+
+
+
+ 
 
 
 ### 후기
