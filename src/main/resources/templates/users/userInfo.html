@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>aladin - 중고 거래 사이트</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/shop/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+<!-- Navigation menu bar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/bookstore/home"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/BOOK"><label th:text="#{label.category.book}">도서 카테고리</label></a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/MUSIC"><label th:text="#{label.category.music}">음반 카테고리</label></a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/bookstore/user/Info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/bookstore/user/product"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
+                        <li><a class="dropdown-item" href="/bookstore/item/new"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
+                        <li><a class="dropdown-item" href="/bookstore/user/cart"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
+                        <li><form th:action="@{/bookstore/logout}" method="post"><button class="dropdown-item" type="submit"><label th:text="#{label.user.logout}">로그아웃 버튼</label></button></form></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<!-- Section-->
+<section class="py-5">
+    <div class="row gx-0 gx-lg-0 row-cols-2 row-cols-md-3 row-cols-xl-0 justify-content-center">
+        <div class="form_container">
+            <form>
+                <div class="form-group">
+                    <label th:text="#{page.member.memberId}">회원ID</label>
+                    <input class="form-control" th:value="${member.loginId}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.password}">비밀번호</label>
+                    <input class="form-control" th:value="${member.password}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.name}">회원명</label>
+                    <input class="form-control" th:value="${member.name}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.email}">이메일주소</label>
+                    <input class="form-control"  th:value="${member.email}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.city}">주소 도시</label>
+                    <input class="form-control" th:value="${member.address.city}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.street}">주소 도로명</label>
+                    <input class="form-control" th:value="${member.address.street}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{page.member.zipcode}">주소 우편주소</label>
+                    <input class="form-control" th:value="${member.address.zipcode}" readonly>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer-->
+<footer class="py-4 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/shop/js/scripts.js"></script>
+</body>
+</html>

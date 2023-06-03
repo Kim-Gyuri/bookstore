@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>aladin - 중고 거래 사이트</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/shop/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/home">aladin </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/category/BOOK">책</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/category/MUSIC">음반</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/user/Info">개인 정보</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/user/product">등록한 상품</a></li>
+                        <li><a class="dropdown-item" href="/item/new">상품 등록하기</a></li>
+                        <li><a class="dropdown-item" href="/loginInfo">장바구니</a></li>
+                        <li><form th:action="@{/logout}" method="post"><button class="dropdown-item" type="submit">로그아웃</button></form></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<!-- book section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form role="form" method="post" enctype="multipart/form-data" th:object="${item}">
+
+                        <div class="form-group">
+                            <label for="status" th:text="#{label.product.status}">상품 판매상태</label>
+                            <input class="form-control" type="text" id="status" th:field="*{status}" name="status" readonly/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
+                            <input type="text" id="itemName" th:field="*{itemName}"
+                                   th:errorclass="field-error" class="form-control" placeholder="상품명을 입력해주세요">
+                        <div class="field-error" th:errors="*{itemName}">상품명 오류</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" th:text="#{label.item.price}">상품가격</label>
+                            <input type="number" id="price" th:field="*{price}"
+                                   th:errorclass="field-error"
+                                   class="form-control" placeholder="상품의 가격을 입력해주세요">
+                        <div class="field-error" th:errors="*{price}">가격 오류</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity" th:text="#{label.item.quantity}">상품재고량</label>
+                            <input type="number" id="quantity" th:field="*{quantity}"  th:errorclass="field-error"
+                                   class="form-control" placeholder="상품의 재고수량를 입력해주세요">
+                        <div class="field-error" th:errors="*{quantity}">재고수량 오류</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="itemType" th:text="#{label.item.grade}">상품 상태등급</label>
+                            <input class="form-control" type="text" id="itemType" th:field="*{itemType}" name="itemType" readonly/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryType" th:text="#{label.item.field}">상품 카테고리</label>
+                            <input type="text" id="categoryType" th:field="*{categoryType}" name="categoryType" class="form-control" readonly/>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div>
+                            <!-- Dashboard Counts Section-->
+                            <table class="table mb-0 table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">이미지</th>
+                                    <th scope="col">삭제</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                <tr th:each="itemImg : ${item.itemImgDtoList}">
+                                    <td><img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}" th:src="|/bookstore/images/${itemImg.imgName}|"/></td> <br><br>
+                                    <td><a th:href="@{/bookstore/itemImg/delete/{imgName} (imgName=${itemImg.imgName})}" type="button" >삭제</a> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="form-group">
+                            <label th:text="#{label.item.image}">상품 사진</label>
+                            <input class="form-control" id="formFile" type="file" multiple="multiple" name="itemImgFile">
+                        </div>
+
+                        <div class="btn_box">
+                            <button  class="btn btn-outline-dark" type="submit"  th:text="#{button.save}"></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- -->
+            <div class="col-md-6">
+                <div class="map_container ">
+                    <div> 품질 판정 가이드</div>
+                    <img   class="box1" src="/shop/assets/newGrade.png" alt=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end book section -->
+
+
+
+<!-- Footer-->
+<footer class="py-4 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/shop/js/scripts.js"></script>
+</body>
+</html>
