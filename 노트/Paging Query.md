@@ -39,11 +39,7 @@ Spring Data Jpa에서는 Custom Repository를 JpaRepository 상속 클래스에�
 > Custom과 Impl만 외워도 된다.
 
 먼저 ItemRepository와 같은 위치에 ItemRepositoryCustom(인터페이스), ItemRepositoryCustomImpl(구현체) 클래스를 생성한다. <br>
-그리고 ItemRepositoryCustom(인터페이스), ItemRepositoryCustomImpl(구현체)에 다음과 같은 코드를 추가한다. <br>
-+ custom 코드
-+ Impl 코드
-
-<br>
+![리포지토리 위치](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/d0d7b6e3-e91e-4cd8-b291-a8997d94a4fe) <br><br>
 
 코드는 아래와 같다. <br><br>
 `ItemRepository` 코드 <br>
@@ -72,6 +68,7 @@ Spring Data Jpa에서는 Custom Repository를 JpaRepository 상속 클래스에�
  
 #### 3. join 쿼리
 .join() 사용 가능하다.
+> 연관관계가 있는 엔티티 Item, ItemImg를 join()해서 하나의 상품 객체를 만들었다.
 
  <br>
  
@@ -84,10 +81,13 @@ Spring Data Jpa에서는 Custom Repository를 JpaRepository 상속 클래스에�
  <br>
  
 #### 5. Dto로 Projection 하기
-> 자주 사용되는 특정 쿼리의 결과는 Dto로 따로 분리하여 가져올 때가 많다. <br> 프로젝션과 결과 반환하기 위해 @QueryProjection을 사용한다.
-
 + 조회용 DTO를 추가한다.
 + Q-type Dto 생성한다.
+
+> 자주 사용되는 특정 쿼리의 결과는 Dto로 따로 분리하여 가져올 때가 많다. <br> 프로젝션과 결과 반환하기 위해 @QueryProjection을 사용한다. 
+
+> 메인 페이지에 띄울 상품정보만 보여주기 위해 MainItemDto를 만들었다. <br> 간략하게 화면에 보여주고 싶은 정보만 MainItemDto에 담아 페이징처리했다.
+> ![dto 정보](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/14095040-c835-40a5-a924-93c706fb13c5)
 
  <br>
 
