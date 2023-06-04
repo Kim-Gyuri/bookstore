@@ -49,6 +49,15 @@ Spring Data Jpa에서는 Custom Repository를 JpaRepository 상속 클래스에�
 `ItemRepositoryCustomImpl` 코드 <br>
 ![Impl](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/58e5fef0-0b05-4e38-bf84-c2ffad2b73e4) <br><br>
 
+
++    Page<MainItemDto> searchByItemName(ItemSearchCondition condition, Pageable pageable) : 상품 이름으로 검색 페이징
++    Page<MainItemDto> sortByCategoryType(String code, Pageable pageable) : 카테고리 타입별 페이징
++   Page<MainItemDto> searchByItemNameAndCategoryType(ItemSearchCondition condition, String code, Pageable pageable) : 카테고리별  상품 이름검색 페이징
++    Page<MainItemDto> sortByItemPriceASC(Pageable pageable) : 높은 가격순 페이징
++    Page<MainItemDto> sortByItemPriceDESC(Pageable pageable): 낮은 가격순 페이징
++    List<UserMainItemDto> sortByUser() : 유저별 등록한 상품 리스트 반환
+
+
 <br><br><br>
 
 ### Querydsl 작성
