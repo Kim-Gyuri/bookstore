@@ -45,9 +45,9 @@ Spring Data Jpa에서는 Custom Repository를 JpaRepository 상속 클래스에�
 `ItemRepository` 코드 <br>
 ![리포지](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/ddd8f61b-de1d-479f-9dd5-7653c9b8af0b) <br><br>
 `ItemRepositoryCustom` 코드 <br>
-![custom](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/04012b31-e522-4219-be3a-d950e14ca078)<br><br>
+![custom](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/b963388d-1f79-4f3c-bc70-e88786812bd4) <br><br>
 `ItemRepositoryCustomImpl` 코드 <br>
-![Impl](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/1898a141-ec41-4db1-b2fb-ce2fa61aa55a)<br><br>
+![Impl](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/58e5fef0-0b05-4e38-bf84-c2ffad2b73e4) <br><br>
 
 <br><br><br>
 
@@ -155,10 +155,10 @@ BooleanExpression을 사용하면 QueryDSL Repository의 표현을 좀더 직관
 메인홈 페이지에서 상품 이름 "Anne"를 검색하면 화면과 같이 조횐된다.  <br>
 > 다음에는 "높은가격" 선택한 상태인 경우 "Anne" 이름을 검색했을 때는 높은 가격순으로 페이징처리 되도록 해봐야겠다.
 
-
-
+ <br><br>
  
-
+### 참고자료
+[fetchResults deprecated 관련하여 공식문서의 설명 링크와 대체 방법에 대한설명 글](https://devwithpug.github.io/java/querydsl-with-datajpa/)
 
 ### 후기
 이제 명확하게 쿼리가 예측 가능하게 되었다. <br> 다음에는 추가로 [페이징 성능개선 참고글](https://jojoldu.tistory.com/528)를 읽고 프로젝트 리팩토링을 했으면 좋겠다.
