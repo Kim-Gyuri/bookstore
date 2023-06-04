@@ -98,7 +98,7 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public Page<MainItemDto> searchAndCategory(ItemSearchCondition condition, String code, Pageable pageable) {
-        return itemRepository.searchByItemNameAndSortByItemPrice(condition, code, pageable);
+        return itemRepository.searchByItemNameAndCategoryType(condition, code, pageable);
     }
 
     public void delete(Long id) {

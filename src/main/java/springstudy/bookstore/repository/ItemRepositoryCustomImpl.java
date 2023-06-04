@@ -102,7 +102,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> searchByItemNameAndSortByItemPrice(ItemSearchCondition condition, String code, Pageable pageable) {
+    public Page<MainItemDto> searchByItemNameAndCategoryType(ItemSearchCondition condition, String code, Pageable pageable) {
         List<MainItemDto> content = queryFactory
                 .select(new QMainItemDto(
                         item.id.as("itemId"),

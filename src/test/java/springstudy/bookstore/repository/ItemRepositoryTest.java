@@ -121,7 +121,7 @@ class ItemRepositoryTest {
     void searchItemAndCategoryType_카테고리안에서검색테스트() {
         PageRequest pageable = PageRequest.of(0, 4);
         ItemSearchCondition condition = createCondition();
-        Page<MainItemDto> mainItemDtos = itemRepository.searchByItemNameAndSortByItemPrice(condition, CategoryType.BOOK.getTypeCode(), pageable);
+        Page<MainItemDto> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(condition, CategoryType.BOOK.getTypeCode(), pageable);
         assertThat(mainItemDtos.getSize() == 0);
 
         for (MainItemDto mainItemDto : mainItemDtos) {
