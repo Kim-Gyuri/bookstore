@@ -23,23 +23,25 @@ class CartTest {
 
         User userA = new User( "test","test!","userA", "mimi03@naver.com", addressA);
         User userB = new User("test2", "test2!","userB", "nana05@gmail.com", addressB);
+        userA.createCart(new Cart());
+        userB.createCart(new Cart());
 
         Item item1 = new Item("spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
         Item item2 = new Item("mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
         ItemImg img1 = new ItemImg("origin.jpg", "store.jpg", "c:save/store.jpg", IsMainImg.Y, item1);
         ItemImg img2 = new ItemImg("origin.jpg", "store.jpg", "c:save/store.jpg", IsMainImg.Y, item2);
 
-        OrderItem orderItem1 = new OrderItem(item1, 5);
-        OrderItem orderItem2 = new OrderItem(item2, 2);
-
-        Cart cart = Cart.createCart(userA, orderItem1, orderItem2);
+        OrderItem orderItem1 = new OrderItem(userA.getCart(), item1, 5);
+        OrderItem orderItem2 = new OrderItem(userA.getCart(), item2, 2);
+        userA.addCartItem(orderItem1);
+        userA.addCartItem(orderItem2);
 
         int sum = 0;
-        for (OrderItem orderItem : cart.getOrderItemList()) {
+        for (OrderItem orderItem : userA.getCart().getOrderItemList()) {
             sum += orderItem.getCount();
         }
 
         assertThat(sum).isEqualTo(7);
-        assertThat(userB.getCart()).isNull();
+        assertThat(userB.getCart().getOrderItemList().size()).isEqualTo(0);
     }
 }

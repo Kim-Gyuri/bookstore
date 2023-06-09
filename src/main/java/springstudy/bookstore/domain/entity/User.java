@@ -1,10 +1,15 @@
 package springstudy.bookstore.domain.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import springstudy.bookstore.domain.dto.CartInfoDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -26,7 +31,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @Builder(builderMethodName = "userBuilder")
@@ -36,6 +42,39 @@ public class User {
         this.name = name;
         this.email = email;
         this.address = address;
+        this.cart = new Cart();
+    }
+
+    @Builder(builderMethodName = "initBuilder")
+    public User(String loginId, String password, String name, String email, Address address, Cart cart) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.cart = cart;
+    }
+
+    public void createCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public void addCartItem(OrderItem orderItem) {
+        cart.addOrderItem(orderItem);
+    }
+
+    public List<CartInfoDto> getWishList() {
+        return cart.getOrderItemList()
+                .stream()
+                .map(OrderItem::toWishItemDto)
+                .collect(Collectors.toList());
+    }
+
+    public boolean checkOrderItemDuplicate(OrderItem orderItem) {
+        return cart.getOrderItemList()
+                .stream()
+                .map(OrderItem::getItem)
+                .anyMatch(v -> v.getId() == orderItem.getItemId());
     }
 
     @Override

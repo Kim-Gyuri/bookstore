@@ -7,12 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.dto.LoginFormDto;
 import springstudy.bookstore.domain.dto.UserFormDto;
 import springstudy.bookstore.domain.dto.UserMainItemDto;
+import springstudy.bookstore.domain.entity.Cart;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
 import springstudy.bookstore.domain.entity.User;
+import springstudy.bookstore.repository.CartRepository;
 import springstudy.bookstore.repository.ItemImgRepository;
 import springstudy.bookstore.repository.ItemRepository;
 import springstudy.bookstore.repository.UserRepository;
+import springstudy.bookstore.util.exception.UserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +29,28 @@ public class UserService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final ItemImgRepository itemImgRepository;
+    private final CartRepository cartRepository;
 
     public Long signUp(UserFormDto userFormDto) {
         validateDuplicateUser(userFormDto.getLoginId());
-        return userRepository.save(userFormDto.userEntity()).getId();
+        User user = userRepository.save(userFormDto.userEntity());
+        user.createCart(cartRepository.save(new Cart()));
+
+        return user.getId();
     }
 
+    @Transactional(readOnly = true)
     private void validateDuplicateUser(String loginId) {
         Optional<User> byLoginId = userRepository.findByLoginId(loginId);
         if (byLoginId.isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void existByLoginIdAndPassword(LoginFormDto loginFormDto) {
+        if (!userRepository.existsByLoginIdAndPassword(loginFormDto.getLoginId(), loginFormDto.getPassword())) {
+            throw new UserNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 

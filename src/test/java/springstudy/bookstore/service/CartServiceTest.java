@@ -14,9 +14,12 @@ import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 import springstudy.bookstore.repository.ItemRepository;
+import springstudy.bookstore.util.exception.DuplicateOrderItemException;
 
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
@@ -61,9 +64,9 @@ class CartServiceTest {
         Item item = createItemTest();
         int orderCount = 10;
 
-        cartService.mergeCart(customer, item.getId(), 10);
+        cartService.addWishList(customer.getLoginId(), item.getId(), 10);
 
-        List<CartInfoDto> cartList = cartService.getCartList(customer);
+        List<CartInfoDto> cartList = cartService.getWishList(customer.getLoginId());
         for (CartInfoDto cartInfoDto : cartList) {
             assertEquals(cartInfoDto.getItem(), item);
             assertEquals(cartInfoDto.getCount(), orderCount);
@@ -71,4 +74,17 @@ class CartServiceTest {
         }
     }
 
+    @Test
+    @DisplayName("중복된 상품이 아닌 경우 장바구니에 상품을 추가한다.")
+    public void addWishList() {
+        // when : "test" (아이디 사용자)가 "Ariana Grande" (상품)을 이미 장바구니에 담았었다.
+        String testUserId = "test";
+        String testOrderItemName = "Ariana Grande";
+        User user = userService.findOne(testUserId);
+        Item item = itemRepository.findByItemName(testOrderItemName);
+
+        // 다시 "Ariana Grande" 를 2개 담으려고 한다면?
+        Throwable e  = assertThrows(DuplicateOrderItemException.class, () -> cartService.addWishList(user.getLoginId(), item.getId(), 2));
+        assertEquals("중복된 장바구니입니다.", e.getMessage());
+    }
 }

@@ -89,7 +89,8 @@ public class ItemController {
 
     @PostMapping("/item/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form,
-                       BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, RedirectAttributes redirectAttributes) throws IOException {
+                       BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList,
+                       RedirectAttributes redirectAttributes) throws IOException {
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);

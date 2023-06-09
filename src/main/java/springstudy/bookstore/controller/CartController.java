@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import springstudy.bookstore.domain.dto.CartInfoDto;
-import springstudy.bookstore.domain.entity.Cart;
-import springstudy.bookstore.domain.entity.OrderItem;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.CartService;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
@@ -23,25 +21,19 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/products/{itemId}")
-    public String mergeCart(@Login User loginUser, @PathVariable Long itemId, @RequestParam int count) {
+    public String addWishList(@Login User loginUser, @PathVariable Long itemId, @RequestParam int count) {
 
         if (loginUser == null) {
             return "login/loginForm";
         }
 
-        Long cartId = cartService.mergeCart(loginUser, itemId, count);
+        cartService.addWishList(loginUser.getLoginId(), itemId, count);
 
-        Cart savedCart = cartService.findById(cartId);
-        log.info("order Info-count={}", count);
-        for (OrderItem orderItem : savedCart.getOrderItemList()) {
-            log.info("item Info-quantity={}", orderItem.getItem().getStockQuantity());
-            log.info("order Info-order price", orderItem.getOrderPrice());
-        }
         return "redirect:/bookstore/user/cart";
     }
 
     @GetMapping("/user/cart")
-    public String getCart(Model model, @Login User loginUser) {
+    public String getWishList(Model model, @Login User loginUser) {
         if (loginUser == null) {
             model.addAttribute("message", "no User");
             return "login/loginForm";
@@ -50,7 +42,7 @@ public class CartController {
         model.addAttribute("member", loginUser);
         log.info("get loginMember{}", loginUser.toString());
 
-        List<CartInfoDto> cartList = cartService.getCartList(loginUser);
+        List<CartInfoDto> cartList = cartService.getWishList(loginUser.getLoginId());
         model.addAttribute("cartList", cartList);
         for (CartInfoDto cartDto : cartList) {
             log.info("cartDto Info-Item name={}", cartDto.getItem().getItemName());
@@ -59,9 +51,9 @@ public class CartController {
     }
 
     @GetMapping("/user/cart/delete/{orderItemId}")
-    public String deleteOrderItem(@PathVariable("orderItemId") Long orderItemId) {
+    public String deleteWishList(@PathVariable("orderItemId") Long orderItemId) {
 
-        cartService.deleteCart(orderItemId);
+        cartService.deleteWishList(orderItemId);
         return "redirect:/bookstore/user/cart";
     }
 }

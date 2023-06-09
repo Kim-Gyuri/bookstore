@@ -80,7 +80,8 @@
                     <h2 th:text="#{label.user.product.img}">등록한 사진</h2>
 
                     <div th:each="itemImg : ${item.itemImgDtoList}">
-                        <img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}" th:src="|/bookstore/images/${itemImg.imgName}|"/> <br><br>
+                        <img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}"
+                             th:src="|/bookstore/images/${itemImg.imgName}|"/> <br><br>
                     </div>
                 </div>
 

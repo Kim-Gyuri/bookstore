@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import springstudy.bookstore.domain.dto.CartInfoDto;
 
 import javax.persistence.*;
 
@@ -21,25 +22,38 @@ public class OrderItem {
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     private Integer orderPrice;
     private Integer count;
 
     @Builder(builderMethodName = "orderItemBuilder")
-    public OrderItem(Item item, Integer count) {
+    public OrderItem(Cart cart, Item item, Integer count) {
         item.removeStock(count);
         item.checkStatus();
+        this.cart = cart;
         this.item = item;
         this.count = count;
+        orderAmount(count);
     }
 
-    public void addCart(Cart cart) {
-        this.cart = cart;
+    public Long getItemId() {
+        return item.getId();
     }
 
     public void orderAmount(Integer count) {
         int sum = item.getPrice() * count;
         this.orderPrice = sum;
     }
+
+    public CartInfoDto toWishItemDto() {
+        return CartInfoDto.wishItemBuilder()
+                .orderItemId(this.id)
+                .item(item)
+                .count(this.count)
+                .orderPrice(this.orderPrice)
+                .build();
+    }
+
 }

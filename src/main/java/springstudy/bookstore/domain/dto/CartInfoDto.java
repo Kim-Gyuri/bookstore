@@ -1,5 +1,6 @@
 package springstudy.bookstore.domain.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import springstudy.bookstore.domain.entity.Item;
 
@@ -11,9 +12,9 @@ public class CartInfoDto {
     private Integer count;
     private Integer orderPrice;
 
-    public void updateCartInfo(Long orderItemId, String loginId, Item item, Integer count, Integer orderPrice) {
+    @Builder(builderMethodName = "wishItemBuilder")
+    public CartInfoDto(Long orderItemId, Item item, Integer count, Integer orderPrice) {
         this.orderItemId = orderItemId;
-        this.loginId = loginId;
         this.item = item;
         this.count = count;
         this.orderPrice = orderPrice;

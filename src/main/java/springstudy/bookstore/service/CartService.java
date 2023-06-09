@@ -12,8 +12,10 @@ import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.repository.CartRepository;
 import springstudy.bookstore.repository.ItemRepository;
 import springstudy.bookstore.repository.OrderItemRepository;
+import springstudy.bookstore.repository.UserRepository;
+import springstudy.bookstore.util.exception.DuplicateOrderItemException;
+import springstudy.bookstore.util.exception.UserNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,50 +23,43 @@ import java.util.List;
 @Slf4j
 public class CartService {
 
+    private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
     private final OrderItemRepository orderItemRepository;
 
+    @Transactional(readOnly = true)
     public Cart findById(Long id) {
         return cartRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문이 없습니다."));
     }
 
-    public List<CartInfoDto> getCartList(User user) {
-        List<Cart> carts = cartRepository.findByUser(user);
-
-        List<CartInfoDto> dtoList = new ArrayList<>();
-        for (Cart cart : carts) {
-            for (OrderItem orderItem : cart.getOrderItemList()) {
-                CartInfoDto cartDto = new CartInfoDto();
-
-                cartDto.updateCartInfo(orderItem.getId(), user.getLoginId(), orderItem.getItem(), orderItem.getCount(), orderItem.getOrderPrice());
-                log.info("update Dto={}", cartDto.getItem().getStockQuantity());
-                dtoList.add(cartDto);
-            }
-        }
-        return dtoList;
+    @Transactional(readOnly = true)
+    public List<CartInfoDto> getWishList(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+        return user.getWishList();
     }
 
     @Transactional
-    public Long mergeCart(User user, Long itemId, Integer count) {
+    public void addWishList(String loginId, Long itemId, Integer count) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
-        OrderItem orderItem = OrderItem.orderItemBuilder()
-                .item(item)
-                .count(count)
-                .build();
+        OrderItem orderItem = orderItemRepository.save(new OrderItem(user.getCart(), item, count));
 
-        orderItem.orderAmount(count);
-        Cart cart = Cart.createCart(user, orderItem);
+        if (user.checkOrderItemDuplicate(orderItem)) {
+            throw new DuplicateOrderItemException("중복된 장바구니입니다.");
+        }
 
-        cartRepository.save(cart);
-        return cart.getId();
+        user.addCartItem(orderItem);
     }
 
     @Transactional
-    public void deleteCart(Long orderItemId) {
+    public void deleteWishList(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 

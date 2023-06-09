@@ -22,6 +22,7 @@ public class InitData {
 
     private final InitService initService;
 
+
     @PostConstruct
     public void init(){
         initService.dbInit1();
@@ -37,17 +38,15 @@ public class InitData {
 
         public void dbInit1() {
             Address addressA = new Address("진주", "2", "2222");
-            User user = new User( "test3","test3!","userC", "karis99@naver.com", addressA);
+            User user = new User( "test3","test3!","userC", "karis99@naver.com", addressA, new Cart());
             em.persist(user);
-
             sellBook(user);
         }
 
         public void dbInit2() {
             Address addressA = new Address("진주", "2", "2222");
-            User user = new User( "test4","test4!","userD", "bambi05@naver.com", addressA);
+            User user = new User( "test4","test4!","userD", "bambi05@naver.com", addressA, new Cart());
             em.persist(user);
-
             sellMusic(user);
         }
 
@@ -55,9 +54,8 @@ public class InitData {
             Address addressA = new Address("진주", "2", "2222");
             Address addressB = new Address("서울", "1", "1111");
 
-            User userA = new User( "test","test!","userA", "mimi03@naver.com", addressA);
-            User userB = new User("test2", "test2!","userB", "nana05@gmail.com", addressB);
-
+            User userA = new User( "test","test!","userA", "mimi03@naver.com", addressA, new Cart());
+            User userB = new User("test2", "test2!","userB", "nana05@gmail.com", addressB, new Cart());
             em.persist(userA);
             em.persist(userB);
 
@@ -71,14 +69,10 @@ public class InitData {
             em.persist(item2);
             em.persist(img2);
 
-            OrderItem orderItem1 = new OrderItem(item1, 5);
-            OrderItem orderItem2 = new OrderItem(item2, 2);
-            orderItem1.orderAmount(5);
-            orderItem2.orderAmount(2);
-
-            Cart cart = Cart.createCart(userA, orderItem1, orderItem2);
-
-            em.persist(cart);
+            OrderItem orderItem1 = new OrderItem(userA.getCart(), item1, 5);
+            OrderItem orderItem2 = new OrderItem(userA.getCart(), item2, 2);
+            userA.addCartItem(orderItem1);
+            userA.addCartItem(orderItem2);
         }
 
         private void sellBook(User user) {

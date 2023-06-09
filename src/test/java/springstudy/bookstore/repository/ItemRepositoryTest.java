@@ -35,11 +35,10 @@ class ItemRepositoryTest {
     }
 
     public ItemSearchCondition createCondition() {
-        ItemSearchCondition dto = new ItemSearchCondition();
-        dto.setItemName("Ariana Grande");
-        dto.setLoginMember(createUser());
-
-        return dto;
+        return ItemSearchCondition.builder()
+                .itemName("Ariana Grande")
+                .loginMember(createUser())
+                .build();
     }
     
     @Test
