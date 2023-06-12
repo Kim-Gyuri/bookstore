@@ -2,7 +2,7 @@ package springstudy.bookstore.util.validation.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
-import springstudy.bookstore.domain.entity.SessionConst;
+import springstudy.bookstore.util.validation.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

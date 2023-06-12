@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import springstudy.bookstore.domain.dto.LoginFormDto;
 import springstudy.bookstore.domain.dto.UserFormDto;
 import springstudy.bookstore.domain.dto.UserMainItemDto;
-import springstudy.bookstore.domain.entity.SessionConst;
+import springstudy.bookstore.util.validation.SessionConst;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.ItemService;
 import springstudy.bookstore.service.UserService;
