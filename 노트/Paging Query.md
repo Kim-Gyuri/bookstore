@@ -166,6 +166,18 @@ BooleanExpression을 사용하면 QueryDSL Repository의 표현을 좀더 직관
 
  <br><br>
  
+### 페이징 처리를 위한 클래스 설계
+[PageDto 코드](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/master/src/main/java/springstudy/bookstore/domain/dto/sort/PageDto.java)
+ + 생성자를 정의하고 전체 데이터 수(total), 카테고리 타입(sortParam), Pageable를 파라미터로 지정한다.
++ 컨트롤러에서 PageDto를 사용할 수 있도록 Model에 담아서 화면에 전달해 준다.
++ sortParam으로 "카테고리타입" "가격순 필터조건" 을 받아 페이징을 구현했다.
+> sortParam이 없는 생성자는 상품검색 페이징을 위해 만들었다.
+
+####  html 파일
+```html
+th:href="@{/bookstore/home?code={code}&page={page}&itemName={name}(page = ${page.getCurPage()-1}, code=${page.sortParam}, name=${condition.itemName})}" 
+```
+ 
 ### 참고자료
 [fetchResults deprecated 관련하여 공식문서의 설명 링크와 대체 방법에 대한설명 글](https://devwithpug.github.io/java/querydsl-with-datajpa/)
 
