@@ -11,6 +11,7 @@ branches:
 
 # 빌드 전에 gradlew의 권한을 추가한다.
 before_install:
+  - cd ./server/server
   - chmod +x gradlew
 
 # Travis CI 서버의 Home
