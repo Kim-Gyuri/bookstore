@@ -14,6 +14,10 @@ cache:
     - '$HOME/.m2/repository' # maven 사용하는 경우
     - '$HOME/.gradle' # gradle 사용하는 경우
 
+# 모든 사용자에게 접근 권한 풀어주기 -> gradlew permission error
+before_install:
+  - -chomod +x gradlew
+
 # main branch에 push 되었을 때 수행할 명령어
 script: "./gradlew clean build"
 
