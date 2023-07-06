@@ -41,6 +41,11 @@ dependencies {
 	//mapper
 	implementation 'org.modelmapper:modelmapper:2.4.2'
 
+	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트를 위한 세팅
+	testImplementation 'org.projectlombok:lombok' // 테스트를 위한 세팅
+	testAnnotationProcessor 'org.projectlombok:lombok' // 테스트를 위한 세팅
+	testImplementation 'org.projectlombok:lombok' // 테스트를 위한 세팅
+
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'
 	//querydsl 추가
