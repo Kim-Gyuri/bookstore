@@ -3,11 +3,13 @@ package springstudy.bookstore.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.dto.MainItemDto;
 import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
@@ -21,8 +23,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(SpringExtension.class)
+@WebMvcTest
 @Slf4j
-@SpringBootTest
+//@SpringBootTest
 @Transactional
 class ItemRepositoryTest {
 
