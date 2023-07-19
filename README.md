@@ -45,7 +45,10 @@
 
 `drop menu` 
 > 메뉴(개인정보/등록한 상품/상품 등록하기/ 장바구니/로그아웃)를 볼 수 있다.
-<br><br>
+
+<br>
+
+![로그아웃_메뉴_AdobeExpress_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/cddf4667-a138-4920-8fd2-86a85932711c)
 
 <br> <br> <br>
 
@@ -61,9 +64,18 @@
 
 `가격순 필터` <br>
 
+![가격필터_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/105dbd44-cc7e-4322-bc98-819bd29c78ad)
+
+<br> <br> <br>
+
 `검색` <br>
-> 메인 페이지에서 검색하기 <br>
-> 카테고리 페이지에서 검색하기
+> 메인/카테고리 페이지에서 검색하기
+
+<br>
+
+![검색_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/7a789c47-024c-4a0c-bf17-aad8044186d7)
+
+<br> <br> <br>
 
 ## 프로젝트에 대한 요구사항과 핵심기능
 프로젝트를 만드는 과정을 노트로 정리했다. <br> 프로젝트에 대한 요구사항 및 구조, 서비스의 핵심 기능 및 기능을 구현하기 위해 어떻게 했는지 적었다. <br> 
