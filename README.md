@@ -1,5 +1,9 @@
 # :pushpin: Improved-SpringBoot-Online-Shopping-Store
 > [이전 프로젝트](https://github.com/Kim-Gyuri/SpringBoot-Online-Shopping-Store)를 개선한 버전의 프로젝트다.
+
+프로젝트 코드는 master 브랜치로 넣어놨는데, [링크](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/tree/master)로 이동하면 읽어볼 수 있다. <br>
+
+
 ## Features
 + MVC  - 로그인 처리(based 쿠키, 세션, 인터셉터), 파일 업로드(상품 이미지 등록)
 + Querydsl - 페이징처리( 모든상품 정렬/ 카테고리 정렬/ 상품명 검색)
