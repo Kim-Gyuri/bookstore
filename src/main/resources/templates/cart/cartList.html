@@ -33,7 +33,8 @@
                         <li><a class="dropdown-item" href="/bookstore/user/product"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
                         <li><a class="dropdown-item" href="/bookstore/item/new"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
                         <li><a class="dropdown-item" href="/bookstore/user/cart"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
-                        <li><form th:action="@{/bookstore/logout}" method="post"><button class="dropdown-item" type="submit"><label th:text="#{label.user.logout}">로그아웃 버튼</label></button></form></li>
+                        <li><form th:action="@{/bookstore/logout}" method="post">
+                            <button class="dropdown-item"  type="submit"><label th:text="#{label.user.logout}">로그아웃 버튼</label></button></form></li>
                     </ul>
                 </li>
             </ul>

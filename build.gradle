@@ -47,10 +47,11 @@ dependencies {
 	implementation 'com.querydsl:querydsl-apt'
 
 	// ec2 테스트를 위한 세팅
+	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.projectlombok:lombok'
+
+	// jdbc
+	implementation 'org.springframework.session:spring-session-jdbc'
 }
 
 tasks.named('test') {

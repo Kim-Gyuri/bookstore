@@ -78,6 +78,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.categoryType)
                        )
                 .from(itemImg)
+
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
                 .where(categoryTypeContains(code))

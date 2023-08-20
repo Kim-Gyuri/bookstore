@@ -61,7 +61,10 @@ public class UserController {
             return "login/loginForm";
         }
 
+        // 로그인 성공 처리
+        // 세션이 있으면 세션 반환하고, 없으면 신규 세션을 반환한다.
         HttpSession session = request.getSession();
+        // 세션이 로그인 정보를 보관한다.
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
         log.info("loginUser info{}", loginUser.toString());
 
@@ -70,11 +73,13 @@ public class UserController {
 
     @PostMapping("/logout")
     public String logoutV3(HttpServletRequest request) {
+        // 세션을 없애기 위해 null을 반환하도록 false를 넣느다.
         HttpSession session = request.getSession(false);
+        log.info("session = {}", session);
         if (session != null) {
-            session.invalidate();
+            session.invalidate(); // 세션 데이터 삭제
         }
-        return "redirect:/bookstore/home";
+        return "redirect:/bookstore/login";
     }
 
     @GetMapping("/user/Info")
