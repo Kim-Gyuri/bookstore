@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 
 @Slf4j
 @Profile("local")
-@Component
+//@Component
 @RequiredArgsConstructor
 public class InitData {
 
