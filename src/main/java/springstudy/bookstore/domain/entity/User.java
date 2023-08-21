@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import springstudy.bookstore.domain.dto.CartInfoDto;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User implements Serializable {
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
