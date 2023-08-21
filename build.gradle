@@ -28,6 +28,10 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+    enabled = false
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -52,6 +56,9 @@ dependencies {
 
 	// jdbc
 	implementation 'org.springframework.session:spring-session-jdbc'
+
+	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.1.4'
 }
 
 tasks.named('test') {
