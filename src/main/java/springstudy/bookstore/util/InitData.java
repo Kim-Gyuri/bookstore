@@ -1,25 +1,11 @@
 package springstudy.bookstore.util;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.entity.*;
-import springstudy.bookstore.domain.enums.CategoryType;
-import springstudy.bookstore.domain.enums.IsMainImg;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
-import springstudy.bookstore.domain.enums.ItemType;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-
-@Slf4j
-@Profile("local")
+//@Slf4j
+//@Profile("local")
 //@Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class InitData {
-
+/*
     private final InitService initService;
 
 
@@ -204,5 +190,5 @@ public class InitData {
             em.persist(img13);
         }
     }
-
+*/
 }
