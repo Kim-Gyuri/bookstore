@@ -42,7 +42,7 @@ public class ItemController {
         return "item/addItemForm";
     }
 
-    @PostMapping("/item/new")
+    //@PostMapping("/item/new")
     public String itemNew(@Login User loginUser, @Validated @ModelAttribute ItemFormDto itemFormDto, BindingResult bindingResult,
                           Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, RedirectAttributes redirectAttributes) throws IOException {
 
@@ -63,6 +63,32 @@ public class ItemController {
 
         // 성공로직
         Long id = itemService.saveItem(loginUser, itemFormDto, itemImgFileList);
+        log.info("itemInfo={}", itemService.findById(id).toString());
+        redirectAttributes.addAttribute("itemId", id);
+        return "redirect:/bookstore/item/{itemId}";
+    }
+
+    @PostMapping("/item/new")
+    public String itemNew_s3(@Login User loginUser, @Validated @ModelAttribute ItemFormDto itemFormDto, BindingResult bindingResult,
+                          Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, RedirectAttributes redirectAttributes) throws IOException {
+
+        if (loginUser == null) {
+            return "login/loginForm";
+        }
+
+        log.info("post-> loginUser info{}", loginUser.toString());
+        if (itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
+            model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력 값 입니다.");
+            return "item/addItemForm";
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "item/addItemForm";
+        }
+
+        // 성공로직
+        Long id = itemService.saveItem_s3(loginUser, itemFormDto, itemImgFileList);
         log.info("itemInfo={}", itemService.findById(id).toString());
         redirectAttributes.addAttribute("itemId", id);
         return "redirect:/bookstore/item/{itemId}";

@@ -17,6 +17,7 @@ import java.io.IOException;
 public class ItemImgService {
 
     private final FileService fileService;
+    private final S3FileService s3FileService;
     private final ItemImgRepository imgRepository;
 
     public Long saveItemImg(ItemInfoDto itemInfo, MultipartFile multipartFile) throws IOException {
@@ -33,6 +34,22 @@ public class ItemImgService {
         ItemImg saved = imgRepository.save(itemImgEntity);
         return saved.getId();
     }
+
+    public Long saveItemImg_s3(ItemInfoDto itemInfo, MultipartFile multipartFile) throws IOException {
+        FileInfoDto fileInfo = s3FileService.storeFile(multipartFile);
+
+        ItemImg itemImgEntity = ItemImg.imgBuilder()
+                .originImgName(fileInfo.getOriginImgName())
+                .imgName(fileInfo.getImgName())
+                .savePath(fileInfo.getSavePath())
+                .isMainImg(itemInfo.getYN())
+                .item(itemInfo.getItem())
+                .build();
+
+        ItemImg saved = imgRepository.save(itemImgEntity);
+        return saved.getId();
+    }
+
 
     public ItemImg findByImgName(String imgName) {
         return imgRepository.findByImgName(imgName);

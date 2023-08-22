@@ -50,6 +50,28 @@ public class ItemService {
         }
         return id;
     }
+    public Long saveItem_s3(User user, ItemFormDto itemFormDto, List<MultipartFile> multipartFileList) throws IOException {
+        Item item = itemFormDto.toEntity();
+        item.setUpUser(user);
+        Long id = itemRepository.save(item).getId();
+
+        // 대표 이미지 구별
+        for (int i=0; i<multipartFileList.size(); i++) {
+            ItemInfoDto itemInfo = new ItemInfoDto();
+            itemInfo.setItem(item);
+
+            if (i==0)
+                itemInfo.setYN(IsMainImg.Y);
+            else
+                itemInfo.setYN(IsMainImg.N);
+
+
+            itemImgService.saveItemImg_s3(itemInfo, multipartFileList.get(i));
+        }
+        return id;
+    }
+
+
 
     @Transactional(readOnly = true)
     public Item findById(Long id) {
