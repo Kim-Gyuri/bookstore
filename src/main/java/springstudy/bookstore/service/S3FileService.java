@@ -1,17 +1,19 @@
 package springstudy.bookstore.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import springstudy.bookstore.domain.dto.FileInfoDto;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,45 +23,54 @@ public class S3FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-   // private final AmazonS3 amazonS3;
+    private final AmazonS3Client amazonS3;
 
-    public FileInfoDto storeFile(MultipartFile multipartFile) throws IOException {
-        if (multipartFile.isEmpty()) {
-           return null;
-        }
+    public String getFullPath(String filename) {
+        return amazonS3.getUrl(bucket, filename).toString();
+    }
 
-        // 원래 파일명 추출
-        String originalFilename = multipartFile.getOriginalFilename();
+    public FileInfoDto upload(MultipartFile multipartFile, String dirName) throws IOException {
+        File uploadFile = convert(multipartFile)
+                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        // uuid 저장파일명 생성
-        String savedFileName = createStoreFileName(originalFilename);
 
-        // 파일을 불러올 때 사용할 파일 경로 (예: /file:/users/.../nameh8787bghh33.png)
-        String savedFilePath = bucket + savedFileName;
+        return upload(dirName, uploadFile);
+    }
 
+    private FileInfoDto upload(String dirName, File uploadFile) {
         FileInfoDto fileInfo = new FileInfoDto();
-        fileInfo.updateItemImg(originalFilename,savedFileName,savedFilePath);
 
-        // 실제로 로컬에 uuid 파일명으로 저장하기
-        multipartFile.transferTo(new File(savedFilePath));
-        log.info("fileInfo={}", fileInfo.getSavePath());
+        String originalFilename = uploadFile.getName();
+        String fileName = dirName + "/" + uploadFile.getName();
+        String uploadImageUrl = putS3(uploadFile, fileName);
+
+        fileInfo.updateItemImg(originalFilename,fileName,uploadImageUrl);
         return fileInfo;
-
     }
 
-    // uuid 파일명 생성 메서드
-    private String createStoreFileName(String originalFilename) {
-        return UUID.randomUUID().toString().concat(getFileExtension(originalFilename));
+    private String putS3(File uploadFile, String fileName) {
+        amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
-    // 확장자 추출 메서드
-    private String getFileExtension(String originalFilename) {
-        try {
-            return originalFilename.substring(originalFilename.lastIndexOf("."));
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + originalFilename + ") 입니다.");
+    private void removeNewFile(File targetFile) {
+        if (targetFile.delete()) {
+            log.info("파일이 삭제되었습니다.");
+        } else {
+            log.info("파일이 삭제되지 못했습니다.");
         }
     }
 
+    private Optional<File> convert(MultipartFile file) throws IOException {
+        File convertFile = new File(file.getOriginalFilename());
+        if(convertFile.createNewFile()) {
+            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+                fos.write(file.getBytes());
+            }
+            return Optional.of(convertFile);
+        }
+
+        return Optional.empty();
+    }
 
 }

@@ -36,7 +36,7 @@ public class ItemImgService {
     }
 
     public Long saveItemImg_s3(ItemInfoDto itemInfo, MultipartFile multipartFile) throws IOException {
-        FileInfoDto fileInfo = s3FileService.storeFile(multipartFile);
+        FileInfoDto fileInfo = s3FileService.upload(multipartFile,"elasticbeanstalk-ap-northeast-2-574628083448");
 
         ItemImg itemImgEntity = ItemImg.imgBuilder()
                 .originImgName(fileInfo.getOriginImgName())
