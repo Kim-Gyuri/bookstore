@@ -44,6 +44,8 @@ public class S3FileService {
         String fileName = dirName + "/" + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
 
+        log.info("img s3 url ={}", uploadImageUrl);
+
         fileInfo.updateItemImg(originalFilename,fileName,uploadImageUrl);
         return fileInfo;
     }
