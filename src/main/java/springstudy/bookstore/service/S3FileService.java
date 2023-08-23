@@ -1,5 +1,7 @@
 package springstudy.bookstore.service;
 
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -26,6 +28,7 @@ public class S3FileService {
     private final AmazonS3Client amazonS3;
 
     public String getFullPath(String filename) {
+        amazonS3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
         return amazonS3.getUrl(bucket, filename).toString();
     }
 
@@ -51,6 +54,7 @@ public class S3FileService {
     }
 
     private String putS3(File uploadFile, String fileName) {
+        amazonS3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
         amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3.getUrl(bucket, fileName).toString();
     }
