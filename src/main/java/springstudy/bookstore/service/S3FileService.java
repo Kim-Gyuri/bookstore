@@ -36,11 +36,9 @@ public class S3FileService {
         amazonS3 = AmazonS3ClientBuilder.standard()
                 .withRegion(regionStatic)
          //       .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .enablePathStyleAccess()
                 .build();
     }
     public String getFullPath(String filename) {
-        filename = "test/" + filename;
         return amazonS3.getUrl(bucket, filename).toString();
     }
 
@@ -56,7 +54,7 @@ public class S3FileService {
 
         String originalFilename = uploadFile.getName();
         String fileName = dirName + "/" + uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile, "test/"+ fileName);
+        String uploadImageUrl = putS3(uploadFile,  fileName);
 
         log.info("img s3 url ={}", uploadImageUrl);
 
