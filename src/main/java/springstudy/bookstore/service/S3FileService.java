@@ -36,17 +36,18 @@ public class S3FileService {
         amazonS3 = AmazonS3ClientBuilder.standard()
                 .withRegion(regionStatic)
          //       .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .enablePathStyleAccess()
                 .build();
     }
     public String getFullPath(String filename) {
-        return amazonS3.getUrl(bucket, "/test/"+filename).toString();
+        return amazonS3.getUrl(bucket, "test/"+filename).toString();
     }
 
     public FileInfoDto upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        return upload("/test/"+dirName, uploadFile);
+        return upload("test/"+dirName, uploadFile);
     }
 
     private FileInfoDto upload(String dirName, File uploadFile) {
@@ -54,7 +55,7 @@ public class S3FileService {
 
         String originalFilename = uploadFile.getName();
         String fileName = dirName + "/" + uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile, "/test/"+fileName);
+        String uploadImageUrl = putS3(uploadFile, "test/"+fileName);
 
         log.info("img s3 url ={}", uploadImageUrl);
 
@@ -64,7 +65,7 @@ public class S3FileService {
 
     private String putS3(File uploadFile, String fileName) {
         amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3.getUrl(bucket, "/test"+fileName).toString();
+        return amazonS3.getUrl(bucket, "test/"+fileName).toString();
     }
 
     private void removeNewFile(File targetFile) {
