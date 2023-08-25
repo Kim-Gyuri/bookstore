@@ -24,12 +24,11 @@ import java.net.MalformedURLException;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/bookstore")
 public class HomeController {
 
     private final ItemService itemService;
 
-    @GetMapping("/home")
+    @GetMapping("/bookstore/home")
     public String home(Model model, @Login User loginUser,
                        @PageableDefault(size = 4) Pageable pageable,
                        @RequestParam(required = false, name = "code") String code,
@@ -66,7 +65,7 @@ public class HomeController {
         return "shop/index";
     }
 
-    @GetMapping("/products/{itemId}")
+    @GetMapping("/bookstore/products/{itemId}")
     public String showOne(@PathVariable Long itemId, Model model) {
 
         ItemFormDto product = itemService.getItemDetail(itemId);
