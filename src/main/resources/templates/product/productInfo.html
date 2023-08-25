@@ -117,7 +117,7 @@
         <div class="row">
           <div class="btn_box">
             <div th:each="itemImg : ${product.itemImgDtoList}">
-              <img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}" th:src="|/bookstore/images/${itemImg.imgName}|"/> <br><br>
+              <img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}" th:src="|${itemImg.savePath}|"/> <br><br>
             </div>
           </div>
         </div>
