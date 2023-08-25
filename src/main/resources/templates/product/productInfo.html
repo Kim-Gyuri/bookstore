@@ -51,7 +51,7 @@
       <!--main img -->
       <div class="col-md-6">
         <div class="map_container ">
-          <img  class="card-img-fake2" th:src="|/bookstore/images/${product.itemImgDtoList[0].imgName}|" alt=""/>
+          <img  class="card-img-fake2" th:src="|${product.itemImgDtoList[0].getSavePath()}|" alt=""/>
         </div>
       </div>
 

@@ -230,6 +230,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
+                        itemImg.savePath,
                         item.itemType,
                         item.categoryType))
                 .from(itemImg)

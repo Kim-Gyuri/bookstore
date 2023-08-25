@@ -66,7 +66,7 @@
                             <tbody>
 
                             <tr th:each="item : ${products}">
-                                <td class="align-middle"><img class="card-img-fake" th:src="|/bookstore/images/${item.imgName}|"></td>
+                                <td class="align-middle"><img class="card-img-fake" th:src="|${item.imgUrl}|"></td>
                                 <td class="align-middle" th:text="${item.itemName}"></td>
                                 <td class="align-middle" th:text="${item.price}"></td>
                                 <td class="align-middle" th:text="${item.quantity}"></td>

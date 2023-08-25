@@ -131,7 +131,7 @@ public class InitData {
             ItemImg img1 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Ariana Grande.jpg")
-                    .savePath("c:save/Ariana Grande.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/3bd66ffe-53fe-4e7f-b676-4909ccddbb4b")
                     .isMainImg(IsMainImg.Y)
                     .item(item1)
                     .build();
@@ -139,7 +139,7 @@ public class InitData {
             ItemImg img2 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("BAEK HYUN.jpg")
-                    .savePath("c:save/BAEK HYUN.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/27392311-6b6c-4852-8087-6a12834b9908")
                     .isMainImg(IsMainImg.Y)
                     .item(item2)
                     .build();
@@ -179,7 +179,7 @@ public class InitData {
             ItemImg img = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("1984.jpg")
-                    .savePath("c:save/1984.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/c87b0c45-1ac6-41c3-beb2-82cd80d8c7fd")
                     .isMainImg(IsMainImg.Y)
                     .item(item)
                     .build();
@@ -201,7 +201,7 @@ public class InitData {
             ItemImg img2 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("And Then There Were None.jpg")
-                    .savePath("c:save/And Then There Were None.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/62c68662-fd5a-4e15-90a3-7279d99c94cf")
                     .isMainImg(IsMainImg.Y)
                     .item(item2)
                     .build();
@@ -223,7 +223,7 @@ public class InitData {
             ItemImg img3 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Anne of Green Gables.jpg")
-                    .savePath("c:save/Anne of Green Gables.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/2e564f8b-4367-4acf-99bf-77e56958991c")
                     .isMainImg(IsMainImg.Y)
                     .item(item3)
                     .build();
@@ -244,7 +244,7 @@ public class InitData {
             ItemImg img4 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Damian.jpg")
-                    .savePath("c:save/Damian.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/d679e445-39d9-43cd-8b83-9af46df52d1f")
                     .isMainImg(IsMainImg.Y)
                     .item(item4)
                     .build();
@@ -265,7 +265,7 @@ public class InitData {
             ItemImg img5 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Little Women.jpg")
-                    .savePath("c:save/Little Women.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/082cbfb9-deaa-479e-8fb3-87b561509012")
                     .isMainImg(IsMainImg.Y)
                     .item(item5)
                     .build();
@@ -286,7 +286,7 @@ public class InitData {
             ItemImg img6 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("MOMO.jpg")
-                    .savePath("c:save/MOMO.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/e0bd1c01-d9aa-41a7-9ae2-f56f761195cd")
                     .isMainImg(IsMainImg.Y)
                     .item(item6)
                     .build();
@@ -307,7 +307,7 @@ public class InitData {
             ItemImg img7 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("My Sweet Orange Tree.jpg")
-                    .savePath("c:save/My Sweet Orange Tree.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/f5f7fac5-f1e5-4f34-92a2-c5f52c820403")
                     .isMainImg(IsMainImg.Y)
                     .item(item7)
                     .build();
@@ -329,7 +329,7 @@ public class InitData {
             ItemImg img8 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Peter Pan.jpg")
-                    .savePath("c:save/Peter Pan.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/19e5bc6b-3eda-4dab-ac6e-c799ebbdbb6c")
                     .isMainImg(IsMainImg.Y)
                     .item(item8)
                     .build();
@@ -349,7 +349,7 @@ public class InitData {
             ItemImg img9 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Seven Years of Darkness.jpg")
-                    .savePath("c:save/Seven Years of Darkness.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/d39ca436-a351-4e91-92bf-2f5b55eb047b")
                     .isMainImg(IsMainImg.Y)
                     .item(item9)
                     .build();
@@ -370,7 +370,7 @@ public class InitData {
             ItemImg img10 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Tara Duncan.jpg")
-                    .savePath("c:save/Tara Duncan.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/145237d6-b511-4dcd-947a-492589fdbee8")
                     .isMainImg(IsMainImg.Y)
                     .item(item10)
                     .build();
@@ -392,7 +392,7 @@ public class InitData {
             ItemImg img11 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("The Blue Bird for Children.jpg")
-                    .savePath("c:save/The Blue Bird for Children.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/effeec6a-1e61-4e99-87db-b28fba714c08")
                     .isMainImg(IsMainImg.Y)
                     .item(item11)
                     .build();
@@ -413,7 +413,7 @@ public class InitData {
             ItemImg img12 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("The Diary of Anne Frank.jpg")
-                    .savePath("c:save/The Diary of Anne Frank.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/f704fd45-7e33-48d9-a5f3-cc729132b85b")
                     .isMainImg(IsMainImg.Y)
                     .item(item12)
                     .build();
@@ -435,7 +435,7 @@ public class InitData {
             ItemImg img = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Edith Piaf.jpg")
-                    .savePath("c:save/Edith Piaf.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/08498786-065d-472f-96f4-bab7b019141e")
                     .isMainImg(IsMainImg.Y)
                     .item(item)
                     .build();
@@ -456,7 +456,7 @@ public class InitData {
             ItemImg img2 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Warner Classics.jpg")
-                    .savePath("c:save/Warner Classics.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/f5ddb6fa-cf02-4208-b615-ff3eefcbf5ca")
                     .isMainImg(IsMainImg.Y)
                     .item(item2)
                     .build();
@@ -476,7 +476,7 @@ public class InitData {
             ItemImg img3 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Utopia.jpg")
-                    .savePath("c:save/Utopia.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/2aa0fec5-2e03-4eb2-aeb3-635874fa56c0")
                     .isMainImg(IsMainImg.Y)
                     .item(item3)
                     .build();
@@ -497,7 +497,7 @@ public class InitData {
             ItemImg img4 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Utada Hikaru.jpg")
-                    .savePath("c:save/Utada Hikaru.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/3a0df0b4-ca73-49c7-9b59-10270cb1ad9d")
                     .isMainImg(IsMainImg.Y)
                     .item(item4)
                     .build();
@@ -518,7 +518,7 @@ public class InitData {
             ItemImg img5 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("totoro.jpg")
-                    .savePath("c:save/totoro.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/62a76cee-a563-4934-be0e-06b72903ee44")
                     .isMainImg(IsMainImg.Y)
                     .item(item5)
                     .build();
@@ -539,7 +539,7 @@ public class InitData {
             ItemImg img6 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("sm.jpg")
-                    .savePath("c:save/sm.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/d141de99-308c-4585-b02d-6e27fd8c5351")
                     .isMainImg(IsMainImg.Y)
                     .item(item6)
                     .build();
@@ -560,7 +560,7 @@ public class InitData {
             ItemImg img7 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Sia.jpg")
-                    .savePath("c:save/Sia.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/edd76fca-4377-4de1-bb91-db87c5ecd845")
                     .isMainImg(IsMainImg.Y)
                     .item(item7)
                     .build();
@@ -581,7 +581,7 @@ public class InitData {
             ItemImg img8 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("pororo.jpg")
-                    .savePath("c:save/pororo.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/410b31ce-21a0-4041-88d0-3d391d90ac70")
                     .isMainImg(IsMainImg.Y)
                     .item(item8)
                     .build();
@@ -602,7 +602,7 @@ public class InitData {
             ItemImg img9 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("NewJeans.jpg")
-                    .savePath("c:save/NewJeans.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/11cc1176-7a3b-4206-b698-5e137f93ef49")
                     .isMainImg(IsMainImg.Y)
                     .item(item9)
                     .build();
@@ -624,7 +624,7 @@ public class InitData {
             ItemImg img10 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("Miriam Makeba.jpg")
-                    .savePath("c:save/Miriam Makeba.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/2c6bad42-7a57-456e-8cab-8c42e32b10f8")
                     .isMainImg(IsMainImg.Y)
                     .item(item10)
                     .build();
@@ -644,7 +644,7 @@ public class InitData {
             ItemImg img11 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("La La Land OST by Justin Hurwitz.jpg")
-                    .savePath("c:save/La La Land OST by Justin Hurwitz.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/27d1f3a8-0a07-472c-be4f-9ff59a33a9a7")
                     .isMainImg(IsMainImg.Y)
                     .item(item11)
                     .build();
@@ -664,7 +664,7 @@ public class InitData {
             ItemImg img12 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("John Coltrane.jpg")
-                    .savePath("c:save/John Coltrane.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/9981c6e7-f3f2-428b-bf16-bd289ce8fd0a")
                     .isMainImg(IsMainImg.Y)
                     .item(item12)
                     .build();
@@ -684,7 +684,7 @@ public class InitData {
             ItemImg img13 = ItemImg.imgBuilder()
                     .originImgName("origin.jpg")
                     .imgName("BLACKPINK.jpg")
-                    .savePath("c:save/BLACKPINK.jpg")
+                    .savePath("https://github.com/Kim-Gyuri/bookstore/assets/57389368/e6d6777f-7e4f-49d0-9d30-ed59202610c9")
                     .isMainImg(IsMainImg.Y)
                     .item(item13)
                     .build();

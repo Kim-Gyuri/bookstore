@@ -12,16 +12,18 @@ public class UserMainItemDto {
     private Integer price;
     private Integer quantity;
     private String imgName;
+    private String imgUrl;
     private ItemType itemType;
     private CategoryType categoryType;
 
     @QueryProjection
-    public UserMainItemDto(Long itemId, String itemName, Integer price, Integer quantity, String imgName, ItemType itemType, CategoryType categoryType) {
+    public UserMainItemDto(Long itemId, String itemName, Integer price, Integer quantity, String imgName, String imgUrl, ItemType itemType, CategoryType categoryType) {
         this.itemId = itemId;
         this.itemName = itemName;
         this.price = price;
         this.quantity = quantity;
         this.imgName = imgName;
+        this.imgUrl = imgUrl;
         this.itemType = itemType;
         this.categoryType = categoryType;
     }
