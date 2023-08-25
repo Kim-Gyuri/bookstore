@@ -81,7 +81,7 @@
 
                     <div th:each="itemImg : ${item.itemImgDtoList}">
                         <img class="card-img-fake2" th:if="${not #strings.isEmpty(itemImg.savePath)}"
-                             th:src="|${item.imgUrl}|" /> <br><br>
+                             th:src="|${itemImg.imgUrl}|" /> <br><br>
                     </div>
                 </div>
 
