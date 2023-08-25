@@ -16,10 +16,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ItemImgService {
 
-    private final FileService fileService;
+//    private final FileService fileService;
     private final S3FileService s3FileService;
     private final ItemImgRepository imgRepository;
 
+    /*
     public Long saveItemImg(ItemInfoDto itemInfo, MultipartFile multipartFile) throws IOException {
         FileInfoDto fileInfo = fileService.storeFile(multipartFile);
 
@@ -34,6 +35,8 @@ public class ItemImgService {
         ItemImg saved = imgRepository.save(itemImgEntity);
         return saved.getId();
     }
+
+     */
 
     public Long saveItemImg_s3(ItemInfoDto itemInfo, MultipartFile multipartFile) throws IOException {
         FileInfoDto fileInfo = s3FileService.upload(multipartFile, "test");

@@ -46,7 +46,7 @@ public class ItemService {
             else
                 itemInfo.setYN(IsMainImg.N);
 
-            itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
+            itemImgService.saveItemImg_s3(itemInfo, multipartFileList.get(i));
         }
         return id;
     }
@@ -146,7 +146,7 @@ public class ItemService {
             else
                 itemInfo.setYN(IsMainImg.N);
 
-            Long imgId = itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
+            Long imgId = itemImgService.saveItemImg_s3(itemInfo, multipartFileList.get(i));
             ItemImg imgEntity = itemImgService.findByImgId(imgId);
             imgTemp.add(imgEntity);
         }
