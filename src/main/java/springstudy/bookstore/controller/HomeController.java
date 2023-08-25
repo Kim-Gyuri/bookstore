@@ -17,7 +17,6 @@ import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.dto.sort.PageDto;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.ItemService;
-import springstudy.bookstore.service.S3FileService;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 
 import java.net.MalformedURLException;
@@ -29,8 +28,6 @@ import java.net.MalformedURLException;
 public class HomeController {
 
     private final ItemService itemService;
-   // private final FileService fileService;
-    private final S3FileService s3FileService;
 
     @GetMapping("/home")
     public String home(Model model, @Login User loginUser,
@@ -56,7 +53,7 @@ public class HomeController {
         for (MainItemDto result : results) {
             log.info("items info-itemImg={}", result.getImgName());
 
-            String fullPath = s3FileService.getFullPath(result.getImgName());
+            String fullPath = result.getImgUrl();
             log.info("file path check={}", fullPath);
         }
         log.info(pageDto.toString());
@@ -82,11 +79,19 @@ public class HomeController {
     }
 
     @ResponseBody
+    @GetMapping("{fileId}")
+    public Resource download(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource(filename);
+    }
+
+/*
+    @ResponseBody
     @GetMapping("/images/{filename}")
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
         log.info("file path check={}",s3FileService.getFullPath(filename));
         return new UrlResource(s3FileService.getFullPath(filename));
     }
+ */
 
 
 }

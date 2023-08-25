@@ -1,18 +1,16 @@
 package springstudy.bookstore.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import springstudy.bookstore.domain.dto.FileInfoDto;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,50 +18,40 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Component
+@Service
 public class S3FileService {
+
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${cloud.aws.region.static}")
-    private String regionStatic;
-    private AmazonS3 amazonS3;
 
-    @PostConstruct
-    private void setS3Client() {
-       // AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-
-        amazonS3 = AmazonS3ClientBuilder.standard()
-                .withRegion(regionStatic)
-         //       .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .build();
-    }
-    public String getFullPath(String filename) {
-        return amazonS3.getUrl(bucket, filename).toString();
-    }
-
+    // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
     public FileInfoDto upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
 
-        return upload(uploadFile, dirName, multipartFile.getOriginalFilename());
+        return upload(multipartFile, dirName, uploadFile);
     }
 
+    private FileInfoDto upload(MultipartFile multipartFile, String dirName, File uploadFile) {
+        FileInfoDto fileInfoDto = new FileInfoDto();
 
-    private FileInfoDto upload(File uploadFile, String dirName, String originalName) {
-        FileInfoDto fileInfo = new FileInfoDto();
-
-        String fileName = dirName + "/" + UUID.randomUUID() + originalName; // S3에 저장된 파일 이름
+        String originFileName = multipartFile.getOriginalFilename(); // 올리려는 파일이름
+        String fileName = createStoreFileName(dirName, multipartFile.getOriginalFilename()); // s3에 저장될 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
 
-        fileInfo.updateItemImg(originalName,fileName,uploadImageUrl);
-        log.info("img s3 url ={}", uploadImageUrl);
+        log.info("upload -> uploadFile{}", uploadFile); //로그로 확인해봄
+        log.info("upload -> dirName{}", dirName);
+        log.info("upload -> originName{}", originFileName);
 
         removeNewFile(uploadFile);
-        return fileInfo;
+
+        fileInfoDto.updateItemImg(originFileName, fileName, uploadImageUrl);
+        return fileInfoDto;
     }
 
     private String putS3(File uploadFile, String fileName) {
@@ -71,9 +59,15 @@ public class S3FileService {
                 new PutObjectRequest(bucket, fileName, uploadFile)
                         .withCannedAcl(CannedAccessControlList.PublicRead)	// PublicRead 권한으로 업로드 됨
         );
+        log.info("getFullPath={}", amazonS3Client.getUrl(bucket, fileName).toString());
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
+
+    // uuid 파일명 생성 메서드
+    private String createStoreFileName(String dirName, String originalName) {
+        return dirName + "/" + UUID.randomUUID() + originalName;
+    }
 
     private void removeNewFile(File targetFile) {
         if(targetFile.delete()) {
