@@ -22,6 +22,7 @@ import springstudy.bookstore.service.UserService;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @Slf4j
@@ -42,6 +43,12 @@ class ItemRepositoryTest {
         return ItemSearchCondition.builder()
                 .itemName("Ariana Grande")
                 .loginMember(createUser())
+                .build();
+    }
+
+    public ItemSearchCondition createCondition_search() {
+        return ItemSearchCondition.builder()
+                .itemName("Anne")
                 .build();
     }
     
@@ -117,26 +124,22 @@ class ItemRepositoryTest {
         String itemName = content.get(0).getItemName();
         Item findItem = itemRepository.findByItemName(itemName);
         assertThat(findItem.getCategoryType().getTypeCode().equals(CategoryType.MUSIC.getTypeCode()));
-        System.out.println(findItem.toString());
     }
 
-    /*
     @Test
     void searchItemAndCategoryType_카테고리안에서검색테스트() {
         //given : "BOOK" 카테고리 페이지에서 상품 "Anne"을 검색하려고 한다.
         PageRequest pageable = PageRequest.of(0, 4);
-        ItemSearchCondition condition = createCondition();
+        ItemSearchCondition condition = createCondition_search();
         Page<MainItemDto> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(condition, CategoryType.BOOK.getTypeCode(), pageable);
 
         for (MainItemDto mainItemDto : mainItemDtos.getContent()) {
            log.info("mainItemDto.getItemName()", mainItemDto.getItemName());
         }
         // then : 상품 2개가 조회 되는지?
-       // assertThat(mainItemDtos.getContent().size()).isEqualTo(2);
-//        assertEquals(2, mainItemDtos.getContent().size());
+        assertEquals(2, mainItemDtos.getContent().size());
 
     }
-     */
 
 
 }
