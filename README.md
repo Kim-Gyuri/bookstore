@@ -36,6 +36,11 @@
 ## Database Schema
 ![ERD](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/5eeeda0f-39f3-4ee7-bd2b-0a119a8d8e76) 
 
+## Server Architecture
+![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1)
+
+<br>
+
 ## gif
 `로그인` <br> <br>
 ![aladin - 중고 거래 사이트 외 페이지 1개 - 프로필 1 - Microsoft_ Edge 2023-07-18 17-43-21 (online-video-cutter com)](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/280ca6f0-71e3-4f06-8171-5a4fc7ce0dbf)
@@ -91,5 +96,4 @@
 + [파일 업로드](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/main/%EB%85%B8%ED%8A%B8/%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C.md)
 + [오류처리와 예외처리](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/main/%EB%85%B8%ED%8A%B8/%EC%98%A4%EB%A5%98%EC%B2%98%EB%A6%AC%EC%99%80%20%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC.md)
 + [개선사항과 만났던 오류들](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/main/%EB%85%B8%ED%8A%B8/%EA%B0%9C%EC%84%A0%EC%82%AC%ED%95%AD%EA%B3%BC%20%EB%A7%8C%EB%82%AC%EB%8D%98%20%EC%98%A4%EB%A5%98%EB%93%A4.md)
-+ [AWS 서버 환경](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/blob/main/%EB%85%B8%ED%8A%B8/AWS%20%EC%84%9C%EB%B2%84%20%ED%99%98%EA%B2%BD.md)
-
++ [AWS 서버 환경](https://github.com/Kim-Gyuri/bookstore/tree/main/%EB%85%B8%ED%8A%B8/AWS%20)
