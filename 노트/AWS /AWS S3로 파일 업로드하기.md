@@ -239,5 +239,7 @@ s3Uploader에서 반환받은 DTO로 상품 이미지 엔티티를 저장한다.
 
 
 ## 참고자료
++ [S3 버킷 프리티어 생성 - 블로그 글](https://dev-elena-k.tistory.com/15)
++ [S3 버킷에 업로드 하기](https://dev-elena-k.tistory.com/16)
 + [[SpringBoot] AWS S3로 이미지 업로드하기 - 블로그 글](https://velog.io/@chaeri93/SpringBoot-AWS-S3%EB%A1%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EA%B8%B0)
 + [S3_연동하기 - github 글](https://github.com/jojoldu/blog-code/blob/master/springboot-aws-tui/S3_%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0.md)
