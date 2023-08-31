@@ -151,6 +151,7 @@ insert into cart(cart_id) values(58);
 <details>
 <summary> user 테이블 값 세팅</summary>
 
+```
 insert into users (user_id, city, street, zipcode, email, login_id, name, password, cart_id)
 values (1, '진주', '2', '2222', 'karis99@naver.com', 'test3', 'userC', 'test3!', 2);
 
@@ -162,6 +163,7 @@ values (55, '광주', '4', '4444', 'mimi00@naver.com', 'test', 'userA', 'test!',
 
 insert into users (user_id, city, street, zipcode, email, login_id, name, password, cart_id)
 values (57, '부천', '5', '5555', 'nana10@naver.com', 'test2', 'userB', 'test2!', 58);
+```
 
 </details>
 
@@ -197,7 +199,7 @@ values (17, 'BOOK', 'Peter Pan', 'HIGHEST', 5000, 'SELL', 10, 1);
 
 
 
-회원 "userD"가 등록한 상품
+# 회원 "userD"가 등록한 상품
 insert into item (item_id, category_type, item_name, item_type, price, status, stock_quantity, user_user_id)
 values (19, 'BOOK', 'Seven Years of Darkness', 'BEST', 5000, 'SELL', 10, 27);
 
@@ -224,7 +226,7 @@ values (35, 'MUSIC', 'Utada Hikaru', 'HIGHEST', 18000, 'SELL', 10, 55);
 
 
 
-회원 "userA"가 등록한 상품
+# 회원 "userA"가 등록한 상품
 insert into item (item_id, category_type, item_name, item_type, price, status, stock_quantity, user_user_id)
 values (37, 'MUSIC', 'ToToRo', 'HIGHEST', 3000, 'SELL', 10, 55);
 
