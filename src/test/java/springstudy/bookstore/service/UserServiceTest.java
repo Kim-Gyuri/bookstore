@@ -1,5 +1,6 @@
 package springstudy.bookstore.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.dto.LoginFormDto;
 import springstudy.bookstore.domain.dto.UserFormDto;
+import springstudy.bookstore.domain.dto.UserMainItemDto;
 import springstudy.bookstore.domain.entity.User;
+import springstudy.bookstore.repository.ItemRepository;
 import springstudy.bookstore.util.exception.UserNotFoundException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
+@Slf4j
 @SpringBootTest
 @Transactional
 class UserServiceTest {
@@ -20,6 +27,8 @@ class UserServiceTest {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ItemRepository itemRepository;
 
     public UserFormDto createUserTest() {
         UserFormDto dto = new UserFormDto();
@@ -126,6 +135,16 @@ class UserServiceTest {
         User user = userService.findOne(loginDto.getLoginId());
         assertEquals(dto.getName(), user.getName());
         assertEquals(dto.getEmail(), user.getEmail());
+    }
+    
+    @Test
+    void getItems() {
+        User user = userService.findOne("test2");
+        List<UserMainItemDto> list = userService.findAllByUser(user);
+
+        for (UserMainItemDto dto : list) {
+            log.info("확인ㅇㅇ={}", dto.getItemName());
+        }
 
     }
 }

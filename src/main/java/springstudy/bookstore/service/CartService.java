@@ -10,11 +10,8 @@ import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.OrderItem;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.repository.CartRepository;
-import springstudy.bookstore.repository.ItemRepository;
 import springstudy.bookstore.repository.OrderItemRepository;
-import springstudy.bookstore.repository.UserRepository;
 import springstudy.bookstore.util.exception.DuplicateOrderItemException;
-import springstudy.bookstore.util.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -23,8 +20,8 @@ import java.util.List;
 @Slf4j
 public class CartService {
 
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
+    private final UserService userService;
+    private final ItemService itemService;
     private final CartRepository cartRepository;
     private final OrderItemRepository orderItemRepository;
 
@@ -36,26 +33,26 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public List<CartInfoDto> getWishList(String loginId) {
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+        User user = userService.findByLoginId(loginId);
         return user.getWishList();
     }
 
     @Transactional
     public void addWishList(String loginId, Long itemId, Integer count) {
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+        User buyer = userService.findByLoginId(loginId); // 구매자
 
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+        Item item = itemService.findById(itemId); // (구매자가 주문요청한 상품)
 
-        OrderItem orderItem = orderItemRepository.save(new OrderItem(user.getCart(), item, count));
+        User seller = userService.findByItemId(itemId); // 판매자
 
-        if (user.checkOrderItemDuplicate(orderItem)) {
+        OrderItem orderItem = orderItemRepository.save(new OrderItem(buyer.getCart(), item, count)); // (장바구니에 담길 상품정보)
+
+        if (buyer.checkOrderItemDuplicate(orderItem)) {
             throw new DuplicateOrderItemException("중복된 장바구니입니다.");
         }
 
-        user.addCartItem(orderItem);
+        buyer.addCartItem(orderItem); // 장바구니에 추가
+        seller.searchSales().takeOrder(orderItem.getOrderPrice());
     }
 
     @Transactional
@@ -63,7 +60,10 @@ public class CartService {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
-        orderItem.getItem().cancelCart(orderItem.getCount());
+        orderItem.getItem().cancelCart(orderItem.getCount()); // 구매자 장바구니에서 삭제
+
+        orderItem.getItem().getUser().getSales().cancelOrder(orderItem.getOrderPrice()); // 주문 취소요청 받음
+
         orderItemRepository.delete(orderItem);
     }
 }

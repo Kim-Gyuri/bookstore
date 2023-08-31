@@ -1,5 +1,6 @@
 package springstudy.bookstore.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 @SpringBootTest
 @Transactional
 class ItemServiceTest {
@@ -93,7 +95,7 @@ class ItemServiceTest {
         ItemFormDto dto = createItemFormDtoTest();
 
         // when : 상품 등록 로직을 실행했을 때
-        Long itemId = itemService.saveItem_s3(user, dto, multipartFiles);
+        Long itemId = itemService.saveItem(user, dto, multipartFiles);
 
 
         List<ItemImg> itemImgList = imgRepository.findAllByItem_id(itemId);
@@ -116,7 +118,7 @@ class ItemServiceTest {
         // then : 상품 2개가 조회되는지 확인한다.
         assertEquals(2, result.getContent().size());
         for (MainItemDto mainItemDto : result) {
-            System.out.println("mainItemDto.getItemName() = " + mainItemDto.getItemName());
+            log.info("mainItemDto.getItemName() = {}", mainItemDto.getItemName());
         }
     }
 
@@ -154,7 +156,7 @@ class ItemServiceTest {
         // then : 해당 회원이 판매하는 상품 개수가 13개가 맞는지?
         assertThat(itemDto.size() == 13);
         for (UserMainItemDto userMainItemDto : itemDto) {
-            System.out.println("userMainItemDto.toString() = " + userMainItemDto.toString());
+            log.info("userMainItemDto.toString() = {}", userMainItemDto.toString());
         }
     }
 
@@ -172,7 +174,7 @@ class ItemServiceTest {
         // then : 조회했을 때 해당 상품 카테고리 타입이 "BOOK"이 맞는지?
         assertThat(content.get(0).getCategoryType().getTypeCode().equals(CategoryType.BOOK.getTypeCode()));
         for (MainItemDto mainItemDto : content) {
-            System.out.println(mainItemDto.toString());
+            log.info("dto info ={}", mainItemDto.toString());
         }
     }
 
@@ -187,7 +189,7 @@ class ItemServiceTest {
         // then : 상품 2개가 조회 되는지?
         assertEquals(2, mainItemDtos.getContent().size());
         for (MainItemDto mainItemDto : mainItemDtos) {
-            System.out.println("mainItemDto.toString() = " + mainItemDto.toString());
+            log.info("mainItemDto.toString() = {}", mainItemDto.toString());
         }
 
     }

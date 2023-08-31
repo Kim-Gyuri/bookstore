@@ -31,13 +31,25 @@ public class ItemService {
     private final ItemImgService itemImgService;
     private final ItemImgRepository itemImgRepository;
 
+    public Long saveItem_test(ItemFormDto itemFormDto, List<MultipartFile> multipartFileList) throws IOException {
+        Item item = itemFormDto.toEntity(); // 아이템 정보
+        getThumbnailImage(multipartFileList, item); // 아이템 이미지 첨부
+        Long id = itemRepository.save(item).getId(); // 저장
+
+        return id;
+    }
     public Long saveItem(User user, ItemFormDto itemFormDto, List<MultipartFile> multipartFileList) throws IOException {
         Item item = itemFormDto.toEntity();
         item.setUpUser(user);
         Long id = itemRepository.save(item).getId();
 
         // 대표 이미지 구별
-        for (int i=0; i<multipartFileList.size(); i++) {
+       getThumbnailImage(multipartFileList, item);
+        return id;
+    }
+    private void getThumbnailImage(List<MultipartFile> multipartFileList, Item item) throws IOException {
+        // 대표 이미지 구별
+        for (int i = 0; i< multipartFileList.size(); i++) {
             ItemInfoDto itemInfo = new ItemInfoDto();
             itemInfo.setItem(item);
 
@@ -46,10 +58,10 @@ public class ItemService {
             else
                 itemInfo.setYN(IsMainImg.N);
 
-            itemImgService.saveItemImg_s3(itemInfo, multipartFileList.get(i));
+           itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
         }
-        return id;
     }
+    /*
     public Long saveItem_s3(User user, ItemFormDto itemFormDto, List<MultipartFile> multipartFileList) throws IOException {
         Item item = itemFormDto.toEntity();
         item.setUpUser(user);
@@ -70,7 +82,7 @@ public class ItemService {
         }
         return id;
     }
-
+*/
 
 
     @Transactional(readOnly = true)
@@ -95,8 +107,14 @@ public class ItemService {
 
         ItemFormDto itemFormDto = ItemFormDto.of(item);
         itemFormDto.setItemImgDtoList(itemImgDtoList);
-        itemFormDto.setItemImgDtoList(itemImgDtoList);
+      //  itemFormDto.setItemImgDtoList(itemImgDtoList);
         return itemFormDto;
+    }
+
+    @Transactional(readOnly = true)
+    public SalesFormDto getItemDetail_test(Long itemId) {
+        Item item = findById(itemId);
+        return new SalesFormDto(item);
     }
 
     @Transactional(readOnly = true)
@@ -146,7 +164,7 @@ public class ItemService {
             else
                 itemInfo.setYN(IsMainImg.N);
 
-            Long imgId = itemImgService.saveItemImg_s3(itemInfo, multipartFileList.get(i));
+            Long imgId = itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
             ItemImg imgEntity = itemImgService.findByImgId(imgId);
             imgTemp.add(imgEntity);
         }

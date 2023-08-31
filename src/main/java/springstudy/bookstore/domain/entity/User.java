@@ -8,7 +8,6 @@ import springstudy.bookstore.domain.dto.CartInfoDto;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,6 @@ public class User implements Serializable {
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-
     private String loginId;
     private String password;
     private String name;
@@ -29,12 +27,13 @@ public class User implements Serializable {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Item> itemList = new ArrayList<>();
-
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sales_id")
+    private Sales sales;
 
     @Builder(builderMethodName = "userBuilder")
     public User(String loginId, String password, String name, String email, Address address) {
@@ -44,16 +43,26 @@ public class User implements Serializable {
         this.email = email;
         this.address = address;
         this.cart = new Cart();
+        this.sales = new Sales();
     }
 
     @Builder(builderMethodName = "initBuilder")
-    public User(String loginId, String password, String name, String email, Address address, Cart cart) {
+    public User(String loginId, String password, String name, String email, Address address, Cart cart, Sales sales) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
         this.address = address;
         this.cart = cart;
+        this.sales = sales;
+    }
+
+    public void createSales(Sales sales) {
+        this.sales = sales;
+    }
+
+    public void uploadItem(Item item) {
+        sales.uploadItem(item);
     }
 
     public void createCart(Cart cart) {
@@ -76,6 +85,10 @@ public class User implements Serializable {
                 .stream()
                 .map(OrderItem::getItem)
                 .anyMatch(v -> v.getId() == orderItem.getItemId());
+    }
+
+    public Sales searchSales() {
+        return this.sales;
     }
 
     @Override

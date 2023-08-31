@@ -1,6 +1,6 @@
 package springstudy.bookstore.domain.entity;
 
-import org.junit.jupiter.api.DisplayName;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,13 +10,13 @@ import springstudy.bookstore.domain.enums.ItemType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
+@Transactional
 @SpringBootTest
-class CartTest {
+public class SalesTest {
 
     @Test
-    @Transactional
-    @DisplayName("장바구니 만들기")
-    void 장바구니_생성() {
+    void uploadSales_정상() {
         // given : "userA", "userB" 회원 2명이 있다.
         Address addressA = new Address("진주", "2", "2222");
         Address addressB = new Address("서울", "1", "1111");
@@ -25,7 +25,11 @@ class CartTest {
         User userB = new User("test2", "test2!","userB", "nana05@gmail.com", addressB);
         userA.createCart(new Cart());
         userB.createCart(new Cart());
+        userB.createSales(new Sales());
 
+        // when :
+        // "userB" 회원은 상품을 등록하였고,
+        // "userA" 회원이 그 상품을 장바구니에 담았을 때,
         Item item1 = new Item("spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
         Item item2 = new Item("mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
 
@@ -35,21 +39,22 @@ class CartTest {
         OrderItem orderItem1 = new OrderItem(userA.getCart(), item1, 5);
         OrderItem orderItem2 = new OrderItem(userA.getCart(), item2, 2);
 
-        // when :
-        // "userA" 회원이 상품을 장바구니에 담았을 때,
-        // "userB" 회원은 장바구니에 아무것도 담지 않았다.
         userA.addCartItem(orderItem1);
         userA.addCartItem(orderItem2);
 
+        userB.getSales().takeOrder(orderItem1.getOrderPrice());
+        userB.getSales().takeOrder(orderItem2.getOrderPrice());
+
+
+        // then : "userB" 회원의 판매금액과 "userA" 회원의 결재금액이 같은지?
         int sum = 0;
         for (OrderItem orderItem : userA.getCart().getOrderItemList()) {
-            sum += orderItem.getCount();
+            sum += orderItem.getOrderPrice();
         }
 
-        // then :
-        // "userA"가 담은 상품 개수가 총 7개가 맞는지?
-        //  "userB"는 장바구니에 상품을 담지 않았는지?
-        assertThat(sum).isEqualTo(7);
-        assertThat(userB.getCart().getOrderItemList().size()).isEqualTo(0);
+        log.info("userA buy item -> orderPrice={}", sum);
+        log.info("userB sell item -> total revenue={}", userB.getSales().getTotalRevenue());
+        assertThat(userB.getSales().getTotalRevenue()).isEqualTo(sum);
     }
+
 }

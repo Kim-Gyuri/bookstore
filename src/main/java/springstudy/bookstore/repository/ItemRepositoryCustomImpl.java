@@ -12,6 +12,7 @@ import springstudy.bookstore.domain.dto.QMainItemDto;
 import springstudy.bookstore.domain.dto.QUserMainItemDto;
 import springstudy.bookstore.domain.dto.UserMainItemDto;
 import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
+import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 
@@ -222,7 +223,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<UserMainItemDto> sortByUser() {
+    public List<UserMainItemDto> sortByUser(User user) {
         List<UserMainItemDto> content = queryFactory
                 .select(new QUserMainItemDto(
                         item.id.as("itemId"),
@@ -235,7 +236,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.categoryType))
                 .from(itemImg)
                 .join(itemImg.item, item)
-                .where(itemImg.isMainImg.eq(IsMainImg.Y))
+                .where(itemImg.isMainImg.eq(IsMainImg.Y).and(item.user.loginId.eq(user.getLoginId())))
                 .fetch();
 
         return content;
