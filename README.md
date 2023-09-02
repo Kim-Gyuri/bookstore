@@ -34,7 +34,7 @@
 <br>
 
 ## Database Schema
-![ERD](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/5eeeda0f-39f3-4ee7-bd2b-0a119a8d8e76) 
+![erd 제출용](https://github.com/Kim-Gyuri/bookstore/assets/57389368/0627e85d-5a00-4fca-bc88-f6afa91e2625)
 
 ## Server Architecture
 ![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1)
