@@ -1,11 +1,11 @@
-package springstudy.bookstore.domain.dto;
+package springstudy.bookstore.domain.dto.user;
 
 import lombok.Data;
 import springstudy.bookstore.domain.entity.Address;
 import springstudy.bookstore.domain.entity.User;
 
 @Data
-public class UserFormDto {
+public class CreateUserRequest {
 
     private Long id;
     private String loginId;

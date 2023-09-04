@@ -7,11 +7,13 @@ import lombok.NoArgsConstructor;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
-import springstudy.bookstore.util.exception.NotEnoughStockException;
+import springstudy.bookstore.util.exception.item.NotEnoughStockException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static springstudy.bookstore.util.constant.Constants.THUMBNAIL_INDEX;
 
 @Entity
 @Getter
@@ -22,9 +24,7 @@ public class Item {
     @Column(name = "item_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
+    private String sellerId; // 상품 등록자; 판매자의 ID
     private String itemName;
     private Integer price;
     private Integer stockQuantity;
@@ -45,26 +45,20 @@ public class Item {
     @JoinColumn(name = "sales_id")
     private Sales sales;
 
-    @Builder(builderMethodName ="itemBuilder")
-    public Item(String itemName, Integer price, Integer stockQuantity, ItemType itemType, CategoryType categoryType, ItemSellStatus status) {
+    // H2 DB 테스트 할 때, 입력 데이터를 만들기 위해
+    @Builder(builderMethodName = "initItemBuilder")
+    public Item(String sellerId, String itemName, Integer price, Integer stockQuantity, ItemType itemType, CategoryType categoryType) {
+        this.sellerId = sellerId;
         this.itemName = itemName;
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.itemType = itemType;
         this.categoryType = categoryType;
-        this.status = status;
+        this.status = ItemSellStatus.SELL;
     }
 
-    @Builder(builderMethodName = "initItemBuilder")
-    public Item(User user, String itemName, Integer price, Integer stockQuantity, ItemType itemType, CategoryType categoryType, ItemSellStatus status, Sales sales) {
-        this.user = user;
-        this.itemName = itemName;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-        this.itemType = itemType;
-        this.categoryType = categoryType;
-        this.status = status;
-        this.sales = sales;
+    public void sellerInfo(String userId) {
+        this.sellerId = userId;
     }
 
     public void removeStock(Integer quantity) {
@@ -86,12 +80,8 @@ public class Item {
     public void cancelCart(Integer quantity) {
         int restQuantity = this.stockQuantity + quantity;
         this.stockQuantity = restQuantity;
-        this.sales.cancelOrder(price*quantity);
     }
 
-    public void setUpUser(User user) {
-        this.user = user;
-    }
 
     public void update(String itemName, Integer price, Integer stockQuantity) {
         this.itemName = itemName;
@@ -103,8 +93,9 @@ public class Item {
         this.imgList.add(itemImg);
     }
 
+
     public String getMainImg_path() {
-        return imgList.get(0).getSavePath();
+        return imgList.get(THUMBNAIL_INDEX).getSavePath();
     }
     @Override
     public String toString() {

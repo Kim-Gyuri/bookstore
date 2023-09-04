@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import springstudy.bookstore.domain.dto.CartInfoDto;
+import springstudy.bookstore.domain.dto.cart.GetCartResponse;
 
 import javax.persistence.*;
 
@@ -28,6 +28,8 @@ public class OrderItem {
     private Integer orderPrice;
     private Integer count;
 
+    // 테스를 위한 데이터 만들기 위해
+    // cart()에 담을 때 주문 상품을 생성하기 위해
     @Builder(builderMethodName = "orderItemBuilder")
     public OrderItem(Cart cart, Item item, Integer count) {
         item.removeStock(count);
@@ -37,20 +39,19 @@ public class OrderItem {
         this.count = count;
         orderAmount(count);
     }
-
     public Long getItemId() {
         return item.getId();
     }
-
     public void orderAmount(Integer count) {
         int sum = item.getPrice() * count;
         this.orderPrice = sum;
     }
 
-    public CartInfoDto toWishItemDto() {
-        return CartInfoDto.wishItemBuilder()
+    public GetCartResponse toWishItemDto() {
+        return GetCartResponse.wishItemBuilder()
                 .orderItemId(this.id)
-                .item(item)
+                .itemName(item.getItemName())
+                .mainImg_savePath(item.getMainImg_path())
                 .count(this.count)
                 .orderPrice(this.orderPrice)
                 .build();

@@ -7,12 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
-import springstudy.bookstore.domain.dto.MainItemDto;
-import springstudy.bookstore.domain.dto.QMainItemDto;
-import springstudy.bookstore.domain.dto.QUserMainItemDto;
-import springstudy.bookstore.domain.dto.UserMainItemDto;
+import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
+import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
+import springstudy.bookstore.domain.dto.item.QGetPreViewItemResponse;
+import springstudy.bookstore.domain.dto.item.QGetUserItemResponse;
 import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
-import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 
@@ -31,10 +30,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> searchByItemName(ItemSearchCondition condition, Pageable pageable) {
+    public Page<GetPreViewItemResponse> searchByItemName(ItemSearchCondition condition, Pageable pageable) {
 
-        List<MainItemDto> content = queryFactory
-                .select(new QMainItemDto(
+        List<GetPreViewItemResponse> content = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -52,8 +51,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<MainItemDto> query = queryFactory
-                .select(new QMainItemDto(
+        JPAQuery<GetPreViewItemResponse> query = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -69,9 +68,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> sortByCategoryType(String code, Pageable pageable) {
-        List<MainItemDto> content = queryFactory
-                .select(new QMainItemDto(
+    public Page<GetPreViewItemResponse> sortByCategoryType(String code, Pageable pageable) {
+        List<GetPreViewItemResponse> content = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -90,8 +89,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<MainItemDto> query = queryFactory
-                .select(new QMainItemDto(
+        JPAQuery<GetPreViewItemResponse> query = queryFactory
+                .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
                     item.itemName.as("itemName"),
                     item.price,
@@ -108,9 +107,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> searchByItemNameAndCategoryType(ItemSearchCondition condition, String code, Pageable pageable) {
-        List<MainItemDto> content = queryFactory
-                .select(new QMainItemDto(
+    public Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(ItemSearchCondition condition, String code, Pageable pageable) {
+        List<GetPreViewItemResponse> content = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -129,8 +128,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<MainItemDto> query = queryFactory
-                .select(new QMainItemDto(
+        JPAQuery<GetPreViewItemResponse> query = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -147,9 +146,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> sortByItemPriceASC(Pageable pageable) {
-        List<MainItemDto> content = queryFactory
-                .select(new QMainItemDto(
+    public Page<GetPreViewItemResponse> sortByItemPriceASC(Pageable pageable) {
+        List<GetPreViewItemResponse> content = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -167,8 +166,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<MainItemDto> query = queryFactory
-                .select(new QMainItemDto(
+        JPAQuery<GetPreViewItemResponse> query = queryFactory
+                .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
                     item.itemName.as("itemName"),
                     item.price,
@@ -185,9 +184,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<MainItemDto> sortByItemPriceDESC(Pageable pageable) {
-        List<MainItemDto> content = queryFactory
-                .select(new QMainItemDto(
+    public Page<GetPreViewItemResponse> sortByItemPriceDESC(Pageable pageable) {
+        List<GetPreViewItemResponse> content = queryFactory
+                .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -205,8 +204,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<MainItemDto> query = queryFactory
-                .select(new QMainItemDto(
+        JPAQuery<GetPreViewItemResponse> query = queryFactory
+                .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
                     item.itemName.as("itemName"),
                     item.price,
@@ -223,9 +222,9 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public List<UserMainItemDto> sortByUser(User user) {
-        List<UserMainItemDto> content = queryFactory
-                .select(new QUserMainItemDto(
+    public List<GetUserItemResponse> sortByUser(String uploaderId) {
+        List<GetUserItemResponse> content = queryFactory
+                .select(new QGetUserItemResponse(
                         item.id.as("itemId"),
                         item.itemName.as("itemName"),
                         item.price,
@@ -236,11 +235,13 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.categoryType))
                 .from(itemImg)
                 .join(itemImg.item, item)
-                .where(itemImg.isMainImg.eq(IsMainImg.Y).and(item.user.loginId.eq(user.getLoginId())))
+                .where(itemImg.isMainImg.eq(IsMainImg.Y).and(item.sellerId.eq(uploaderId)))
                 .fetch();
 
         return content;
     }
+
+
 
     private BooleanExpression itemNameContains(String itemName) {
         return StringUtils.hasText(itemName) ? item.itemName.contains(itemName) : null;

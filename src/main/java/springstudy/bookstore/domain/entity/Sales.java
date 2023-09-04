@@ -2,6 +2,7 @@ package springstudy.bookstore.domain.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import springstudy.bookstore.domain.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class Sales {
     @OneToMany(mappedBy = "sales", cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     /*
       비지니스 로직 ;
       uploadItem : 팔고 싶은 상품 등록
@@ -29,14 +33,17 @@ public class Sales {
      */
     public void uploadItem(Item item) {
         itemList.add(item);
+        this.orderStatus = OrderStatus.NONE;
     }
 
     public void takeOrder(int orderPrice) {
+        this.orderStatus = OrderStatus.ORDER;
         totalRevenue += orderPrice;
     }
 
     public void cancelOrder(int orderPrice) {
         totalRevenue -= orderPrice;
+        this.orderStatus = OrderStatus.CANCEL;
     }
 
 

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import springstudy.bookstore.domain.dto.FileInfoDto;
+import springstudy.bookstore.domain.dto.file.CreateFileResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class FileService {
     }
 
 
-    public FileInfoDto storeFile(MultipartFile multipartFile) throws IOException {
+    public CreateFileResponse storeFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
@@ -35,7 +35,7 @@ public class FileService {
         // 파일을 불러올 때 사용할 파일 경로 (예: /file:/users/.../nameh8787bghh33.png)
         String savedFilePath = fileDir + savedFileName;
 
-        FileInfoDto fileInfo = new FileInfoDto();
+        CreateFileResponse fileInfo = new CreateFileResponse();
         fileInfo.updateItemImg(originalFilename,savedFileName,savedFilePath);
 
         // 실제로 로컬에 uuid 파일명으로 저장하기

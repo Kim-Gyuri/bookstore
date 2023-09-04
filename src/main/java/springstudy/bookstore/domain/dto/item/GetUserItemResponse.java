@@ -1,4 +1,4 @@
-package springstudy.bookstore.domain.dto;
+package springstudy.bookstore.domain.dto.item;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
@@ -6,9 +6,8 @@ import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemType;
 
 @Data
-public class MainItemDto {
-
-    private Long id;
+public class GetUserItemResponse {
+    private Long itemId;
     private String itemName;
     private Integer price;
     private Integer quantity;
@@ -18,8 +17,8 @@ public class MainItemDto {
     private CategoryType categoryType;
 
     @QueryProjection
-    public MainItemDto(Long id, String itemName, Integer price, Integer quantity, String imgName, String imgUrl, ItemType itemType, CategoryType categoryType) {
-        this.id = id;
+    public GetUserItemResponse(Long itemId, String itemName, Integer price, Integer quantity, String imgName, String imgUrl, ItemType itemType, CategoryType categoryType) {
+        this.itemId = itemId;
         this.itemName = itemName;
         this.price = price;
         this.quantity = quantity;
@@ -28,5 +27,4 @@ public class MainItemDto {
         this.itemType = itemType;
         this.categoryType = categoryType;
     }
-
 }

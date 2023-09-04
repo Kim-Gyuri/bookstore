@@ -1,4 +1,4 @@
-package springstudy.bookstore.util.exception;
+package springstudy.bookstore.util.exception.cart;
 
 public class DuplicateOrderItemException extends RuntimeException {
 

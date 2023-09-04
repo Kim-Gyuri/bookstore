@@ -5,16 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import springstudy.bookstore.domain.dto.ItemFormDto;
-import springstudy.bookstore.domain.dto.ItemUpdateForm;
-import springstudy.bookstore.domain.dto.SalesFormDto;
+import springstudy.bookstore.domain.dto.item.CreateItemRequest;
+import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
+import springstudy.bookstore.domain.dto.item.UpdateItemRequest;
+import springstudy.bookstore.domain.dto.sales.GetSalesResponse;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.Sales;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.repository.SalesRepository;
+import springstudy.bookstore.util.exception.sales.NotFoundSalesException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,13 +27,15 @@ public class SalesService {
     private final SalesRepository salesRepository;
     private final ItemService itemService;
     private final UserService userService;
-    private final CartService cartService;
+
 
     // 상품 업로드
-    public void uploadItem(User user,ItemFormDto itemFormDto, List<MultipartFile> multipartFileList) throws IOException {
-        Long itemId = itemService.saveItem_test(itemFormDto, multipartFileList);
+    public Long uploadItem(User user, CreateItemRequest dto, List<MultipartFile> multipartFileList) throws IOException {
+        Long itemId = itemService.saveItem(user, dto, multipartFileList);
         Item item = itemService.findById(itemId);
         user.uploadItem(item);
+
+        return user.getSales().getId();
     }
 
 
@@ -42,29 +45,25 @@ public class SalesService {
     @Transactional(readOnly = true)
     public Sales findById(Long id) {
         return salesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 " + id + " 번호 상품이 없습니다."));
+                .orElseThrow(() -> new NotFoundSalesException("해당 " + id + " 번호 상품이 없습니다."));
     }
 
     @Transactional(readOnly = true)
-    public List<SalesFormDto> getItemDetail(Long id) {
-        Sales sales = findById(id);
+    public  GetSalesResponse findByUserLoginId(String id) {
+        User seller = userService.findByLoginId(id);
+        List<GetUserItemResponse> items = userService.findItemsByUser(id);
 
-        List<SalesFormDto> list = new ArrayList<>();
-        for (Item item : sales.getItemList()) {
-            list.add(itemService.getItemDetail_test(item.getId()));
-        }
-        return list;
+        return new GetSalesResponse(items, seller.income());
     }
 
     // 업로드한 상품 삭제
     public void delete(Long id) {
-        Sales sales = salesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+        Sales sales = findById(id);
         salesRepository.delete(sales);
     }
 
     // 업로드 수정
-    public void update(Long itemId, ItemUpdateForm form, List<MultipartFile> multipartFileList) throws IOException {
+    public void update(Long itemId, UpdateItemRequest form, List<MultipartFile> multipartFileList) throws IOException {
         itemService.update(itemId,form,multipartFileList);
     }
 

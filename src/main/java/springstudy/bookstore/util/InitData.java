@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.entity.*;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 
 import javax.annotation.PostConstruct;
@@ -51,8 +50,8 @@ public class InitData {
                     .address(addressA)
                     .build();
 
-            em.persist(user);
             sellBook(user);
+            em.persist(user);
         }
 
         public void dbInit2() {
@@ -71,8 +70,8 @@ public class InitData {
                     .address(addressA)
                     .build();
 
-            em.persist(user);
             sellMusic(user);
+            em.persist(user);
         }
 
         public void dbInit3(){
@@ -109,23 +108,21 @@ public class InitData {
             em.persist(userB);
 
             Item item1 = Item.initItemBuilder()
-                    .user(userB)
+                    .sellerId(userB.getLoginId())
                     .itemName("Ariana Grande")
                     .price(12000)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             Item item2 = Item.initItemBuilder()
-                    .user(userB)
+                    .sellerId(userB.getLoginId())
                     .itemName("BAEK HYUN")
                     .price(30000)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img1 = ItemImg.imgBuilder()
@@ -167,13 +164,12 @@ public class InitData {
 
         private void sellBook(User user) {
             Item item = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("1984")
                     .price(10000)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img = ItemImg.imgBuilder()
@@ -189,13 +185,12 @@ public class InitData {
 
 
             Item item2 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("And Then There Were None")
                     .price(8000)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img2 = ItemImg.imgBuilder()
@@ -211,13 +206,12 @@ public class InitData {
 
 
             Item item3 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Anne of Green Gables")
                     .price(7900)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img3 = ItemImg.imgBuilder()
@@ -232,13 +226,12 @@ public class InitData {
             em.persist(img3);
 
             Item item4 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Damian")
                     .price(7700)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img4 = ItemImg.imgBuilder()
@@ -253,13 +246,12 @@ public class InitData {
             em.persist(img4);
 
             Item item5 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Little Women")
                     .price(10000)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img5 = ItemImg.imgBuilder()
@@ -274,13 +266,12 @@ public class InitData {
             em.persist(img5);
 
             Item item6 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("MOMO")
                     .price(10000)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img6 = ItemImg.imgBuilder()
@@ -295,13 +286,12 @@ public class InitData {
             em.persist(img6);
 
             Item item7 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("My Sweet Orange Tree")
                     .price(5000)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img7 = ItemImg.imgBuilder()
@@ -317,13 +307,12 @@ public class InitData {
 
 
             Item item8 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Peter Pan")
                     .price(4900)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img8 = ItemImg.imgBuilder()
@@ -337,13 +326,12 @@ public class InitData {
             em.persist(img8);
 
             Item item9 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Seven Years of Darkness")
                     .price(12000)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img9 = ItemImg.imgBuilder()
@@ -358,13 +346,12 @@ public class InitData {
             em.persist(img9);
 
             Item item10 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Tara Duncan")
                     .price(1000)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img10 = ItemImg.imgBuilder()
@@ -380,13 +367,12 @@ public class InitData {
 
 
             Item item11 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("The Blue Bird for Children")
                     .price(10000)
                     .stockQuantity(10)
                     .itemType(ItemType.LOWER)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img11 = ItemImg.imgBuilder()
@@ -401,13 +387,12 @@ public class InitData {
             em.persist(img11);
 
             Item item12 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("The Diary of Anne Frank")
                     .price(20000)
                     .stockQuantity(10)
                     .itemType(ItemType.LOWER)
                     .categoryType(CategoryType.BOOK)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img12 = ItemImg.imgBuilder()
@@ -423,13 +408,12 @@ public class InitData {
 
         private void sellMusic(User user) {
             Item item = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Edith Piaf")
                     .price(14200)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img = ItemImg.imgBuilder()
@@ -444,13 +428,12 @@ public class InitData {
             em.persist(img);
 
             Item item2 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Warner Classics")
                     .price(13300)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img2 = ItemImg.imgBuilder()
@@ -464,13 +447,12 @@ public class InitData {
             em.persist(img2);
 
             Item item3 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Utopia")
                     .price(10300)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img3 = ItemImg.imgBuilder()
@@ -485,13 +467,12 @@ public class InitData {
             em.persist(img3);
 
             Item item4 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Utada Hikaru")
                     .price(10100)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img4 = ItemImg.imgBuilder()
@@ -506,13 +487,12 @@ public class InitData {
             em.persist(img4);
 
             Item item5 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("totoro")
                     .price(10190)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img5 = ItemImg.imgBuilder()
@@ -527,13 +507,12 @@ public class InitData {
             em.persist(img5);
 
             Item item6 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("sm")
                     .price(8810)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img6 = ItemImg.imgBuilder()
@@ -548,13 +527,12 @@ public class InitData {
             em.persist(img6);
 
             Item item7 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Sia")
                     .price(7710)
                     .stockQuantity(10)
                     .itemType(ItemType.HIGHEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img7 = ItemImg.imgBuilder()
@@ -569,13 +547,12 @@ public class InitData {
             em.persist(img7);
 
             Item item8 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("pororo")
                     .price(10090)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img8 = ItemImg.imgBuilder()
@@ -590,13 +567,12 @@ public class InitData {
             em.persist(img8);
 
             Item item9 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("NewJeans")
                     .price(8930)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img9 = ItemImg.imgBuilder()
@@ -612,13 +588,12 @@ public class InitData {
 
 
             Item item10 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("Miriam Makeba")
                     .price(7710)
                     .stockQuantity(10)
                     .itemType(ItemType.BEST)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img10 = ItemImg.imgBuilder()
@@ -632,13 +607,12 @@ public class InitData {
             em.persist(img10);
 
             Item item11 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("La La Land OST by Justin Hurwitz")
                     .price(10000)
                     .stockQuantity(10)
                     .itemType(ItemType.LOWER)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img11 = ItemImg.imgBuilder()
@@ -652,13 +626,12 @@ public class InitData {
             em.persist(img11);
 
             Item item12 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("John Coltrane")
                     .price(10150)
                     .stockQuantity(10)
                     .itemType(ItemType.LOWER)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img12 = ItemImg.imgBuilder()
@@ -672,13 +645,12 @@ public class InitData {
             em.persist(img12);
 
             Item item13 = Item.initItemBuilder()
-                    .user(user)
+                    .sellerId(user.getLoginId())
                     .itemName("BLACKPINK")
                     .price(16100)
                     .stockQuantity(10)
                     .itemType(ItemType.LOWER)
                     .categoryType(CategoryType.MUSIC)
-                    .status(ItemSellStatus.SELL)
                     .build();
 
             ItemImg img13 = ItemImg.imgBuilder()

@@ -1,9 +1,9 @@
-package springstudy.bookstore.domain.dto;
+package springstudy.bookstore.domain.dto.file;
 
 import lombok.Data;
 
 @Data
-public class FileInfoDto {
+public class CreateFileResponse {
 
     private String imgName;
     private String originImgName;

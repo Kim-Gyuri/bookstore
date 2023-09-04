@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import springstudy.bookstore.domain.dto.CartInfoDto;
+import springstudy.bookstore.domain.dto.cart.GetCartResponse;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,6 +35,7 @@ public class User implements Serializable {
     @JoinColumn(name = "sales_id")
     private Sales sales;
 
+    // H2 DB 테스트 할 때, 입력 데이터를 만들기 위해
     @Builder(builderMethodName = "userBuilder")
     public User(String loginId, String password, String name, String email, Address address) {
         this.loginId = loginId;
@@ -46,22 +47,13 @@ public class User implements Serializable {
         this.sales = new Sales();
     }
 
-    @Builder(builderMethodName = "initBuilder")
-    public User(String loginId, String password, String name, String email, Address address, Cart cart, Sales sales) {
-        this.loginId = loginId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.cart = cart;
-        this.sales = sales;
-    }
 
     public void createSales(Sales sales) {
         this.sales = sales;
     }
 
     public void uploadItem(Item item) {
+        item.sellerInfo(loginId); // 상품에 판매자 정보를 등록한다.
         sales.uploadItem(item);
     }
 
@@ -73,7 +65,7 @@ public class User implements Serializable {
         cart.addOrderItem(orderItem);
     }
 
-    public List<CartInfoDto> getWishList() {
+    public List<GetCartResponse> getWishList() {
         return cart.getOrderItemList()
                 .stream()
                 .map(OrderItem::toWishItemDto)
@@ -89,6 +81,11 @@ public class User implements Serializable {
 
     public Sales searchSales() {
         return this.sales;
+    }
+
+    public int income() {
+        Sales sales = searchSales();
+        return sales.getTotalRevenue();
     }
 
     @Override
