@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.enums.CategoryType;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,8 +25,8 @@ class CartTest {
         userA.createCart(new Cart());
         userB.createCart(new Cart());
 
-        Item item1 = new Item("spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
-        Item item2 = new Item("mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
+        Item item1 = new Item(userB.getLoginId(), "spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK);
+        Item item2 = new Item(userB.getLoginId(),"mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK);
 
         userB.uploadItem(item1);
         userB.uploadItem(item2);

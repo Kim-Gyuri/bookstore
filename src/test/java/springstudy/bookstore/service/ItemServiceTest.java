@@ -12,16 +12,15 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import springstudy.bookstore.controller.dto.ItemSortParam;
-import springstudy.bookstore.domain.dto.ItemFormDto;
-import springstudy.bookstore.domain.dto.MainItemDto;
-import springstudy.bookstore.domain.dto.UserFormDto;
-import springstudy.bookstore.domain.dto.UserMainItemDto;
+import springstudy.bookstore.domain.dto.item.CreateItemRequest;
+import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
+import springstudy.bookstore.domain.dto.user.CreateUserRequest;
+import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 import springstudy.bookstore.repository.ItemImgRepository;
 
@@ -55,7 +54,7 @@ class ItemServiceTest {
     }
 
     public User createUserTest() {
-        UserFormDto dto = new UserFormDto();
+        CreateUserRequest dto = new CreateUserRequest();
         dto.setLoginId("nana20");
         dto.setPassword("1234@");
         dto.setName("faker");
@@ -65,7 +64,7 @@ class ItemServiceTest {
         dto.setZipcode("1120");
 
         userService.signUp(dto);
-        return userService.findOne(dto.getLoginId());
+        return userService.findByLoginId(dto.getLoginId());
     }
 
     public ItemSearchCondition createSearchConditionTest() {
@@ -75,14 +74,14 @@ class ItemServiceTest {
                 .build();
     }
 
-    public ItemFormDto createItemFormDtoTest() {
-        ItemFormDto dto = new ItemFormDto();
+    public CreateItemRequest createRequestItemDto(String sellerId) {
+        CreateItemRequest dto = new CreateItemRequest();
+        dto.setUploaderId(sellerId);
         dto.setItemName("테스트 상품명");
         dto.setCategoryType(CategoryType.BOOK);
         dto.setItemType(ItemType.BEST);
         dto.setPrice(10000);
         dto.setQuantity(100);
-        dto.setStatus(ItemSellStatus.SELL);
         return dto;
     }
 
@@ -92,7 +91,7 @@ class ItemServiceTest {
         // given : 회원 user 가 상품 등록을 하려고 한다.
         List<MultipartFile> multipartFiles = createMultipartFiles();
         User user = createUserTest();
-        ItemFormDto dto = createItemFormDtoTest();
+        CreateItemRequest dto = createRequestItemDto(user.getLoginId());
 
         // when : 상품 등록 로직을 실행했을 때
         Long itemId = itemService.saveItem(user, dto, multipartFiles);
@@ -113,11 +112,11 @@ class ItemServiceTest {
     public void searchProduct() {
         // given : "Anne" 상품 이름을 검색하려고 한다.
         Pageable pageable = PageRequest.of(0, 10);
-        Page<MainItemDto> result = itemService.searchPageSort(createSearchConditionTest(), pageable);
+        Page<GetPreViewItemResponse> result = itemService.searchPageSort(createSearchConditionTest(), pageable);
 
         // then : 상품 2개가 조회되는지 확인한다.
         assertEquals(2, result.getContent().size());
-        for (MainItemDto mainItemDto : result) {
+        for (GetPreViewItemResponse mainItemDto : result) {
             log.info("mainItemDto.getItemName() = {}", mainItemDto.getItemName());
         }
     }
@@ -127,8 +126,8 @@ class ItemServiceTest {
     void ascSort_페이지테스트() {
         // given : 낮은 가격순으로 상품을 조회하려고 한다.
         Pageable pageable = PageRequest.of(0, 4);
-        Page<MainItemDto> sort = itemService.itemPriceSort(ItemSortParam.ASC.getCode(), pageable);
-        List<MainItemDto> list = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemService.itemPriceSort(ItemSortParam.ASC.getCode(), pageable);
+        List<GetPreViewItemResponse> list = sort.getContent();
 
         // then : 가장 낮은 가격의 상품이 "Tara Duncan"이 맞는지 확인한다.
         assertThat(list.get(0).getImgName().equals("Tara Duncan"));
@@ -139,8 +138,8 @@ class ItemServiceTest {
     void descSort_페이지테스트() {
         // given : 높은 가격순으로 상품을 조회하려고 한다.
         Pageable pageable = PageRequest.of(0, 4);
-        Page<MainItemDto> sort = itemService.itemPriceSort(ItemSortParam.DESC.getCode(), pageable);
-        List<MainItemDto> list = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemService.itemPriceSort(ItemSortParam.DESC.getCode(), pageable);
+        List<GetPreViewItemResponse> list = sort.getContent();
 
         // then : 가장 높은 가격의 상품이 "BAEK HYUN"이 맞는지 확인한다.
         assertThat(list.get(0).getImgName().equals("BAEK HYUN"));
@@ -150,15 +149,17 @@ class ItemServiceTest {
     @DisplayName("사용자별 판매상품 리스트보기 테스트")
     void sortByUser_유저별판매제품테스트() {
         // given :  회원 "test4"가 판매하는 상품을 조회하려고 한다.
-        User user = userService.findOne("test4");
-        List<UserMainItemDto> itemDto = userService.findAllByUser(user);
+        User user = userService.findByLoginId("test4");
+        List<GetUserItemResponse> itemDto = userService.findItemsByUser(user.getLoginId());
 
         // then : 해당 회원이 판매하는 상품 개수가 13개가 맞는지?
         assertThat(itemDto.size() == 13);
-        for (UserMainItemDto userMainItemDto : itemDto) {
+        for (GetUserItemResponse userMainItemDto : itemDto) {
             log.info("userMainItemDto.toString() = {}", userMainItemDto.toString());
         }
     }
+
+
 
     @Test
     @DisplayName("카테고리별 상품페이지보기 테스트")
@@ -168,12 +169,12 @@ class ItemServiceTest {
         String code = CategoryType.BOOK.getTypeCode();
 
         // then :  로직을 실행
-        Page<MainItemDto> sort = itemService.categoryPageSort(code, pageable);
-        List<MainItemDto> content = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemService.categoryPageSort(code, pageable);
+        List<GetPreViewItemResponse> content = sort.getContent();
 
         // then : 조회했을 때 해당 상품 카테고리 타입이 "BOOK"이 맞는지?
         assertThat(content.get(0).getCategoryType().getTypeCode().equals(CategoryType.BOOK.getTypeCode()));
-        for (MainItemDto mainItemDto : content) {
+        for (GetPreViewItemResponse mainItemDto : content) {
             log.info("dto info ={}", mainItemDto.toString());
         }
     }
@@ -184,11 +185,11 @@ class ItemServiceTest {
         //given : "BOOK" 카테고리 페이지에서 상품 "Anne"을 검색하려고 한다.
         PageRequest pageable = PageRequest.of(0, 4);
         ItemSearchCondition condition = createSearchConditionTest();
-        Page<MainItemDto> mainItemDtos = itemService.searchAndCategory(condition, CategoryType.BOOK.getTypeCode(), pageable);
+        Page<GetPreViewItemResponse> mainItemDtos = itemService.searchAndCategory(condition, CategoryType.BOOK.getTypeCode(), pageable);
 
         // then : 상품 2개가 조회 되는지?
         assertEquals(2, mainItemDtos.getContent().size());
-        for (MainItemDto mainItemDto : mainItemDtos) {
+        for (GetPreViewItemResponse mainItemDto : mainItemDtos) {
             log.info("mainItemDto.toString() = {}", mainItemDto.toString());
         }
 

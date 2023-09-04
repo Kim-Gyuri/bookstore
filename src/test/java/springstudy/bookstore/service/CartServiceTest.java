@@ -6,15 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.dto.ItemFormDto;
-import springstudy.bookstore.domain.dto.UserFormDto;
+import springstudy.bookstore.domain.dto.item.CreateItemRequest;
+import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 import springstudy.bookstore.repository.ItemRepository;
-import springstudy.bookstore.util.exception.DuplicateOrderItemException;
+import springstudy.bookstore.util.exception.cart.DuplicateOrderItemException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,8 +27,10 @@ class CartServiceTest {
     @Autowired ItemRepository itemRepository;
     @Autowired UserService userService;
 
+    @Autowired SalesService salesService;
+
     public User createBuyerTest() {
-        UserFormDto dto = new UserFormDto();
+        CreateUserRequest dto = new CreateUserRequest();
         dto.setLoginId("wolf27");
         dto.setPassword("1234@");
         dto.setName("wolf");
@@ -43,7 +44,7 @@ class CartServiceTest {
     }
 
     public User createSellerTest() {
-        UserFormDto dto = new UserFormDto();
+        CreateUserRequest dto = new CreateUserRequest();
         dto.setLoginId("nana20");
         dto.setPassword("1234@");
         dto.setName("faker");
@@ -53,19 +54,20 @@ class CartServiceTest {
         dto.setZipcode("1120");
 
         userService.signUp(dto);
-        return userService.findOne(dto.getLoginId());
+        return userService.findByLoginId(dto.getLoginId());
     }
 
 
-    public Item createItemTest() {
+    public Item createItemTest(String sellerId) {
 
-        ItemFormDto dto = new ItemFormDto();
+        CreateItemRequest dto = new CreateItemRequest();
+        dto.setUploaderId(sellerId);
         dto.setItemName("테스트 상품명");
         dto.setCategoryType(CategoryType.BOOK);
         dto.setItemType(ItemType.BEST);
         dto.setPrice(10000);
         dto.setQuantity(100);
-        dto.setStatus(ItemSellStatus.SELL);
+
 
         return itemRepository.save(dto.toEntity());
     }
@@ -77,14 +79,14 @@ class CartServiceTest {
         User buyer = createBuyerTest(); // 구매자
         User seller = createSellerTest(); // 판매자
 
-        Item item = createItemTest();
+        Item item = createItemTest(seller.getLoginId());
         seller.uploadItem(item);    // 판매자가 상품 등록
 
         // 구매자는 10개를 주문하려고 한다.
         int orderCount = 10;
 
         // when : 상품 담기 로직 실행, 10개를 주문한다.
-        cartService.addWishList(buyer.getLoginId(), item.getId(), 10);
+        cartService.addWishList(buyer.getLoginId(), item.getId(), orderCount);
 
         //then
         // 판매자가 파는 상품의 남은 재고가 90개가 맞는지?
@@ -104,16 +106,18 @@ class CartServiceTest {
         User buyer = createBuyerTest(); // 구매자
         User seller = createSellerTest(); // 판매자
 
-        Item item = createItemTest();
+        Item item = createItemTest(seller.getLoginId());
         seller.uploadItem(item);    // 판매자가 상품 등록
 
-
+        int orderCount = 10;
         // given : 구매자 장바구니에 (상품)을 이미 장바구니에 담았었다.
-        cartService.addWishList(buyer.getLoginId(), item.getId(), 10);
+        cartService.addWishList(buyer.getLoginId(), item.getId(),  orderCount);
 
         // when : 다시 2개 담으려고 했을 때
         // 중복된 상품을 담았을 때 예외가 발생하는지?
         Throwable e  = assertThrows(DuplicateOrderItemException.class, () -> cartService.addWishList(buyer.getLoginId(), item.getId(), 2));
         assertEquals("중복된 장바구니입니다.", e.getMessage());
     }
+
+
 }

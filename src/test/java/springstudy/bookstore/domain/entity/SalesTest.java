@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.enums.CategoryType;
-import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,8 +29,8 @@ public class SalesTest {
         // when :
         // "userB" 회원은 상품을 등록하였고,
         // "userA" 회원이 그 상품을 장바구니에 담았을 때,
-        Item item1 = new Item("spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
-        Item item2 = new Item("mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK, ItemSellStatus.SELL);
+        Item item1 = new Item(userB.getLoginId(),"spring5", 10000, 10, ItemType.BEST, CategoryType.BOOK);
+        Item item2 = new Item(userB.getLoginId(),"mvc2", 10000, 10, ItemType.BEST, CategoryType.BOOK);
 
         userB.uploadItem(item1);
         userB.uploadItem(item2);

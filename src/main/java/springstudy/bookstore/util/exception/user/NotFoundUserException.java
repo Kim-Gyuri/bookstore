@@ -1,7 +1,7 @@
 package springstudy.bookstore.util.exception.user;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+public class NotFoundUserException extends RuntimeException {
+    public NotFoundUserException(String message) {
         super(message);
     }
 }

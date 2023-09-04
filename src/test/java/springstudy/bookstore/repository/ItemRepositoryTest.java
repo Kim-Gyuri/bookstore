@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.dto.MainItemDto;
+import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Address;
 import springstudy.bookstore.domain.entity.Item;
@@ -56,12 +56,12 @@ class ItemRepositoryTest {
     void ascSort_페이지테스트() {
         // given : 낮은 가격순으로 상품을 조회하려고 한다.
         Pageable pageable = PageRequest.of(0, 4);
-        Page<MainItemDto> sort = itemRepository.sortByItemPriceASC(pageable);
-        List<MainItemDto> list = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemRepository.sortByItemPriceASC(pageable);
+        List<GetPreViewItemResponse> list = sort.getContent();
 
         // then : 가장 낮은 가격의 상품이 "Tara Duncan"이 맞는지 확인한다.
         assertThat(list.get(0).getImgName().equals("Tara Duncan"));
-        for (MainItemDto mainItemDto : list) {
+        for (GetPreViewItemResponse mainItemDto : list) {
             System.out.println(mainItemDto.toString());
         }
     }
@@ -70,12 +70,12 @@ class ItemRepositoryTest {
     void descSort_페이지테스트() {
         // given : 높은 가격순으로 상품조회 하려고 할 때
         Pageable pageable = PageRequest.of(0, 4);
-        Page<MainItemDto> sort = itemRepository.sortByItemPriceDESC(pageable);
+        Page<GetPreViewItemResponse> sort = itemRepository.sortByItemPriceDESC(pageable);
 
         // then : 가장 높은 가격의 상품이 "BAEK HYUN"이 맞는지 확인한다.
-        List<MainItemDto> list = sort.getContent();
+        List<GetPreViewItemResponse> list = sort.getContent();
         assertThat(list.get(0).getImgName().equals("BAEK HYUN"));
-        for (MainItemDto mainItemDto : list) {
+        for (GetPreViewItemResponse mainItemDto : list) {
             System.out.println(mainItemDto.toString());
         }
     }
@@ -83,8 +83,8 @@ class ItemRepositoryTest {
     @Test
     void sortByUser_유저별판매제품테스트() {
         // given : "test4" 아이디 회원이 판매하는 상품리스트를 조회하려고 했을 때
-        User user = userService.findOne("test4");
-        List<Item> itemList = itemRepository.findAllByUser(user);
+        User user = userService.findByLoginId("test4");
+        List<Item> itemList = itemRepository.findAllBySellerId(user.getLoginId());
 
         // then : 총 13개 상품을 판매하는게 맞는지?
         assertThat(itemList.size() == 13);
@@ -93,17 +93,19 @@ class ItemRepositoryTest {
         }
     }
 
+
+
     @Test
     void sortByCategoryType_카테고리정렬테스트() {
         // given : "BOOK" 카테고리 페이지로 들어갔을 때
         Pageable pageable = PageRequest.of(0, 4);
         String code = CategoryType.BOOK.getTypeCode();
-        Page<MainItemDto> sort = itemRepository.sortByCategoryType(code, pageable);
-        List<MainItemDto> content = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemRepository.sortByCategoryType(code, pageable);
+        List<GetPreViewItemResponse> content = sort.getContent();
 
         // then : 해당 상품이 "BOOK"타입이 맞는지?
         assertThat(content.get(0).getCategoryType().getTypeCode().equals(CategoryType.BOOK.getTypeCode()));
-        for (MainItemDto mainItemDto : content) {
+        for (GetPreViewItemResponse mainItemDto : content) {
             System.out.println(mainItemDto.toString());
        }
     }
@@ -113,10 +115,10 @@ class ItemRepositoryTest {
         // given : "Ariana Grande"(음반 카테고리 타입 상품이다.)으로 검색했을 때
         Pageable pageable = PageRequest.of(0, 4);
         ItemSearchCondition condition = createCondition();
-        Page<MainItemDto> sort = itemRepository.searchByItemName(condition, pageable);
-        List<MainItemDto> content = sort.getContent();
+        Page<GetPreViewItemResponse> sort = itemRepository.searchByItemName(condition, pageable);
+        List<GetPreViewItemResponse> content = sort.getContent();
 
-        for (MainItemDto mainItemDto : content) {
+        for (GetPreViewItemResponse mainItemDto : content) {
             System.out.println(mainItemDto.toString());
         }
 
@@ -131,9 +133,9 @@ class ItemRepositoryTest {
         //given : "BOOK" 카테고리 페이지에서 상품 "Anne"을 검색하려고 한다.
         PageRequest pageable = PageRequest.of(0, 4);
         ItemSearchCondition condition = createCondition_search();
-        Page<MainItemDto> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(condition, CategoryType.BOOK.getTypeCode(), pageable);
+        Page<GetPreViewItemResponse> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(condition, CategoryType.BOOK.getTypeCode(), pageable);
 
-        for (MainItemDto mainItemDto : mainItemDtos.getContent()) {
+        for (GetPreViewItemResponse mainItemDto : mainItemDtos.getContent()) {
            log.info("mainItemDto.getItemName()", mainItemDto.getItemName());
         }
         // then : 상품 2개가 조회 되는지?
