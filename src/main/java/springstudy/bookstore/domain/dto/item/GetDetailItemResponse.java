@@ -25,6 +25,7 @@ public class GetDetailItemResponse {
     private List<GetItemImgResponse> itemImgDtoList;
 
     public GetDetailItemResponse(Item item) {
+        this.id = item.getId();
         this.itemName = item.getItemName();
         this.price = item.getPrice();
         this.quantity = item.getStockQuantity();

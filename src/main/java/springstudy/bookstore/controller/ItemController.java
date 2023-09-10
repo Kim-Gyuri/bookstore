@@ -2,7 +2,6 @@ package springstudy.bookstore.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,9 +24,8 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-@Controller
+//@Controller
 @RequiredArgsConstructor
-@RequestMapping("/bookstore")
 public class ItemController {
 
     private final ItemService itemService;
@@ -53,7 +51,7 @@ public class ItemController {
         }
 
         log.info("post-> loginUser info{}", loginUser.toString());
-        if (itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
+        if (itemImgFileList.get(0).isEmpty()) {
             model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력 값 입니다.");
             return "item/addItemForm";
         }

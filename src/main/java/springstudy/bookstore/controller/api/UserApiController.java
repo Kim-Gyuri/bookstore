@@ -1,7 +1,9 @@
 package springstudy.bookstore.controller.api;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springstudy.bookstore.controller.api.dto.user.CreateUserResponse;
 import springstudy.bookstore.controller.api.dto.user.GetUserResponse;
@@ -11,11 +13,14 @@ import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.dto.user.LoginRequest;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.UserService;
+import springstudy.bookstore.util.validation.argumentResolver.Login;
+import springstudy.bookstore.util.validation.consts.SessionConst;
+import springstudy.bookstore.util.validation.dto.SessionUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
@@ -29,7 +34,7 @@ public class UserApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CreateUserResponse createUser(CreateUserRequest dto) {
+    public CreateUserResponse createUser(@Validated @RequestPart(value = "createUserRequest")CreateUserRequest dto) {
         Long id = userService.signUp(dto);
 
         User user = userService.findById(id);
@@ -43,11 +48,19 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public LoginResponse login(LoginRequest dto) {
+    public LoginResponse login(@Validated @RequestPart(value = "loginRequest") LoginRequest dto,
+                               HttpServletRequest request) {
         User user = userService.signIn(dto);
 
-        return new LoginResponse(user.getLoginId(), user.getPassword());
+        // 로그인 성공 처리
+        // 세션이 있으면 세션 반환하고, 없으면 신규 세션을 반환한다.
+        HttpSession session = request.getSession();
+        // 세션이 로그인 정보를 보관한다.
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, new SessionUser(user));
+        return new LoginResponse(sessionUser.getLoginId());
     }
+
 
     /**
      * 로그아웃 성공
@@ -55,25 +68,23 @@ public class UserApiController {
      */
     @PostMapping("/logout")
     public LogoutResponse logout(HttpServletRequest request) {
-        // 세션을 없애기 위해 null을 반환하도록 false를 넣느다.
+        // 세션을 없애기 위해 null을 반환하도록 false를 넣는다.
         HttpSession session = request.getSession(false);
 
         if (session != null) {
             session.invalidate(); // 세션 데이터 삭제
         }
-
         return new LogoutResponse(Boolean.TRUE, "logout success!");
     }
 
     // 추가할 것?
     // 비밀번호 찾기 -> 이메일 인증(토큰)
     // 회원 정보 수정
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/info")
-    public GetUserResponse UserInfo(String loginId) {
-        User user = userService.findByLoginId(loginId);
+    public GetUserResponse UserInfo(@Login SessionUser sessionUser) {
+        User user = userService.findByLoginId(sessionUser.getLoginId());
 
-        return new GetUserResponse(user.getEmail(), user.getName(), user.getAddress().getCity(), user.getSales().getTotalRevenue());
+        return new GetUserResponse(user);
     }
 }

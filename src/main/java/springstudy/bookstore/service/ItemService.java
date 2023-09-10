@@ -14,6 +14,7 @@ import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
 import springstudy.bookstore.domain.entity.User;
+import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 import springstudy.bookstore.repository.ItemRepository;
 import springstudy.bookstore.util.exception.item.DuplicateItemException;
@@ -39,10 +40,11 @@ public class ItemService {
     public Long saveItem(User user, CreateItemRequest dto, List<MultipartFile> multipartFileList) throws IOException {
         validateDuplicateItem(dto);
 
-        Item item = dto.toEntity();
+        Item item = dto.toEntity(user.getLoginId());
+        log.info("잘 저장되었는지?={}", item.toString());
         Long id = itemRepository.save(item).getId(); // 상품 상세 정보 저장
 
-        validateImgFiles(dto, multipartFileList); // 필수로 이미지 1개를 업로드 했는지?
+        validateImgFiles(multipartFileList); // 필수로 이미지 1개를 업로드 했는지?
 
        getThumbnailImage(multipartFileList, item);   // 상품 이미지 저장 (# pick thumbnail)
 
@@ -50,8 +52,8 @@ public class ItemService {
         return id;  // 상품 id 반환
     }
 
-    private static void validateImgFiles(CreateItemRequest dto, List<MultipartFile> multipartFileList) throws NotFoundImgFileException {
-        if (multipartFileList.get(FIRST_FILE).isEmpty() && dto.getId() == null) {
+    private static void validateImgFiles( List<MultipartFile> multipartFileList) throws NotFoundImgFileException {
+        if (multipartFileList.get(FIRST_FILE).isEmpty()) {
             throw new NotFoundImgFileException("첫번째 상품 이미지는 필수 입력 값 입니다.");
         }
     }
@@ -73,7 +75,7 @@ public class ItemService {
     // 중복된 상품 등록인지 확인하는 로직 ; 상품 이름, 상품 카테고리가 동일한 상품 등록인지?
     @Transactional(readOnly = true)
     public void validateDuplicateItem(CreateItemRequest dto) {
-        if (itemRepository.existsByItemNameAndCategoryType(dto.getItemName(), dto.getCategoryType())) {
+        if (itemRepository.existsByItemNameAndCategoryType(dto.getName(), CategoryType.valueOf(dto.getCategoryType()))) {
             throw new DuplicateItemException("이미 등록된 상품이 존재합니다.");
         }
     }
@@ -119,6 +121,13 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
+    public void deleteImg(Long itemId, Long imgId) {
+        ItemImg imgEntity = itemImgService.findByImgId(imgId);
+        Item item = findById(itemId);
+
+        itemImgService.delete(imgEntity);
+        item.deleteItemImg(imgEntity);
+    }
 
     public void update(Long itemId, UpdateItemRequest form, List<MultipartFile> multipartFileList) throws IOException {
 

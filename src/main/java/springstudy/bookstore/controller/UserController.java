@@ -2,7 +2,6 @@ package springstudy.bookstore.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import springstudy.bookstore.domain.dto.user.LoginRequest;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.ItemService;
 import springstudy.bookstore.service.UserService;
-import springstudy.bookstore.util.validation.SessionConst;
+import springstudy.bookstore.util.validation.consts.SessionConst;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +20,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@Controller
+//@Controller
 @RequiredArgsConstructor
-@RequestMapping("/bookstore")
 public class UserController {
 
     private final UserService userService;

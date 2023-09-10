@@ -2,7 +2,6 @@ package springstudy.bookstore.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import springstudy.bookstore.domain.dto.cart.GetCartResponse;
@@ -13,7 +12,7 @@ import springstudy.bookstore.util.validation.argumentResolver.Login;
 import java.util.List;
 
 @Slf4j
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @RequestMapping("/bookstore")
 public class CartController {

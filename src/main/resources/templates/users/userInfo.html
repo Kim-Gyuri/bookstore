@@ -6,8 +6,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>aladin - 중고 거래 사이트</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -47,40 +45,40 @@
 <section class="py-5">
     <div class="row gx-0 gx-lg-0 row-cols-2 row-cols-md-3 row-cols-xl-0 justify-content-center">
         <div class="form_container">
-            <form>
+            <form th:object="${users}">
                 <div class="form-group">
                     <label th:text="#{page.member.memberId}">회원ID</label>
-                    <input class="form-control" th:value="${member.loginId}" readonly>
+                    <input class="form-control" th:field="*{loginId}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.password}">비밀번호</label>
-                    <input class="form-control" th:value="${member.password}" readonly>
+                    <input class="form-control" th:field="*{password}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.name}">회원명</label>
-                    <input class="form-control" th:value="${member.name}" readonly>
+                    <input class="form-control" th:field="*{name}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.email}">이메일주소</label>
-                    <input class="form-control"  th:value="${member.email}" readonly>
+                    <input class="form-control"  th:field="*{email}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.city}">주소 도시</label>
-                    <input class="form-control" th:value="${member.address.city}" readonly>
+                    <input class="form-control" th:field="*{city}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.street}">주소 도로명</label>
-                    <input class="form-control" th:value="${member.address.street}" readonly>
+                    <input class="form-control" th:field="*{street}" readonly>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{page.member.zipcode}">주소 우편주소</label>
-                    <input class="form-control" th:value="${member.address.zipcode}" readonly>
+                    <input class="form-control" th:field="*{zipcode}" readonly>
                 </div>
 
             </form>
@@ -91,13 +89,13 @@
 </section>
 
 
-<!-- Footer-->
-<footer class="py-4 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
-</footer>
+
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="/shop/js/scripts.js"></script>
+<!-- JS-->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/shop/js/users/logout.js"></script>
 </body>
 </html>

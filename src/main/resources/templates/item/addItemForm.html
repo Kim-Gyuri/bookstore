@@ -6,8 +6,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>aladin - 중고 거래 사이트</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -54,40 +52,26 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form_container">
-                    <form role="form" method="post" enctype="multipart/form-data" th:object="${itemFormDto}">
+                    <form id="addItemForm" >
 
                         <div class="form-group">
-                            <select th:field="*{status}" class="form-control nice-select wide">
-                                <option value="SELL">판매중</option>
-                                <option value="SOLD_OUT">품절</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
-                            <input type="text" id="itemName" th:field="*{itemName}"
-                                   th:errorclass="field-error" class="form-control" placeholder="상품명을 입력해주세요">
-                        <div class="field-error" th:errors="*{itemName}">상품명 오류</div>
+                            <label for="name" th:text="#{label.item.itemName}">상품명</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="상품명을 입력해주세요">
                         </div>
 
                         <div class="form-group">
                             <label for="price" th:text="#{label.item.price}">상품가격</label>
-                            <input type="number" id="price" th:field="*{price}"
-                                   th:errorclass="field-error"
-                                   class="form-control" placeholder="상품의 가격을 입력해주세요">
-                        <div class="field-error" th:errors="*{price}">가격 오류</div>
+                            <input type="number" id="price" name="price" class="form-control" placeholder="상품의 가격을 입력해주세요">
                         </div>
 
                         <div class="form-group">
-                            <label for="quantity" th:text="#{label.item.quantity}">상품재고량</label>
-                            <input type="number" id="quantity" th:field="*{quantity}"  th:errorclass="field-error"
-                                   class="form-control" placeholder="상품의 재고수량를 입력해주세요">
-                        <div class="field-error" th:errors="*{quantity}">재고수량 오류</div>
+                            <label for="stockQuantity" th:text="#{label.item.quantity}">상품재고량</label>
+                            <input type="number" id="stockQuantity" name="stockQuantity" class="form-control" placeholder="상품의 재고수량를 입력해주세요">
                         </div>
 
                         <div class="form-group">
                             <label for="itemType" th:text="#{label.item.grade}">상품 상태등급</label>
-                            <select type="text" id="itemType" th:field="*{itemType}" name="itemType" class="form-control nice-select wide">
+                            <select type="text" id="itemType" name="itemType" class="form-control nice-select wide">
                                 <option value="">==상품 등급 선택==</option>
                                 <option th:each="itemType : ${itemTypes}"
                                         th:value="${itemType.name()}" th:text="${itemType.getItemType()}"></option>
@@ -96,7 +80,7 @@
 
                         <div class="form-group">
                             <label for="categoryType" th:text="#{label.item.field}">상품 카테고리</label>
-                            <select type="text" id="categoryType" th:field="*{categoryType}" name="categoryType" class="form-control nice-select wide">
+                            <select type="text" id="categoryType" name="categoryType" class="form-control nice-select wide">
                                 <option value="">==카테고리 선택==</option>
                                 <option th:each="itemCategory : ${categoryTypes}"
                                         th:value="${itemCategory.name()}" th:text="${itemCategory.getCategoryName()}"></option>
@@ -105,13 +89,13 @@
 
                         <div class="form-group">
                             <label th:text="#{label.item.image}">상품 사진</label>
-                            <input class="form-control" id="formFile" type="file" multiple="multiple" name="itemImgFile">
+                            <input class="form-control" type="file" name="images" accept="image/*" multiple="multiple">
                         </div>
 
                         <hr class="my-4">
 
-                        <div c lass="btn_box">
-                            <button  class="btn btn-outline-dark" type="submit"  th:text="#{button.save}"></button>
+                        <div class="btn_box">
+                            <button  class="btn btn-outline-dark" type="button" onclick="addItemSubmit()" th:text="#{button.save}"></button>
                         </div>
                     </form>
                 </div>
@@ -129,13 +113,10 @@
 <!-- end book section -->
 
 
-<!-- Footer-->
-<footer class="py-4 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
-</footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
+<!--JS-->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/shop/js/item/addItem.js"></script>
 </body>
 </html>

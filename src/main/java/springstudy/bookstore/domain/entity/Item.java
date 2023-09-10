@@ -93,6 +93,10 @@ public class Item {
         this.imgList.add(itemImg);
     }
 
+    public void deleteItemImg(ItemImg itemImg) {
+        this.imgList.remove(itemImg);
+    }
+
 
     public String getMainImg_path() {
         return imgList.get(THUMBNAIL_INDEX).getSavePath();

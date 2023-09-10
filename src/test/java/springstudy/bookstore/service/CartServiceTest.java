@@ -61,15 +61,15 @@ class CartServiceTest {
     public Item createItemTest(String sellerId) {
 
         CreateItemRequest dto = new CreateItemRequest();
-        dto.setUploaderId(sellerId);
-        dto.setItemName("테스트 상품명");
-        dto.setCategoryType(CategoryType.BOOK);
-        dto.setItemType(ItemType.BEST);
+       // dto.setUploaderId(sellerId);
+        dto.setName("테스트 상품명");
+        dto.setCategoryType(CategoryType.BOOK.getTypeCode());
+        dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
-        dto.setQuantity(100);
+        dto.setStockQuantity(100);
 
 
-        return itemRepository.save(dto.toEntity());
+        return itemRepository.save(dto.toEntity(sellerId));
     }
 
     @Test

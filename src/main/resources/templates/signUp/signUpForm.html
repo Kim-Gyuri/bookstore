@@ -6,8 +6,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>aladin - 중고 거래 사이트</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -18,7 +16,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/bookstore/home"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
+        <a class="navbar-brand"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     </div>
 </nav>
@@ -29,41 +27,41 @@
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-                                <form role="form"  th:object="${userForm}" method="post">
+                                <form id="signUpForm">
                                     <div class="form-group">
                                         <label th:for="name">이름</label>
 
-                                        <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요">
+                                        <input type="text" id="name" class="form-control" placeholder="이름을 입력하세요">
                                     </div>
 
                                     <div class="form-group">
                                         <label th:for="name">아이디</label>
 
-                                        <input type="text" th:field="*{loginId}" class="form-control" placeholder="아이디를 입력하세요">
+                                        <input type="text" id="loginId" class="form-control" placeholder="아이디를 입력하세요">
                                     </div>
                                     <div class="form-group">
                                         <label th:for="name">비밀번호</label>
 
-                                        <input type="text" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요">
+                                        <input type="text" id="password" class="form-control" placeholder="비밀번호를 입력하세요">
                                     </div>
 
                                     <div class="form-group">
                                         <label th:for="name">이메일</label>
 
-                                        <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요">
+                                        <input type="text" id="email" class="form-control" placeholder="이메일을 입력하세요">
                                     </div>
 
                                     <div class="form-group">
                                         <label th:for="city">도시</label>
-                                        <input type="text" th:field="*{city}" class="form-control" placeholder="도시를 입력하세요">
+                                        <input type="text" id="city" class="form-control" placeholder="도시를 입력하세요">
                                     </div>
                                     <div class="form-group">
                                         <label th:for="street">거리</label>
-                                        <input type="text" th:field="*{street}" class="form-control" placeholder="거리를 입력하세요">
+                                        <input type="text" id="street" class="form-control" placeholder="거리를 입력하세요">
                                     </div>
                                     <div class="form-group">
                                         <label th:for="zipcode">우편번호</label>
-                                        <input type="text" th:field="*{zipcode}" class="form-control" placeholder="우편번호를 입력하세요">
+                                        <input type="text" id="zipcode" class="form-control" placeholder="우편번호를 입력하세요">
                                     </div>
 
 
@@ -73,11 +71,11 @@
                                     <div class="row gy-2 mb-4">
                                         <div class="row">
                                             <div class="col">
-                                                <button  class="btn btn-outline-dark" type="submit" th:text="#{button.save}"> 가입하기 </button>
+                                                <button  class="btn btn-outline-dark" type="button" onclick="signUpSubmit()" th:text="#{button.save}"> 가입하기 </button>
                                             </div>
 
                                             <div class="col">
-                                                <button  class="btn btn-outline-dark" href="/login" th:text="#{button.cancel}"> 취소 </button>
+                                                <button  class="btn btn-outline-dark" href="/users/login" th:text="#{button.cancel}"> 취소 </button>
                                             </div>
                                         </div>
                                     </div>
@@ -91,13 +89,11 @@
 <!-- end book section -->
 
 
-<!-- Footer-->
-<footer class="py-4 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
-</footer>
+
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
+<!--JS-->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/shop/js/users/signUp.js"></script>
 </body>
 </html>

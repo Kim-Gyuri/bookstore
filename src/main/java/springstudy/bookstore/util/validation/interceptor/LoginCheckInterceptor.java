@@ -2,7 +2,7 @@ package springstudy.bookstore.util.validation.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
-import springstudy.bookstore.util.validation.SessionConst;
+import springstudy.bookstore.util.validation.consts.SessionConst;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +20,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             log.info("미인증 사용자 요청");
-            //response.sendRedirect("bookstore/login");
-            response.sendRedirect("/bookstore/login?redirectURL=" + requestURI);
+            response.sendRedirect("/users/login");
             return false;
         }
         return true;

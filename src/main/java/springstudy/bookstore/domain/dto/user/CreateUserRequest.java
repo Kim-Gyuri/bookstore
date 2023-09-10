@@ -7,7 +7,7 @@ import springstudy.bookstore.domain.entity.User;
 @Data
 public class CreateUserRequest {
 
-    private Long id;
+   // private Long id;
     private String loginId;
     private String password;
     private String name;

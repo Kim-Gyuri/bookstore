@@ -73,14 +73,13 @@ public class SalesServiceTest {
         return userService.findByLoginId(dto.getLoginId());
     }
 
-    public CreateItemRequest createRequestItemDto(String sellerId) {
+    public CreateItemRequest createRequestItemDto() {
         CreateItemRequest dto = new CreateItemRequest();
-        dto.setUploaderId(sellerId);
-        dto.setItemName("테스트 상품명");
-        dto.setCategoryType(CategoryType.BOOK);
-        dto.setItemType(ItemType.BEST);
+        dto.setName("테스트 상품명");
+        dto.setCategoryType(CategoryType.BOOK.getTypeCode());
+        dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
-        dto.setQuantity(100);
+        dto.setStockQuantity(100);
         return dto;
     }
 
@@ -98,9 +97,9 @@ public class SalesServiceTest {
         salesService.uploadItem(user, dto, multipartFiles);
 
         // then : 상품이 잘 등록되었는지? 상품 정보를 확인해본다.
-        assertEquals(dto.getItemName(), user.getSales().getItemList().get(0).getItemName());
+        assertEquals(dto.getName(), user.getSales().getItemList().get(0).getItemName());
         assertEquals(dto.getCategoryType(), user.getSales().getItemList().get(0).getCategoryType());
-        log.info("dto info -> itemName={}", dto.getItemName());
+        log.info("dto info -> itemName={}", dto.getName());
         log.info("user uploaded the item->itemName={}", user.getSales().getItemList().get(0).getItemName());
     }
 

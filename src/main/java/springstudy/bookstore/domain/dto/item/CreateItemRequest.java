@@ -5,37 +5,27 @@ import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemType;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 @Data
 public class CreateItemRequest {
 
-    private Long id;
+    private String name;
 
-    private String uploaderId;
-
-    @NotBlank
-    private String itemName;
-
-    @NotNull
     private Integer price;
 
-    @NotNull
-    private Integer quantity;
+    private Integer stockQuantity;
 
-    private ItemType itemType;
+    private String itemType;
 
-    private CategoryType categoryType;
+    private String categoryType;
 
-    public Item toEntity() {
+    public Item toEntity(String userLoginId) {
         return Item.initItemBuilder()
-                .sellerId(uploaderId)
-                .itemName(itemName)
+                .sellerId(userLoginId)
+                .itemName(name)
                 .price(price)
-                .stockQuantity(quantity)
-                .itemType(itemType)
-                .categoryType(categoryType)
+                .stockQuantity(stockQuantity)
+                .itemType(ItemType.valueOf(itemType))
+                .categoryType(CategoryType.valueOf(categoryType))
                 .build();
     }
 }

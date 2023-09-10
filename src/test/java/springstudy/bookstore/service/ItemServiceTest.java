@@ -74,14 +74,14 @@ class ItemServiceTest {
                 .build();
     }
 
-    public CreateItemRequest createRequestItemDto(String sellerId) {
+    public CreateItemRequest createRequestItemDto() {
         CreateItemRequest dto = new CreateItemRequest();
-        dto.setUploaderId(sellerId);
-        dto.setItemName("테스트 상품명");
-        dto.setCategoryType(CategoryType.BOOK);
-        dto.setItemType(ItemType.BEST);
+      //  dto.setUploaderId(sellerId);
+        dto.setName("테스트 상품명");
+        dto.setCategoryType(CategoryType.BOOK.getTypeCode());
+        dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
-        dto.setQuantity(100);
+        dto.setStockQuantity(100);
         return dto;
     }
 
@@ -91,7 +91,7 @@ class ItemServiceTest {
         // given : 회원 user 가 상품 등록을 하려고 한다.
         List<MultipartFile> multipartFiles = createMultipartFiles();
         User user = createUserTest();
-        CreateItemRequest dto = createRequestItemDto(user.getLoginId());
+        CreateItemRequest dto = createRequestItemDto();
 
         // when : 상품 등록 로직을 실행했을 때
         Long itemId = itemService.saveItem(user, dto, multipartFiles);
@@ -101,8 +101,8 @@ class ItemServiceTest {
         Item item = itemService.findById(itemId);
 
         // then : 상품이 잘 등록되었는지? 상품 정보를 확인해본다.
-        assertEquals(dto.getItemName(), item.getItemName());
-        assertEquals(dto.getCategoryType(), item.getCategoryType());
+        assertEquals(dto.getName(), item.getItemName());
+        assertThat(item.getCategoryType()).isEqualTo(CategoryType.enumOf(dto.getCategoryType()));
         assertEquals(multipartFiles.get(0).getOriginalFilename(), itemImgList.get(0).getOriginImgName());
     }
 

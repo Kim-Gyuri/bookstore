@@ -6,8 +6,6 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <title>aladin - 중고 거래 사이트</title>
-  <!-- Favicon-->
-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <!-- Bootstrap icons-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
   <!-- Core theme CSS (includes Bootstrap)-->
@@ -56,10 +54,10 @@
       </div>
 
       <!-- item info -->
-      <div class="col-md-6">
+      <div class="col-md-6" id="cartModel">
         <div class="form_container">
-          <form th:action method="post" enctype="multipart/form-data">
-
+          <form>
+            <input type="hidden" id="id" th:value="${product.id}"/>
             <div class="form-group">
               <label th:text="#{label.item.itemName}">상품명</label>
               <input class="form-control" th:value="${product.itemName}" readonly>
@@ -91,21 +89,21 @@
             </div>
 
 
-            <div class="form-group">
-              <input type="number" id="count" name="count" th:value="${product.count}"  placeholder="주문 수량">
-              <button class="btn btn-outline-dark" type="submit" >주문하기</button>
+            <div class="modelMenu">
+              <div class="form-group">
+                <input type="number" id="count" name="count" th:value="${product.count}"  placeholder="주문 수량">
+                <button class="btn btn-outline-dark" type="button" onclick="orderSubmit()">주문하기</button>
+              </div>
             </div>
 
             <hr class="my-4">
 
             <br><br>
-
           </form>
+          </div>
         </div>
     </div>
 
-
-    </div>
   </div>
 </section>
 
@@ -135,5 +133,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="/shop/js/scripts.js"></script>
+<!--JS-->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="/shop/js/cart/order.js"></script>
 </body>
 </html>
