@@ -10,11 +10,11 @@ public enum CategoryType {
     MUSIC("MUSIC", "음반"),
     STATIONERY("STATIONERY", "문구류");
 
-    private String typeCode;
+    private String code;
     private String categoryName;
 
     CategoryType(String code, String categoryName) {
-        this.typeCode = code;
+        this.code = code;
         this.categoryName = categoryName;
     }
 
@@ -22,7 +22,7 @@ public enum CategoryType {
         //CategoryType의 Enum 상수들을 순회하며
         return Arrays.stream(CategoryType.values())
                 // 같은 code 갖고 있는게 있는지 확인한다.
-                .filter(t->t.getTypeCode().equals(code))
+                .filter(t->t.getCode().equals(code))
                 .findAny().orElse(null);
     }
 

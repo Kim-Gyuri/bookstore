@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import springstudy.bookstore.controller.dto.ItemSortParam;
-import springstudy.bookstore.domain.dto.item.*;
+import springstudy.bookstore.domain.dto.item.CreateItemRequest;
+import springstudy.bookstore.domain.dto.item.GetDetailItemResponse;
+import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
+import springstudy.bookstore.domain.dto.item.UpdateItemRequest;
 import springstudy.bookstore.domain.dto.itemImg.CreateImgRequest;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
 import springstudy.bookstore.domain.entity.User;
@@ -52,12 +54,14 @@ public class ItemService {
         return id;  // 상품 id 반환
     }
 
+    // 최소 상품 이미지 1개 이상 업로드 했는지 체크한다.
     private static void validateImgFiles( List<MultipartFile> multipartFileList) throws NotFoundImgFileException {
         if (multipartFileList.get(FIRST_FILE).isEmpty()) {
             throw new NotFoundImgFileException("첫번째 상품 이미지는 필수 입력 값 입니다.");
         }
     }
 
+    // 이미지 파일의 섬네일을 정하는 로직
     private void getThumbnailImage(List<MultipartFile> multipartFileList, Item item) throws IOException {
 
         for (int i=0; i< multipartFileList.size(); i++) {
@@ -75,33 +79,38 @@ public class ItemService {
     // 중복된 상품 등록인지 확인하는 로직 ; 상품 이름, 상품 카테고리가 동일한 상품 등록인지?
     @Transactional(readOnly = true)
     public void validateDuplicateItem(CreateItemRequest dto) {
-        if (itemRepository.existsByItemNameAndCategoryType(dto.getName(), CategoryType.valueOf(dto.getCategoryType()))) {
+        if (itemRepository.existsByNameAndCategoryType(dto.getName(), CategoryType.valueOf(dto.getCategoryType()))) {
             throw new DuplicateItemException("이미 등록된 상품이 존재합니다.");
         }
     }
 
+    // 상품 단건 조회: id 번호로 상품 조회
     @Transactional(readOnly = true)
     public Item findById(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundItemException("해당 " + id + " 번호 상품이 없습니다."));
     }
 
+    // (해당 상품 id로) 상품 상세정보 조회
     @Transactional(readOnly = true)
     public GetDetailItemResponse getItemDetail(Long itemId) {
         Item item = findById(itemId);
         return new GetDetailItemResponse(item);
     }
 
+    // 페이징; 상품 이름으로 검색 기능 추가됨
     @Transactional(readOnly = true)
-    public Page<GetPreViewItemResponse> searchPageSort(ItemSearchCondition condition, Pageable pageable) {
-        return itemRepository.searchByItemName(condition, pageable);
+    public Page<GetPreViewItemResponse> searchPageSort(String itemName, Pageable pageable) {
+        return itemRepository.searchByItemName(itemName, pageable);
     }
 
+    // 페이징; 카테고리 타입별 상품 조회
     @Transactional(readOnly = true)
     public Page<GetPreViewItemResponse> categoryPageSort(String code, Pageable pageable) {
         return itemRepository.sortByCategoryType(code, pageable);
     }
 
+    // 페이징; 상품 가격별 상품 조회
     @Transactional(readOnly = true)
     public Page<GetPreViewItemResponse> itemPriceSort(String code, Pageable pageable) {
         if (code.equals(ItemSortParam.DESC.getCode())) {
@@ -111,16 +120,19 @@ public class ItemService {
         }
     }
 
+    // 페이징; 상품 이름 검색 기능 + 카테고리별 정렬
     @Transactional(readOnly = true)
-    public Page<GetPreViewItemResponse> searchAndCategory(ItemSearchCondition condition, String code, Pageable pageable) {
-        return itemRepository.searchByItemNameAndCategoryType(condition, code, pageable);
+    public Page<GetPreViewItemResponse> searchAndCategory(String itemName, String code, Pageable pageable) {
+        return itemRepository.searchByItemNameAndCategoryType(itemName, code, pageable);
     }
 
+    // 상품 삭제
     public void delete(Long id) {
         Item item = findById(id);
         itemRepository.delete(item);
     }
 
+    // 상품 이미지 삭제 (해당 상품의 이미지 번호가 imgId인 이미지 삭제)
     public void deleteImg(Long itemId, Long imgId) {
         ItemImg imgEntity = itemImgService.findByImgId(imgId);
         Item item = findById(itemId);
@@ -129,6 +141,7 @@ public class ItemService {
         item.deleteItemImg(imgEntity);
     }
 
+    // 상품 정보 수정
     public void update(Long itemId, UpdateItemRequest form, List<MultipartFile> multipartFileList) throws IOException {
 
         Item findItem = findById(itemId); // 상품 엔티티를 꺼내고
@@ -155,7 +168,7 @@ public class ItemService {
 
     }
 
-    // 상품 이미지가 1개라도 있는지?
+    // 상품 이미지가 1개라도 있는지 체크한다.
     private static void validateImg(Item item) throws NotFoundImgFileException {
         if (item.getImgList().isEmpty()) {
             throw new NotFoundImgFileException("상품 이미지를 넣어주세요.");

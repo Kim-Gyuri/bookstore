@@ -16,7 +16,6 @@ import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
 import springstudy.bookstore.domain.entity.User;
@@ -67,18 +66,16 @@ class ItemServiceTest {
         return userService.findByLoginId(dto.getLoginId());
     }
 
-    public ItemSearchCondition createSearchConditionTest() {
-        return ItemSearchCondition.builder()
-                .itemName("Anne")
-                .loginMember(createUserTest())
-                .build();
+    public String createSearchConditionTest() {
+        String itemName = "Anne";
+        return itemName;
     }
 
     public CreateItemRequest createRequestItemDto() {
         CreateItemRequest dto = new CreateItemRequest();
       //  dto.setUploaderId(sellerId);
         dto.setName("테스트 상품명");
-        dto.setCategoryType(CategoryType.BOOK.getTypeCode());
+        dto.setCategoryType(CategoryType.BOOK.getCode());
         dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
         dto.setStockQuantity(100);
@@ -101,7 +98,7 @@ class ItemServiceTest {
         Item item = itemService.findById(itemId);
 
         // then : 상품이 잘 등록되었는지? 상품 정보를 확인해본다.
-        assertEquals(dto.getName(), item.getItemName());
+        assertEquals(dto.getName(), item.getName());
         assertThat(item.getCategoryType()).isEqualTo(CategoryType.enumOf(dto.getCategoryType()));
         assertEquals(multipartFiles.get(0).getOriginalFilename(), itemImgList.get(0).getOriginImgName());
     }
@@ -166,14 +163,14 @@ class ItemServiceTest {
     void sortByCategoryType_카테고리정렬테스트() {
         // given : "BOOK"(책) 카테고리로 상품을 조회하려고 한다.
         Pageable pageable = PageRequest.of(0, 4);
-        String code = CategoryType.BOOK.getTypeCode();
+        String code = CategoryType.BOOK.getCode();
 
         // then :  로직을 실행
         Page<GetPreViewItemResponse> sort = itemService.categoryPageSort(code, pageable);
         List<GetPreViewItemResponse> content = sort.getContent();
 
         // then : 조회했을 때 해당 상품 카테고리 타입이 "BOOK"이 맞는지?
-        assertThat(content.get(0).getCategoryType().getTypeCode().equals(CategoryType.BOOK.getTypeCode()));
+        assertThat(content.get(0).getCategoryType().getCode().equals(CategoryType.BOOK.getCode()));
         for (GetPreViewItemResponse mainItemDto : content) {
             log.info("dto info ={}", mainItemDto.toString());
         }
@@ -184,8 +181,7 @@ class ItemServiceTest {
     void searchItemAndCategoryType_카테고리안에서검색테스트() {
         //given : "BOOK" 카테고리 페이지에서 상품 "Anne"을 검색하려고 한다.
         PageRequest pageable = PageRequest.of(0, 4);
-        ItemSearchCondition condition = createSearchConditionTest();
-        Page<GetPreViewItemResponse> mainItemDtos = itemService.searchAndCategory(condition, CategoryType.BOOK.getTypeCode(), pageable);
+        Page<GetPreViewItemResponse> mainItemDtos = itemService.searchAndCategory(createSearchConditionTest(), CategoryType.BOOK.getCode(), pageable);
 
         // then : 상품 2개가 조회 되는지?
         assertEquals(2, mainItemDtos.getContent().size());

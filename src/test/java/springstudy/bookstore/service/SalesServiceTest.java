@@ -76,7 +76,7 @@ public class SalesServiceTest {
     public CreateItemRequest createRequestItemDto() {
         CreateItemRequest dto = new CreateItemRequest();
         dto.setName("테스트 상품명");
-        dto.setCategoryType(CategoryType.BOOK.getTypeCode());
+        dto.setCategoryType(CategoryType.BOOK.getCode());
         dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
         dto.setStockQuantity(100);
@@ -91,16 +91,16 @@ public class SalesServiceTest {
 
         // (등록할 상품 정보: 이미지파일, 상품 정보를 담은 dto)
         List<MultipartFile> multipartFiles = createMultipartFiles();
-        CreateItemRequest dto = createRequestItemDto(user.getLoginId());
+        CreateItemRequest dto = createRequestItemDto();
 
         // when : 상품 등록 로직을 실행했을 때
         salesService.uploadItem(user, dto, multipartFiles);
 
         // then : 상품이 잘 등록되었는지? 상품 정보를 확인해본다.
-        assertEquals(dto.getName(), user.getSales().getItemList().get(0).getItemName());
+        assertEquals(dto.getName(), user.getSales().getItemList().get(0).getName());
         assertEquals(dto.getCategoryType(), user.getSales().getItemList().get(0).getCategoryType());
         log.info("dto info -> itemName={}", dto.getName());
-        log.info("user uploaded the item->itemName={}", user.getSales().getItemList().get(0).getItemName());
+        log.info("user uploaded the item->itemName={}", user.getSales().getItemList().get(0).getName());
     }
 
 
@@ -113,7 +113,7 @@ public class SalesServiceTest {
 
         // (등록할 상품 정보: 이미지파일, 상품 정보를 담은 dto)
         List<MultipartFile> multipartFiles = createMultipartFiles();
-        CreateItemRequest dto = createRequestItemDto(seller.getLoginId());
+        CreateItemRequest dto = createRequestItemDto();
 
         // when : 상품 등록 로직을 실행했을 때
         salesService.uploadItem(seller, dto, multipartFiles);
@@ -140,7 +140,7 @@ public class SalesServiceTest {
         User buyer = createCustomerTest();
 
         List<MultipartFile> multipartFiles = createMultipartFiles();
-        CreateItemRequest dto = createRequestItemDto(seller.getLoginId());
+        CreateItemRequest dto = createRequestItemDto();
 
         salesService.uploadItem(seller, dto,multipartFiles);
 
@@ -152,7 +152,7 @@ public class SalesServiceTest {
         cartService.addWishList(buyer.getLoginId(), item.getId(), orderCount);
 
         // when 2: 구매자는 단순변심으로 장바구니를 삭제했다.
-        log.info("buyer cart info = {}", buyer.getCart().getOrderItemList().get(0).getItem().getItemName());
+        log.info("buyer cart info = {}", buyer.getCart().getOrderItemList().get(0).getItem().getName());
         OrderItem orderItem = buyer.getCart().getOrderItemList().get(0);
         cartService.deleteWishList(orderItem.getId());
     }

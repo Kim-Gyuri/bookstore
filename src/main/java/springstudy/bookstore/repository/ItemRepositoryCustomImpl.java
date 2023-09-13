@@ -11,7 +11,6 @@ import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 import springstudy.bookstore.domain.dto.item.QGetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.QGetUserItemResponse;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 
@@ -30,12 +29,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<GetPreViewItemResponse> searchByItemName(ItemSearchCondition condition, Pageable pageable) {
+    public Page<GetPreViewItemResponse> searchByItemName(String itemName, Pageable pageable) {
 
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -46,7 +45,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
-                .where(itemNameContains(condition.getItemName()))
+                .where(itemNameContains(itemName))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -54,7 +53,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         JPAQuery<GetPreViewItemResponse> query = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -72,7 +71,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -81,7 +80,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         item.categoryType)
                        )
                 .from(itemImg)
-
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
                 .where(categoryTypeContains(code))
@@ -92,7 +90,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         JPAQuery<GetPreViewItemResponse> query = queryFactory
                 .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
-                    item.itemName.as("itemName"),
+                    item.name.as("itemName"),
                     item.price,
                     item.stockQuantity,
                     itemImg.imgName,
@@ -107,11 +105,11 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(ItemSearchCondition condition, String code, Pageable pageable) {
+    public Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(String itemName, String code, Pageable pageable) {
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -123,7 +121,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
                 .where(categoryTypeContains(code))
-                .where(itemNameContains(condition.getItemName()))
+                .where(itemNameContains(itemName))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -131,7 +129,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         JPAQuery<GetPreViewItemResponse> query = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -150,7 +148,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -169,7 +167,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         JPAQuery<GetPreViewItemResponse> query = queryFactory
                 .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
-                    item.itemName.as("itemName"),
+                    item.name.as("itemName"),
                     item.price,
                     item.stockQuantity,
                     itemImg.imgName,
@@ -188,7 +186,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -207,7 +205,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         JPAQuery<GetPreViewItemResponse> query = queryFactory
                 .select(new QGetPreViewItemResponse(
                     item.id.as("itemId"),
-                    item.itemName.as("itemName"),
+                    item.name.as("itemName"),
                     item.price,
                     item.stockQuantity,
                     itemImg.imgName,
@@ -226,7 +224,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         List<GetUserItemResponse> content = queryFactory
                 .select(new QGetUserItemResponse(
                         item.id.as("itemId"),
-                        item.itemName.as("itemName"),
+                        item.name.as("itemName"),
                         item.price,
                         item.stockQuantity,
                         itemImg.imgName,
@@ -244,7 +242,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
 
     private BooleanExpression itemNameContains(String itemName) {
-        return StringUtils.hasText(itemName) ? item.itemName.contains(itemName) : null;
+        return StringUtils.hasText(itemName) ? item.name.contains(itemName) : null;
     }
 
     private static BooleanExpression categoryTypeContains(String code) {

@@ -25,7 +25,7 @@ public class Item {
     private Long id;
 
     private String sellerId; // 상품 등록자; 판매자의 ID
-    private String itemName;
+    private String name;
     private Integer price;
     private Integer stockQuantity;
 
@@ -49,7 +49,7 @@ public class Item {
     @Builder(builderMethodName = "initItemBuilder")
     public Item(String sellerId, String itemName, Integer price, Integer stockQuantity, ItemType itemType, CategoryType categoryType) {
         this.sellerId = sellerId;
-        this.itemName = itemName;
+        this.name = itemName;
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.itemType = itemType;
@@ -84,7 +84,7 @@ public class Item {
 
 
     public void update(String itemName, Integer price, Integer stockQuantity) {
-        this.itemName = itemName;
+        this.name = itemName;
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
@@ -103,7 +103,7 @@ public class Item {
     }
     @Override
     public String toString() {
-        return "Item Info {" + "id=" + id + ", name=" + itemName + ", price=" + price + ", stockQuantity =" + stockQuantity + ", itemType =" + itemType + ", categoryType =" + categoryType + ", status=" + status + '}';
+        return "Item Info {" + "id=" + id + ", name=" + name + ", price=" + price + ", stockQuantity =" + stockQuantity + ", itemType =" + itemType + ", categoryType =" + categoryType + ", status=" + status + '}';
     }
 
 }

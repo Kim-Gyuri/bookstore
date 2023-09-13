@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>aladin - 중고 거래 사이트</title>
@@ -20,8 +20,20 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/BOOK"><label th:text="#{label.category.book}">도서 카테고리</label></a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/MUSIC"><label th:text="#{label.category.music}">음반 카테고리</label></a></li>
+                        <!-- categoryType page sort button-->
+                        <form id="form">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                                <li class="nav-item" th:each="itemCategory : ${categoryTypes}">
+                                    <input type="hidden" id="categoryType" th:value="${itemCategory.code}">
+                                    <input type="hidden" id="condition" th:value="${condition}">
+                                    <a class="nav-link active" aria-current="page"
+                                       th:href="@{/api/items/category/{code} (code=${itemCategory.code})}" type="button" onclick="getCategory()">
+                                        <label class="text-center-float" th:text="${itemCategory.categoryName}">상품 카테고리</label></a>
+                                </li>
+                            </ul>
+                        </form>
+
+                        <!-- dropdown menu bar-->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -30,7 +42,7 @@
                                 <li><a class="dropdown-item" href="/api/users/sales" type="button" onclick="getSalesSubmit()"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
                                 <li><a class="dropdown-item" href="/items/add"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
                                 <li><a class="dropdown-item" href="/api/cart" type="button" onclick="getCart()"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
-                                <li><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
+                                <li> <input type="hidden" id="loginId" th:value="${user.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -38,8 +50,8 @@
                     <!-- search action -->
                         <form class="d-flex">
                             <div class="card-body">
-                                <div class="input-group input--medium"><a th:for="${condition.itemName}"></a>
-                                    <input type="text" th:field="${condition.itemName}">
+                                <div class="input-group input--medium"><a th:for="${condition}"></a>
+                                    <input type="text" th:value="${condition}">
                                     <button class="btn btn-outline-dark" type="submit">search</button>
                                 </div>
                             </div>
@@ -108,12 +120,12 @@
             <div class="container">
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-sm">
-                        <li th:if="${page.isPrev()}" class="page-item"><a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${page.getCurPage()-1}, code=${page.sortParam}, name=${condition.itemName})}" class="page-link" href="#">Prev</a></li>
+                        <li th:if="${page.isPrev()}" class="page-item"><a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${page.getCurPage()-1}, code=${page.sortParam}, name=${condition})}" class="page-link" href="#">Prev</a></li>
                         <li th:unless="${page.isPrev()}" class="page-item disabled"><a class="page-link">Prev</a></li>
                         <li class="page-item" th:each="num, index: ${#numbers.sequence(page.getStartPage(), page.getEndPage())}">
-                            <a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${index.current-1}, code=${page.sortParam}, name=${condition.itemName})}" th:text="${num}" class="page-link" href="">1</a>
+                            <a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${index.current-1}, code=${page.sortParam}, name=${condition})}" th:text="${num}" class="page-link" href="">1</a>
                         </li>
-                        <li th:if="${page.isNext()}" class="page-item"><a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${page.getCurPage()+1}, code=${page.sortParam}, name=${condition.itemName})}" class="page-link" href="#">Next</a></li>
+                        <li th:if="${page.isNext()}" class="page-item"><a th:href="@{/items?code={code}&page={page}&itemName={name}(page = ${page.getCurPage()+1}, code=${page.sortParam}, name=${condition})}" class="page-link" href="#">Next</a></li>
                         <li th:unless="${page.isNext()}" class="page-item disabled"><a class="page-link">Next</a></li>
                     </ul>
                 </nav>
@@ -130,5 +142,6 @@
         <script src="/shop/js/users/logout.js"></script>
         <script src="/shop/js/cart/getCart.js"></script>
         <script src="/shop/js/sales/getSales.js"></script>
+        <script src="/shop/js/item/categoryPage.js"></script>
     </body>
 </html>

@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Address;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.User;
@@ -39,17 +38,14 @@ class ItemRepositoryTest {
         return userB;
     }
 
-    public ItemSearchCondition createCondition() {
-        return ItemSearchCondition.builder()
-                .itemName("Ariana Grande")
-                .loginMember(createUser())
-                .build();
+    public String createCondition() {
+        String itemName = "Ariana Grande";
+        return itemName;
     }
 
-    public ItemSearchCondition createCondition_search() {
-        return ItemSearchCondition.builder()
-                .itemName("Anne")
-                .build();
+    public String createCondition2() {
+        String itemName = "Anne";
+        return itemName;
     }
     
     @Test
@@ -99,12 +95,12 @@ class ItemRepositoryTest {
     void sortByCategoryType_카테고리정렬테스트() {
         // given : "BOOK" 카테고리 페이지로 들어갔을 때
         Pageable pageable = PageRequest.of(0, 4);
-        String code = CategoryType.BOOK.getTypeCode();
+        String code = CategoryType.BOOK.getCode();
         Page<GetPreViewItemResponse> sort = itemRepository.sortByCategoryType(code, pageable);
         List<GetPreViewItemResponse> content = sort.getContent();
 
         // then : 해당 상품이 "BOOK"타입이 맞는지?
-        assertThat(content.get(0).getCategoryType().getTypeCode().equals(CategoryType.BOOK.getTypeCode()));
+        assertThat(content.get(0).getCategoryType().getCode().equals(CategoryType.BOOK.getCode()));
         for (GetPreViewItemResponse mainItemDto : content) {
             System.out.println(mainItemDto.toString());
        }
@@ -114,8 +110,7 @@ class ItemRepositoryTest {
     void searchItem_검색테스트() {
         // given : "Ariana Grande"(음반 카테고리 타입 상품이다.)으로 검색했을 때
         Pageable pageable = PageRequest.of(0, 4);
-        ItemSearchCondition condition = createCondition();
-        Page<GetPreViewItemResponse> sort = itemRepository.searchByItemName(condition, pageable);
+        Page<GetPreViewItemResponse> sort = itemRepository.searchByItemName(createCondition(), pageable);
         List<GetPreViewItemResponse> content = sort.getContent();
 
         for (GetPreViewItemResponse mainItemDto : content) {
@@ -124,16 +119,15 @@ class ItemRepositoryTest {
 
         // then : "Ariana Grande" 상품이 "MUSIC" 카테고리 타입이 맞는지?
         String itemName = content.get(0).getItemName();
-        Item findItem = itemRepository.findByItemName(itemName);
-        assertThat(findItem.getCategoryType().getTypeCode().equals(CategoryType.MUSIC.getTypeCode()));
+        Item findItem = itemRepository.findByName(itemName);
+        assertThat(findItem.getCategoryType().getCode().equals(CategoryType.MUSIC.getCode()));
     }
 
     @Test
     void searchItemAndCategoryType_카테고리안에서검색테스트() {
         //given : "BOOK" 카테고리 페이지에서 상품 "Anne"을 검색하려고 한다.
         PageRequest pageable = PageRequest.of(0, 4);
-        ItemSearchCondition condition = createCondition_search();
-        Page<GetPreViewItemResponse> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(condition, CategoryType.BOOK.getTypeCode(), pageable);
+        Page<GetPreViewItemResponse> mainItemDtos = itemRepository.searchByItemNameAndCategoryType(createCondition2(), CategoryType.BOOK.getCode(), pageable);
 
         for (GetPreViewItemResponse mainItemDto : mainItemDtos.getContent()) {
            log.info("mainItemDto.getItemName()", mainItemDto.getItemName());

@@ -50,7 +50,7 @@ public class OrderItem {
     public GetCartResponse toWishItemDto() {
         return GetCartResponse.wishItemBuilder()
                 .orderItemId(this.id)
-                .itemName(item.getItemName())
+                .itemName(item.getName())
                 .mainImg_savePath(item.getMainImg_path())
                 .count(this.count)
                 .orderPrice(this.orderPrice)

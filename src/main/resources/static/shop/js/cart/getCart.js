@@ -1,14 +1,16 @@
 function getCart(){
 
+    var userId = $('#loginId').val();
+
     $.ajax({
                 url : "/api/cart",
                 type : "get",
-                dataType : 'json',
+                contentType: 'application/json',
                 success : function(data) {
                     window.location.replace('/cart');
                 },
                 error : function(error){
-                    alert(JSON.stringify(error));
+                    console.log(error);
                 }
     });
 }

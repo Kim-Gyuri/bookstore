@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +17,6 @@ import springstudy.bookstore.controller.api.dto.sales.UpdateSalesResponse;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.UpdateItemRequest;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.ItemService;
@@ -36,31 +36,35 @@ public class ItemApiController {
     private final SalesService salesService;
     private final UserService userService;
     private final ItemService itemService;
+
+    // 판매하고 싶은 상품 등록하기
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CreateSalesResponse uploadItem(@Login SessionUser sessionUser,
                                           @Validated @RequestPart(value="createItemRequest") CreateItemRequest dto,
                                           @RequestParam("images") List<MultipartFile> files) throws IOException {
-        User seller = userService.findByLoginId(sessionUser.getLoginId());
+        User seller = userService.findByLoginId(sessionUser.getLoginId()); // 판매자 회원
 
-        Long id = salesService.uploadItem(seller, dto, files);
+        Long id = salesService.uploadItem(seller, dto, files); // 상품 등록
 
         return new CreateSalesResponse(id);
     }
 
+    // 등록한 상품 수정하기
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{id}")
     public UpdateSalesResponse updateItem(@PathVariable("id") Long id,
                                           @Validated @RequestPart(value = "updateItemRequest", required = false) UpdateItemRequest form,
                                           @RequestParam(required = false, name = "images") List<MultipartFile> multipartFileList) throws IOException {
-        salesService.update(id,form, multipartFileList);
+        salesService.update(id,form, multipartFileList); // 상품 수정
 
         Item item = itemService.findById(id);
-        return new UpdateSalesResponse(id, item.getItemName(), item.getMainImg_path());
+        return new UpdateSalesResponse(id, item.getName(), item.getMainImg_path());
     }
 
 
-    //@GetMapping("/{id}")
+    // 상품 단건 조회
+    @GetMapping("/{id}")
     public GetItemResponse findById(@PathVariable Long id) {
         Item item = itemService.findById(id);
 
@@ -74,7 +78,7 @@ public class ItemApiController {
      * 3. 가격순 정렬
      */
 
-    // 삭제
+    // 상품 삭제
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public DeleteItemResponse delete(@PathVariable("id") Long id) {
@@ -85,33 +89,19 @@ public class ItemApiController {
 
     // 카테고리 페이지, +이름 검색조회도 가능
     @GetMapping("/category/{code}") //CODE = "카테고리 타입"
-    public Page<GetPreViewItemResponse> showCategory(Model model , Pageable pageable,
-                               @PathVariable("code") String code, ItemSearchCondition condition) {
+    public Page<GetPreViewItemResponse> showCategory(
+            Pageable pageable,
+            @PathVariable("code") String code,
+            @RequestParam(required = false) String itemName, Model model) {
 
         Page<GetPreViewItemResponse> results;
-        //PageDto pageDto;
 
-        if (condition.getItemName() == null) {
+        if (StringUtils.isEmpty(itemName)) {
             results = itemService.categoryPageSort(code, pageable);
         } else {
-            results = itemService.searchAndCategory(condition, code, pageable);
+            results = itemService.searchAndCategory(itemName, code, pageable);
         }
-        return results;
-    }
-
-    // 모든 상품 조회, + 추가로 상품 가격순 정렬 필터 가능, 추가로 이름검색 조회
-    //@GetMapping
-    public Page<GetPreViewItemResponse> findAll(Pageable pageable,
-                       @RequestParam(required = false, name = "code") String code,
-                       ItemSearchCondition condition) {
-
-        Page<GetPreViewItemResponse> results;
-
-        if (code == null) {
-            results = itemService.searchPageSort(condition, pageable);
-        } else {
-            results = itemService.itemPriceSort(code, pageable);
-        }
+        model.addAttribute("condition", itemName);
         return results;
     }
 

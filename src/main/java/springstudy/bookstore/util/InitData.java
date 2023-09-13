@@ -158,8 +158,10 @@ public class InitData {
                     .count(2)
                     .build();
 
-            userA.addCartItem(orderItem1);
+            userA.addCartItem(orderItem1); //"userA" 회원이 장바구니에 상품을 담는다.
             userA.addCartItem(orderItem2);
+            userB.searchSales().takeOrder(orderItem1.getOrderPrice()); // "userB"회원은 상품 구매에 대해 판매액 업데이트
+            userB.searchSales().takeOrder(orderItem2.getOrderPrice());
         }
 
         private void sellBook(User user) {

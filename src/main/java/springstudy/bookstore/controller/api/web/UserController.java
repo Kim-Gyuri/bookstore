@@ -19,6 +19,7 @@ import springstudy.bookstore.util.validation.dto.SessionUser;
 public class UserController {
 
     private final UserService userService;
+
     // 로그인 양식 폼
     @GetMapping("/login")
     public String loginForm() {
@@ -31,8 +32,10 @@ public class UserController {
         return "signUp/signUpForm";
     }
 
+    // 회원 정보 조회
     @GetMapping("/info")
     public String userInfo(@Login SessionUser sessionUser, Model model) {
+        // 로그인 세션 정보가 없으면, 로그인 화면으로 이동된다.
         if (sessionUser == null) {
             return "login/loginForm";
         }

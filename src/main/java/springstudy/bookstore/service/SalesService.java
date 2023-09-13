@@ -39,15 +39,14 @@ public class SalesService {
     }
 
 
-    // 상품 조회
-    // id로 조회
-    // 전체 조회
+    // 상품 단건 조회 ;  id로 조회
     @Transactional(readOnly = true)
     public Sales findById(Long id) {
         return salesRepository.findById(id)
                 .orElseThrow(() -> new NotFoundSalesException("해당 " + id + " 번호 상품이 없습니다."));
     }
 
+    // 회원이 판매하는 상품정보, 판매액 조회
     @Transactional(readOnly = true)
     public  GetSalesResponse findByUserLoginId(String id) {
         User seller = userService.findByLoginId(id);

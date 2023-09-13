@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.dto.user.LoginRequest;
-import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
-import springstudy.bookstore.domain.entity.*;
+import springstudy.bookstore.domain.dto.user.CreateUserRequest;
+import springstudy.bookstore.domain.dto.user.LoginRequest;
+import springstudy.bookstore.domain.entity.Cart;
+import springstudy.bookstore.domain.entity.Sales;
+import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.repository.*;
 import springstudy.bookstore.util.exception.user.DuplicateLoginIdException;
 import springstudy.bookstore.util.exception.user.NotFoundUserException;
@@ -61,7 +63,7 @@ public class UserService {
     }
 
 
-    // (id로 user 찾기)
+    // (id 번호로 회원 찾기)
     @Transactional(readOnly = true)
     public User findById(long id) {
         return userRepository.findById(id);
@@ -80,5 +82,6 @@ public class UserService {
     public List<GetUserItemResponse> findItemsByUser(String uploaderId) {
         return itemRepository.sortByUser(uploaderId);
     }
+
 
 }

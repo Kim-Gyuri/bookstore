@@ -9,7 +9,7 @@ function editItemSubmit(){
         "price" : $.trim($("#price").val()),
         "quantity" : $.trim($("#quantity").val()),
     }
-    formData.append("updateItemRequest", new Blob([JSON.stringify(data)] , {type: "application/json"}));     //createItemRequest 이름으로 게시글 내용 저장
+    formData.append("updateItemRequest", new Blob([JSON.stringify(data)] , {type: "application/json"}));     //updateItemRequest 이름으로 게시글 내용 저장
     var id = $('#id').val();
 
     // 이미지 파일을 담을 배열 (버튼을 눌렀을 때 서버에 전송할 데이터)

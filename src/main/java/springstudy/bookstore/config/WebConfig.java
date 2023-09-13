@@ -28,8 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                                      "/users/login", "/api/users/login",
                                      "/api/users/logout",
                                      "/shop/css/**", "/*.ico", "/shop/assets/**", "/shop/js/**", "/error");
-
-    }//"/bookstore/signUp", "/bookstore/login", "/bookstore/logout"
+    }
 
 
     @Override

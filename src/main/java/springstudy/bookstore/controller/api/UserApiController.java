@@ -28,10 +28,7 @@ public class UserApiController {
 
     private final UserService userService;
 
-    /** 추가할 것
-     * 이메일 중복 검사 ?
-     */
-
+    // 회원 가입
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CreateUserResponse createUser(@Validated @RequestPart(value = "createUserRequest")CreateUserRequest dto) {
@@ -42,10 +39,7 @@ public class UserApiController {
         return new CreateUserResponse(user.getName(), user.getEmail(), user.getPassword());
     }
 
-    /**
-     * 로그인 성공
-     *  /실패
-     */
+    // 로그인
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public LoginResponse login(@Validated @RequestPart(value = "loginRequest") LoginRequest dto,
@@ -62,10 +56,7 @@ public class UserApiController {
     }
 
 
-    /**
-     * 로그아웃 성공
-     *  /실패
-     */
+    // 로그아웃
     @PostMapping("/logout")
     public LogoutResponse logout(HttpServletRequest request) {
         // 세션을 없애기 위해 null을 반환하도록 false를 넣는다.
@@ -77,9 +68,7 @@ public class UserApiController {
         return new LogoutResponse(Boolean.TRUE, "logout success!");
     }
 
-    // 추가할 것?
-    // 비밀번호 찾기 -> 이메일 인증(토큰)
-    // 회원 정보 수정
+    // 회원 정보 조회
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/info")
     public GetUserResponse UserInfo(@Login SessionUser sessionUser) {

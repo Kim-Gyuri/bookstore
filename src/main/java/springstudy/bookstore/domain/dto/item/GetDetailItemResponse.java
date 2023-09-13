@@ -26,7 +26,7 @@ public class GetDetailItemResponse {
 
     public GetDetailItemResponse(Item item) {
         this.id = item.getId();
-        this.itemName = item.getItemName();
+        this.itemName = item.getName();
         this.price = item.getPrice();
         this.quantity = item.getStockQuantity();
         this.itemType = item.getItemType();

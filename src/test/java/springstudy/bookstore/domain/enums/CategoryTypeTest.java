@@ -19,7 +19,7 @@ class CategoryTypeTest {
 
         // then : 카테고리 이름이 "음반"이 맞는지 확인한다.
         assertThat(findType.getCategoryName().equals(CategoryType.MUSIC.getCategoryName()));
-        assertThat(findType.getTypeCode().equals(CategoryType.MUSIC.getTypeCode()));
+        assertThat(findType.getCode().equals(CategoryType.MUSIC.getCode()));
     }
 
     private String selectCategoryCode() {

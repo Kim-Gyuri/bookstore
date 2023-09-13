@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.dto.cart.GetCartResponse;
+import springstudy.bookstore.domain.dto.orderItem.GetOrderItemResponse;
 import springstudy.bookstore.domain.entity.Cart;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.OrderItem;
@@ -26,18 +26,23 @@ public class CartService {
     private final CartRepository cartRepository;
     private final OrderItemRepository orderItemRepository;
 
+    // cart id로 장바구니 조회
     @Transactional(readOnly = true)
     public Cart findById(Long id) {
         return cartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundOrderItemException("해당 주문이 없습니다."));
     }
 
+
+    // 회원 로그인 아이디로 회원의 장바구니 조회
     @Transactional(readOnly = true)
-    public List<GetCartResponse> getWishList(String loginId) {
-        User user = userService.findByLoginId(loginId);
-        return user.getWishList();
+    public List<GetOrderItemResponse> cartFindByUserId(String userId) {
+        User user = userService.findByLoginId(userId);
+        return orderItemRepository.findAllByCart_id(user.getCart().getId());
     }
 
+
+   // 장바구니에 상품 담기
     @Transactional
     public void addWishList(String loginId, Long itemId, Integer count) {
         User buyer = userService.findByLoginId(loginId); // 구매자
@@ -56,6 +61,7 @@ public class CartService {
         seller.searchSales().takeOrder(orderItem.getOrderPrice());
     }
 
+    // 장바구니에 담긴 상품 삭제
     @Transactional
     public void deleteWishList(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)

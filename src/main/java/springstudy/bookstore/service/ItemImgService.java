@@ -22,6 +22,7 @@ public class ItemImgService {
     private final ItemImgRepository imgRepository;
 
 
+    // 상품 등록에 필요한 이미지 저장
     public Long saveItemImg(CreateImgRequest itemInfo, MultipartFile multipartFile) throws IOException {
         CreateFileResponse fileInfo = fileService.storeFile(multipartFile);
 
@@ -55,6 +56,7 @@ public class ItemImgService {
     }
      */
 
+    // 이미지 이름으로 해당 이미지 객체 조회
     @Transactional(readOnly = true)
     public ItemImg findByImgName(String imgName) {
         return imgRepository.findByImgName(imgName);
@@ -66,6 +68,7 @@ public class ItemImgService {
                 .orElseThrow(() -> new NotFoundItemException("해당 이미지가 없습니다."));
     }
 
+    // 이미지 삭제
     public void delete(ItemImg imgEntity) {
         imgRepository.delete(imgEntity);
     }

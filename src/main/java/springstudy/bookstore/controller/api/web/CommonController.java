@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
-import springstudy.bookstore.domain.dto.sort.ItemSearchCondition;
 import springstudy.bookstore.domain.dto.sort.PageDto;
+import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.service.ItemService;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 import springstudy.bookstore.util.validation.dto.SessionUser;
@@ -29,11 +29,12 @@ public class CommonController {
 
     private final ItemService itemService;
 
+    // 메인 페이지
     @GetMapping("/items")
     public String findAll(Model model, @Login SessionUser loginUser,
                           @PageableDefault(size = 4) Pageable pageable,
                           @RequestParam(required = false, name = "code") String code,
-                          ItemSearchCondition condition) {
+                          @RequestParam(required = false, name = "condition") String itemName) {
 
         Page<GetPreViewItemResponse> results;
         PageDto pageDto;
@@ -43,7 +44,7 @@ public class CommonController {
         }
 
         if (code == null) {
-            results = itemService.searchPageSort(condition, pageable);
+            results = itemService.searchPageSort(itemName, pageable);
             pageDto = new PageDto(results.getTotalElements(), pageable);
         } else {
             results = itemService.itemPriceSort(code, pageable);
@@ -61,12 +62,14 @@ public class CommonController {
 
         model.addAttribute("items", results.getContent());
         model.addAttribute("page", pageDto);
-        model.addAttribute("condition", condition);
+        model.addAttribute("condition", itemName);
+        model.addAttribute("user", loginUser);
+        model.addAttribute("categoryTypes", CategoryType.values());
 
         return "shop/index";
     }
 
-
+   // 모든 이미지 경로 찾기
     @ResponseBody
     @GetMapping("{fileId}")
     public Resource download(@PathVariable String filename) throws MalformedURLException {

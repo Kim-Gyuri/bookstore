@@ -16,6 +16,7 @@ public class SalesApiController {
 
     private final SalesService salesService;
 
+    // 회원이 현재 판매하는 상품정보/총 판매액 조회
     @GetMapping("/sales")
     public GetSalesResponse myItems(@Login SessionUser user) {
         return salesService.findByUserLoginId(user.getLoginId());

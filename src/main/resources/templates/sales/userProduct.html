@@ -45,6 +45,14 @@
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div class="card-body">
+                <h3 class="h4 mb-0" th:text="#{label.sales.totalRevenue}">판매액 조회</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3><a th:text="${products.totalRevenue}"/><label th:text="#{label.item.price.unit}">단위(원)</label></h3>
+                    </div>
+                </div>
+                <br><br>
+
                 <div class="row gx-5 bg-white">
                     <h3 class="h4 mb-0" th:text="#{page.items}">전체 상품</h3>
                     <hr class="my-4">
@@ -55,8 +63,8 @@
                             <tr>
                                 <th scope="col" th:text="#{label.item.image}">image</th>
                                 <th scope="col" th:text="#{label.item}">Name</th>
-                                <th scope="col" th:text="#{label.item.price}">Price</th>
                                 <th scope="col" th:text="#{label.item.quantity}">quantity</th>
+                                <th scope="col" th:text="#{label.item.price}">Price</th>
                                 <th scope="col" th:text="#{button.delete}"></th>
 
                             </tr>
@@ -64,12 +72,12 @@
                             <tbody>
 
                             <tr th:each="item : ${products.itemList}">
-                                <td><input id="id" type="hidden" th:value="${item.itemId}"></td>
+                                <input id="id" type="hidden" th:value="${item.itemId}">
                                 <td class="align-middle"><img class="card-img-fake" th:src="|${item.imgUrl}|"></td>
                                 <td class="align-middle" th:text="${item.itemName}"></td>
-                                <td class="align-middle" th:text="${item.price}"></td>
                                 <td class="align-middle" th:text="${item.quantity}"></td>
-                                <td class="align-middle"><button type="button" onclick="deleteItemSubmit()" ><img src="/shop/assets/delete.PNG" /></button> </td>
+                                <td class="align-middle" th:text="${item.price}"></td>
+                                <td class="align-middle"><a th:href="@{/api/items/{id} (id=${item.itemId})}" type="button" onclick="deleteItem()"><img src="/shop/assets/delete.PNG"/></a></td>
                             </tr>
 
                             </tbody>

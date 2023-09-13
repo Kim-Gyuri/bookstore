@@ -56,7 +56,7 @@
                             <thead>
                             <tr>
                                 <th scope="col" th:text="#{label.item}">Name</th>
-                                <th scope="col" th:text="#{label.item.price}">Price</th>
+                                <th scope="col" th:text="#{label.item.image}"></th>
                                 <th scope="col" th:text="#{label.product.quantity}">quantity</th>
                                 <th scope="col" th:text="#{label.product.price}">orderPrice</th>
                                 <th scope="col" th:text="#{button.delete}"></th>
@@ -65,11 +65,12 @@
                             <tbody>
 
                             <tr th:each="orderItem : ${cartList}">
-                                <td class="align-middle" th:text="${orderItem.item.itemName}"></td>
-                                <td class="align-middle" th:text="${orderItem.item.price}"></td>
-                                <td class="align-middle" th:text="${orderItem.count}"></td>
-                                <td class="align-middle" th:text="${orderItem.orderPrice}"></td>
-                                <td> <a th:href="@{/bookstore/user/cart/delete/{id} (id=${orderItem.orderItemId})}" type="button"><img src="/shop/assets/delete.PNG" /></a></td>
+                                <input type="hidden" id="orderItemId" th:value="${orderItem.orderItemId}">
+                                <td class="align-middle" id="itemName" th:text="${orderItem.name}"></td>
+                                <td class="align-middle" id="savePath"><img class="card-img-fake" th:src="|${orderItem.savePath}|"></td>
+                                <td class="align-middle" id="count" th:text="${orderItem.count}"></td>
+                                <td class="align-middle" id="orderPrice" th:text="${orderItem.orderPrice}"></td>
+                                <td class="align-middle"> <a th:href="@{/api/cart/item/{id} (id=${orderItem.orderItemId})}" type="button" onclick="deleteOrderItem()"><img src="/shop/assets/delete.PNG" /></a></td>
                             </tr>
 
                             </tbody>
@@ -90,6 +91,7 @@
 <script src="/shop/js/scripts.js"></script>
 <!--JS-->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
+<script src="/shop/js/cart/getCart.js"></script>
+<script src="/shop/js/cart/deleteOrder.js"></script>
 </body>
 </html>

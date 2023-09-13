@@ -15,11 +15,12 @@ public class SalesController {
 
     private final SalesService salesService;
 
+    // 회원이 판매하는 상품정보/판매액 조회
     @GetMapping("/sales")
     public String mySales(@Login SessionUser user, Model model) {
         GetSalesResponse dto = salesService.findByUserLoginId(user.getLoginId());
 
         model.addAttribute("products", dto);
-        return "users/userProduct";
+        return "sales/userProduct";
     }
 }

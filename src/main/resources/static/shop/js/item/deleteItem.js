@@ -1,4 +1,4 @@
-function deleteItemSubmit(){
+function deleteItem(){
 
      var id = $('#id').val();
 
@@ -10,6 +10,7 @@ function deleteItemSubmit(){
                 processData : false,
                 success : function(data) {
                     alert("상품이 삭제되었습니다.");
+                    window.location.replace('/sales');
                 },
                 error : function(error){
                     alert(JSON.stringify(error));
