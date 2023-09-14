@@ -1,97 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>aladin - 중고 거래 사이트</title>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/shop/css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
+<head th:replace="fragments/header.html :: header"/>
 <body>
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/bookstore/home"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/BOOK"><label th:text="#{label.category.book}">도서 카테고리</label></a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/bookstore/category/MUSIC"><label th:text="#{label.category.music}">음반 카테고리</label></a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/bookstore/user/Info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/bookstore/user/product"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
-                        <li><a class="dropdown-item" href="/bookstore/item/new"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
-                        <li><a class="dropdown-item" href="/bookstore/user/cart"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
-                        <li><form th:action="@{/bookstore/logout}" method="post">
-                            <button class="dropdown-item"  type="submit"><label th:text="#{label.user.logout}">로그아웃 버튼</label></button></form></li>
-                    </ul>
-                </li>
-            </ul>
+    <!-- Navigation menu bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/items"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <!-- categoryType page sort button-->
+                    <form id="form">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                            <li class="nav-item" th:each="itemCategory : ${categoryTypes}">
+                                <a class="nav-link active" aria-current="page"
+                                   th:href="@{/items/category/{code} (code=${itemCategory.code})}" type="button" >
+                                    <label class="text-center-float" th:text="${itemCategory.categoryName}">상품 카테고리</label></a>
+                            </li>
+                        </ul>
+                    </form>
 
+                    <!-- dropdown menu bar-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/users/info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="/api/users/sales" type="button" onclick="getSalesSubmit()"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
+                            <li><a class="dropdown-item" href="/items/add"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
+                            <li><a class="dropdown-item" href="/api/cart" type="button" onclick="getCart()"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
+                            <li> <input type="hidden" id="loginId" th:value="${user.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-
-<!-- Section-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="card-body">
-                <div class="row gx-5 bg-white">
-                    <h3 class="h4 mb-0" th:text="#{page.items}">전체</h3>
-                    <hr class="my-4">
-                    <div>
-                        <!-- cart table Section-->
-                        <table class="table mb-0 table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col" th:text="#{label.item}">Name</th>
-                                <th scope="col" th:text="#{label.item.image}"></th>
-                                <th scope="col" th:text="#{label.product.quantity}">quantity</th>
-                                <th scope="col" th:text="#{label.product.price}">orderPrice</th>
-                                <th scope="col" th:text="#{button.delete}"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr th:each="orderItem : ${cartList}">
-                                <input type="hidden" id="orderItemId" th:value="${orderItem.orderItemId}">
-                                <td class="align-middle" id="itemName" th:text="${orderItem.name}"></td>
-                                <td class="align-middle" id="savePath"><img class="card-img-fake" th:src="|${orderItem.savePath}|"></td>
-                                <td class="align-middle" id="count" th:text="${orderItem.count}"></td>
-                                <td class="align-middle" id="orderPrice" th:text="${orderItem.orderPrice}"></td>
-                                <td class="align-middle"> <a th:href="@{/api/cart/item/{id} (id=${orderItem.orderItemId})}" type="button" onclick="deleteOrderItem()"><img src="/shop/assets/delete.PNG" /></a></td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-
-
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div class="card-body">
+                    <div class="row gx-5 bg-white">
+                        <h3 class="h4 mb-0" th:text="#{page.items}">전체</h3>
+                        <hr class="my-4">
+                        <div>
+                            <!-- cart table Section-->
+                            <table class="table mb-0 table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" th:text="#{label.item}">Name</th>
+                                    <th scope="col" th:text="#{label.item.image}"></th>
+                                    <th scope="col" th:text="#{label.product.quantity}">quantity</th>
+                                    <th scope="col" th:text="#{label.product.price}">orderPrice</th>
+                                    <th scope="col" th:text="#{button.delete}"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="orderItem : ${cartList}">
+                                    <input type="hidden" id="orderItemId" th:value="${orderItem.orderItemId}">
+                                    <td class="align-middle" id="itemName" th:text="${orderItem.name}"></td>
+                                    <td class="align-middle" id="savePath"><img class="card-img-fake" th:src="|${orderItem.savePath}|"></td>
+                                    <td class="align-middle" id="count" th:text="${orderItem.count}"></td>
+                                    <td class="align-middle" id="orderPrice" th:text="${orderItem.orderPrice}"></td>
+                                    <td class="align-middle"> <a th:href="@{/api/cart/item/{id} (id=${orderItem.orderItemId})}" type="button" onclick="deleteOrderItem()"><img src="/shop/assets/delete.PNG" /></a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
-<!--JS-->
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="/shop/js/cart/getCart.js"></script>
-<script src="/shop/js/cart/deleteOrder.js"></script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/shop/js/scripts.js"></script>
+    <!--JS-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="/shop/js/cart/getCart.js"></script>
+    <script src="/shop/js/cart/deleteOrder.js"></script>
+    <script src="/shop/js/users/logout.js"></script>
+    <script src="/shop/js/sales/getSales.js"></script>
+    <script src="/shop/js/item/categoryPage.js"></script>
 </body>
 </html>

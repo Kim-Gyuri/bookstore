@@ -2,6 +2,7 @@ package springstudy.bookstore.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 
@@ -9,13 +10,13 @@ import java.util.List;
 
 public interface ItemRepositoryCustom {
     // 상품 이름으로 상품 조회
-    Page<GetPreViewItemResponse> searchByItemName(String itemName, Pageable pageable);
+    Page<GetPreViewItemResponse> searchByItemName(ItemSearch itemSearch, Pageable pageable);
 
     // 상품 카테고리별 상품 조회
     Page<GetPreViewItemResponse> sortByCategoryType(String code, Pageable pageable);
 
     // 상품 이름 검색 기능 + 카테고리별 정렬
-    Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(String itemName, String code, Pageable pageable);
+    Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(ItemSearch itemSearch, String code, Pageable pageable);
 
     // 상품 낮은 가격별 정렬
     Page<GetPreViewItemResponse> sortByItemPriceASC(Pageable pageable);

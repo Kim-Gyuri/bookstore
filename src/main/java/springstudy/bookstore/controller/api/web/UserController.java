@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import springstudy.bookstore.controller.api.dto.user.GetUserResponse;
 import springstudy.bookstore.domain.entity.User;
+import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.service.UserService;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 import springstudy.bookstore.util.validation.dto.SessionUser;
@@ -35,13 +36,11 @@ public class UserController {
     // 회원 정보 조회
     @GetMapping("/info")
     public String userInfo(@Login SessionUser sessionUser, Model model) {
-        // 로그인 세션 정보가 없으면, 로그인 화면으로 이동된다.
-        if (sessionUser == null) {
-            return "login/loginForm";
-        }
 
         User user = userService.findByLoginId(sessionUser.getLoginId());
-        model.addAttribute("users", new GetUserResponse(user));
+
+        model.addAttribute("categoryTypes", CategoryType.values());
+        model.addAttribute("users",new GetUserResponse(user));
         return "users/userInfo";
     }
 

@@ -1,132 +1,130 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>aladin - 중고 거래 사이트</title>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/shop/css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-
+<head th:replace="fragments/header.html :: header"/>
 <body>
-<!-- Navigation menu bar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/items"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-               <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/api/users/info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/bookstore/user/product"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
-                        <li><a class="dropdown-item" href="/bookstore/item/new"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
-                        <li><a class="dropdown-item" href="/bookstore/user/cart"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
-                        <li><form th:action="@{/api/users/logout}" method="post"><button class="dropdown-item" type="submit"><label th:text="#{label.user.logout}">로그아웃 버튼</label></button></form></li>
-                    </ul>
-                </li>
-            </ul>
+    <!-- Navigation menu bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/items"><label class="text-center" th:text="#{label.site.name}">siteName</label></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <!-- categoryType page sort button-->
+                    <form id="form">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                            <li class="nav-item" th:each="itemCategory : ${categoryTypes}">
+                                <a class="nav-link active" aria-current="page"
+                                   th:href="@{/items/category/{code} (code=${itemCategory.code})}" type="button" >
+                                    <label class="text-center-float" th:text="${itemCategory.categoryName}">상품 카테고리</label></a>
+                            </li>
+                        </ul>
+                    </form>
 
-            <!-- search action -->
-            <form class="d-flex">
-                <div class="card-body">
-                    <div class="input-group input--medium"><a th:for="${condition}"></a>
-                        <input type="text" th:value="${condition}">
-                        <button class="btn btn-outline-dark" type="submit">search</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</nav>
+                    <!-- dropdown menu bar-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="/shop/assets/user.png" /></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/users/info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="/api/users/sales" type="button" onclick="getSalesSubmit()"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
+                            <li><a class="dropdown-item" href="/items/add"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
+                            <li><a class="dropdown-item" href="/api/cart" type="button" onclick="getCart()"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
+                            <li> <input type="hidden" id="loginId" th:value="${user.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-
-<!-- Header-->
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder"><label th:text="#{label.site.message}">site message</label></h1>
-            <p class="lead fw-normal text-white-50 mb-0">With aladin</p>
-        </div>
-    </div>
-</header>
-
-<!--search result -->
-<div class ="row">
-    <div  th:unless="${#lists.size(items) != 0}">검색결과가 없습니다.</div>
-    <div  th:if="${#lists.size(items) != 0}">
-
-        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center">
-                <th:block th:each="sortParam : ${sortParams}">
-                    <a class="btn btn-outline-dark mt-auto" th:text="${sortParam.displayName}"
-                       th:unless="${#strings.equals(page.sortParam, sortParam.code)}" th:href="@{/bookstore/home(page=${page.curPage},sort=${sortParam.code})}"  role="button"></a>
-                    <a th:text="${sortParam.displayName}" th:if="${#strings.equals(page.sortParam, sortParam.code)}" role="button"></a>
-                </th:block>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-<!-- Section-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-            <!-- card view -->
-            <div th:each="item : ${items}">
-
-                <div class="card h-fake">
-                    <!-- Product image-->
-                    <img class="card-img-top" th:src="|${item.getImgUrl()}|" >
-                    <!-- Product details-->
-                    <div class="card-body p-1">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder"><a th:text="${item.itemName}"></a></h5>
-                            <!-- Product price-->
-                            <a th:text="${item.price}"></a><label th:text="#{label.item.price.unit}">단위(원)</label>
+                <!-- search action -->
+                <form class="d-flex" th:object="${itemSearch}">
+                    <div class="card-body">
+                        <div class="input-group input--medium">
+                            <a th:for="${itemSearch.itemName}"></a>
+                            <input type="text" th:field="*{itemName}" placeholder="상품명">
+                            <button class="btn btn-outline-dark" type="submit">search</button>
                         </div>
                     </div>
-                    <!-- Product actions-->
-                    <div class="card-fake">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/bookstore/products/{id}(id=${item.id})}" th:text="#{button.buy}">구매하기</a></div>
+                </form>
+            </div>
+         </div>
+    </nav>
+
+    <!-- banner -->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder"><label th:text="#{label.site.message}">site message</label></h1>
+                <p class="lead fw-normal text-white-50 mb-0">With aladin</p>
+            </div>
+        </div>
+    </header>
+
+    <!--search result -->
+    <div class ="row">
+        <div  th:unless="${#lists.size(items) != 0}"><h3>검색결과가 없습니다.</h3></div>
+        <div  th:if="${#lists.size(items) != 0}">
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center">
+                    <th:block th:each="sortParam : ${sortParams}">
+                        <a class="btn btn-outline-dark mt-auto" th:text="${sortParam.displayName}"
+                           th:unless="${#strings.equals(page.sortParam, sortParam.code)}"
+                           th:href="@{/bookstore/home(page=${page.curPage},sort=${sortParam.code})}" role="button"></a>
+                        <a th:text="${sortParam.displayName}" th:if="${#strings.equals(page.sortParam, sortParam.code)}" role="button"></a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <!-- card view -->
+                <div th:each="item : ${items}">
+                    <div class="card h-fake">
+                        <!-- Product image-->
+                        <img class="card-img-top" th:src="|${item.getImgUrl()}|" >
+                        <!-- Product details-->
+                        <div class="card-body p-1">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder"><a th:text="${item.itemName}"></a></h5>
+                                <!-- Product price-->
+                                <a th:text="${item.price}"></a><label th:text="#{label.item.price.unit}">단위(원)</label>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-fake">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/items/{id}(id=${item.id})}" th:text="#{button.buy}">구매하기</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
+    </section>
+
+    <!-- page navigation -->
+    <div class="container">
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm">
+                <li th:if="${page.isPrev()}" class="page-item"><a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${page.getCurPage()-1}, code=${page.sortParam}, name=${itemSearch.itemName})}" class="page-link" href="#">Prev</a></li>
+                <li th:unless="${page.isPrev()}" class="page-item disabled"><a class="page-link">Prev</a></li>
+                <li class="page-item" th:each="num, index: ${#numbers.sequence(page.getStartPage(), page.getEndPage())}">
+                    <a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${index.current-1}, code=${page.sortParam}, name=${itemSearch.itemName})}" th:text="${num}" class="page-link" href="">1</a></li>
+                <li th:if="${page.isNext()}" class="page-item"><a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${page.getCurPage()+1}, code=${page.sortParam}, name=${itemSearch.itemName})}" class="page-link" href="#">Next</a></li>
+                <li th:unless="${page.isNext()}" class="page-item disabled"><a class="page-link">Next</a></li>
+            </ul>
+        </nav>
     </div>
-</section>
-
-<div class="container">
-    <nav aria-label="Page navigation">
-        <ul class="pagination pagination-sm">
-            <li th:if="${page.isPrev()}" class="page-item"><a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${page.getCurPage()-1}, code=${page.sortParam}, name=${condition})}" class="page-link" href="#">Prev</a></li>
-            <li th:unless="${page.isPrev()}" class="page-item disabled"><a class="page-link">Prev</a></li>
-            <li class="page-item" th:each="num, index: ${#numbers.sequence(page.getStartPage(), page.getEndPage())}">
-                <a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${index.current-1}, code=${page.sortParam}, name=${condition})}" th:text="${num}" class="page-link" href="">1</a>
-            </li>
-            <li th:if="${page.isNext()}" class="page-item"><a th:href="@{/items/category/{code}?page={page}&itemName={name}(page = ${page.getCurPage()+1}, code=${page.sortParam}, name=${condition})}" class="page-link" href="#">Next</a></li>
-            <li th:unless="${page.isNext()}" class="page-item disabled"><a class="page-link">Next</a></li>
-        </ul>
-    </nav>
-</div>
-
-
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/shop/js/scripts.js"></script>
+    <!-- JS-->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="/shop/js/users/logout.js"></script>
+    <script src="/shop/js/cart/getCart.js"></script>
+    <script src="/shop/js/sales/getSales.js"></script>
+    <script src="/shop/js/item/categoryPage.js"></script>
 </body>
 </html>

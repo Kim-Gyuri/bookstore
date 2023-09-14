@@ -72,9 +72,9 @@ public class Item {
     public void checkStatus() {
         Integer restQuantity = this.stockQuantity;
         if (restQuantity < 0) {
+            this.status = ItemSellStatus.SOLD_OUT;
             throw new NotEnoughStockException("재고가 부족합니다.");
         }
-        this.status = ItemSellStatus.SOLD_OUT;
     }
 
     public void cancelCart(Integer quantity) {

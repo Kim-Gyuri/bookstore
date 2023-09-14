@@ -1,4 +1,4 @@
-package springstudy.bookstore.domain.dto.sort;
+package springstudy.bookstore.controller.api.dto.sort;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

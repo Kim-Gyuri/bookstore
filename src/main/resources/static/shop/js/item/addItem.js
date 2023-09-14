@@ -10,7 +10,7 @@ function addItemSubmit(){
         "price" : $.trim($("#price").val()),
         "stockQuantity" : $.trim($("#stockQuantity").val()),
         "itemType" : $.trim($("#itemType option:selected").val()),
-        "categoryType" : $.trim($("#categoryType option:selected").val())
+        "categoryType" : $.trim($("#category option:selected").val())
     }
     formData.append("createItemRequest", new Blob([JSON.stringify(data)] , {type: "application/json"}));     //createItemRequest 이름으로 게시글 내용 저장
 

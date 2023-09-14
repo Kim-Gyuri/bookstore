@@ -4,11 +4,14 @@ import lombok.Data;
 import springstudy.bookstore.domain.entity.Address;
 import springstudy.bookstore.domain.entity.User;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class CreateUserRequest {
 
-   // private Long id;
+    @NotNull
     private String loginId;
+    @NotNull
     private String password;
     private String name;
     private String email;

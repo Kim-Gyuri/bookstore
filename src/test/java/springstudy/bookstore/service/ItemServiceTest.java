@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.controller.dto.ItemSortParam;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
@@ -66,9 +67,10 @@ class ItemServiceTest {
         return userService.findByLoginId(dto.getLoginId());
     }
 
-    public String createSearchConditionTest() {
-        String itemName = "Anne";
-        return itemName;
+    public ItemSearch createSearchConditionTest() {
+        ItemSearch itemSearch = new ItemSearch();
+        itemSearch.setItemName("Anne");
+        return itemSearch;
     }
 
     public CreateItemRequest createRequestItemDto() {

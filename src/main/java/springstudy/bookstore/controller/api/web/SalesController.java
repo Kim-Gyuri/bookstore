@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import springstudy.bookstore.domain.dto.sales.GetSalesResponse;
+import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.service.SalesService;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 import springstudy.bookstore.util.validation.dto.SessionUser;
@@ -21,6 +22,8 @@ public class SalesController {
         GetSalesResponse dto = salesService.findByUserLoginId(user.getLoginId());
 
         model.addAttribute("products", dto);
+        model.addAttribute("user", user);
+        model.addAttribute("categoryTypes", CategoryType.values());
         return "sales/userProduct";
     }
 }

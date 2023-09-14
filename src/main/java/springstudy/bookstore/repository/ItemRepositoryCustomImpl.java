@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.StringUtils;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 import springstudy.bookstore.domain.dto.item.QGetPreViewItemResponse;
@@ -29,7 +30,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<GetPreViewItemResponse> searchByItemName(String itemName, Pageable pageable) {
+    public Page<GetPreViewItemResponse> searchByItemName(ItemSearch itemSearch, Pageable pageable) {
 
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
@@ -45,7 +46,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
-                .where(itemNameContains(itemName))
+                .where(itemNameContains(itemSearch.getItemName()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -105,7 +106,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(String itemName, String code, Pageable pageable) {
+    public Page<GetPreViewItemResponse> searchByItemNameAndCategoryType(ItemSearch itemSearch, String code, Pageable pageable) {
         List<GetPreViewItemResponse> content = queryFactory
                 .select(new QGetPreViewItemResponse(
                         item.id.as("itemId"),
@@ -121,7 +122,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .join(itemImg.item, item)
                 .where(itemImg.isMainImg.eq(IsMainImg.Y))
                 .where(categoryTypeContains(code))
-                .where(itemNameContains(itemName))
+                .where(itemNameContains(itemSearch.getItemName()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

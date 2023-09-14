@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +13,7 @@ import springstudy.bookstore.controller.api.dto.item.DeleteItemResponse;
 import springstudy.bookstore.controller.api.dto.item.GetItemResponse;
 import springstudy.bookstore.controller.api.dto.sales.CreateSalesResponse;
 import springstudy.bookstore.controller.api.dto.sales.UpdateSalesResponse;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
 import springstudy.bookstore.domain.dto.item.UpdateItemRequest;
@@ -71,37 +71,28 @@ public class ItemApiController {
         return new GetItemResponse(item);
     }
 
-    /**
-     * 조건별 조회
-     * 1. 카테고리별 조회
-     * 2. 등급별 조회
-     * 3. 가격순 정렬
-     */
-
     // 상품 삭제
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public DeleteItemResponse delete(@PathVariable("id") Long id) {
         itemService.delete(id);
-
         return new DeleteItemResponse(Boolean.TRUE, "상품이 삭제되었습니다.");
     }
 
     // 카테고리 페이지, +이름 검색조회도 가능
     @GetMapping("/category/{code}") //CODE = "카테고리 타입"
     public Page<GetPreViewItemResponse> showCategory(
-            Pageable pageable,
             @PathVariable("code") String code,
-            @RequestParam(required = false) String itemName, Model model) {
+            @ModelAttribute("itemSearch") ItemSearch itemSearch, Pageable pageable) {
 
         Page<GetPreViewItemResponse> results;
 
-        if (StringUtils.isEmpty(itemName)) {
+        if (StringUtils.isEmpty(itemSearch.getItemName())) {
             results = itemService.categoryPageSort(code, pageable);
         } else {
-            results = itemService.searchAndCategory(itemName, code, pageable);
+            results = itemService.searchAndCategory(itemSearch, code, pageable);
         }
-        model.addAttribute("condition", itemName);
+
         return results;
     }
 

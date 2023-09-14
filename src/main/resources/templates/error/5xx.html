@@ -1,34 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>aladin - 중고 거래 사이트</title>
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/shop/css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
-</head>
-
+<head th:replace="fragments/header.html :: header"/>
 <body>
 <header class=" py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center">
             <h1 class="display-4 fw-bolder text-black"><label th:text="#{label.site.error}">오류 메시지</label></h1>
-            <a class="nav-link" href="/bookstore/home"><label th:text="#{label.site.home}">홈 이동</label></a>
+            <a class="nav-link" href="/items"><label th:text="#{label.site.home}">홈 이동</label></a>
             <div class="card-img-top"></div><img class="align-middle col-5" src="/shop/assets/errorIcon.png" /></div>
     </div>
     </div>
 </header>
 
-<!-- Footer-->
-<footer class="py-4 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white"><label th:text="#{label.banner}">banner</label></p></div>
-</footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->

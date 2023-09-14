@@ -26,4 +26,7 @@ public enum CategoryType {
                 .findAny().orElse(null);
     }
 
+    public String getCode() {
+        return code;
+    }
 }

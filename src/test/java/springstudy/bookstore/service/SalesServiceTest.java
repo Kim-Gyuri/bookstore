@@ -98,7 +98,7 @@ public class SalesServiceTest {
 
         // then : 상품이 잘 등록되었는지? 상품 정보를 확인해본다.
         assertEquals(dto.getName(), user.getSales().getItemList().get(0).getName());
-        assertEquals(dto.getCategoryType(), user.getSales().getItemList().get(0).getCategoryType());
+        assertEquals(dto.getCategoryType(), user.getSales().getItemList().get(0).getCategoryType().getCode());
         log.info("dto info -> itemName={}", dto.getName());
         log.info("user uploaded the item->itemName={}", user.getSales().getItemList().get(0).getName());
     }

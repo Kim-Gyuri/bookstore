@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.controller.dto.ItemSortParam;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetDetailItemResponse;
@@ -100,8 +101,8 @@ public class ItemService {
 
     // 페이징; 상품 이름으로 검색 기능 추가됨
     @Transactional(readOnly = true)
-    public Page<GetPreViewItemResponse> searchPageSort(String itemName, Pageable pageable) {
-        return itemRepository.searchByItemName(itemName, pageable);
+    public Page<GetPreViewItemResponse> searchPageSort(ItemSearch itemSearch, Pageable pageable) {
+        return itemRepository.searchByItemName(itemSearch, pageable);
     }
 
     // 페이징; 카테고리 타입별 상품 조회
@@ -122,8 +123,8 @@ public class ItemService {
 
     // 페이징; 상품 이름 검색 기능 + 카테고리별 정렬
     @Transactional(readOnly = true)
-    public Page<GetPreViewItemResponse> searchAndCategory(String itemName, String code, Pageable pageable) {
-        return itemRepository.searchByItemNameAndCategoryType(itemName, code, pageable);
+    public Page<GetPreViewItemResponse> searchAndCategory(ItemSearch itemSearch, String code, Pageable pageable) {
+        return itemRepository.searchByItemNameAndCategoryType(itemSearch, code, pageable);
     }
 
     // 상품 삭제
