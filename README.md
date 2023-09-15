@@ -1,8 +1,10 @@
 # :pushpin: Improved-SpringBoot-Online-Shopping-Store
 > [이전 프로젝트](https://github.com/Kim-Gyuri/SpringBoot-Online-Shopping-Store)를 개선한 버전의 프로젝트다.
 
-프로젝트 코드는 master 브랜치로 넣어놨는데, [링크](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/tree/master)로 이동하면 읽어볼 수 있다. <br>
-
+git branches는 다음과 같이 사용하였습니다. <br>
+- [main](https://github.com/Kim-Gyuri/bookstore) : 프로젝트 정리노트
+- [master](https://github.com/Kim-Gyuri/bookstore/tree/master) : 프로젝트 V1 버전 ( sales 테이블 없고 개선하기 전 코드)
+- [improve](https://github.com/Kim-Gyuri/bookstore/tree/improve) : 현재 개선 중인 버전 (sales 테이블 추가, V1 문제점 개선)
 
 ## Features
 + MVC  - 로그인 처리(based 쿠키, 세션, 인터셉터), 파일 업로드(상품 이미지 등록)
