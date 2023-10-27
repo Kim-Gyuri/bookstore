@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import springstudy.bookstore.domain.dto.cart.GetCartResponse;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +47,6 @@ public class User implements Serializable {
         this.sales = new Sales();
     }
 
-
     public void createSales(Sales sales) {
         this.sales = sales;
     }
@@ -63,6 +62,7 @@ public class User implements Serializable {
 
     public void addCartItem(OrderItem orderItem) {
         cart.addOrderItem(orderItem);
+        sales.takeOrder(orderItem);
     }
 
     public List<GetCartResponse> getWishList() {

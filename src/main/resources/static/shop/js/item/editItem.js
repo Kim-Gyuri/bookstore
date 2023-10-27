@@ -31,6 +31,16 @@ function editItemSubmit(){
     　　});
     });
 
+
+    // Check if image files were selected
+    if (inputFileList.length > 0) {
+        // Add image files to the FormData
+        for (let i = 0; i < inputFileList.length; i++) {
+            formData.append("images", inputFileList[i]);
+        }
+    }
+
+
     // 배열에서 이미지들을 꺼내 폼 객체에 담는다.
     for (let i = 0; i < inputFileList.length; i++) {
         formData.append("images", inputFileList[i]);
@@ -56,24 +66,24 @@ function editItemSubmit(){
 }
 
 
-function deleteImg(){
-    console.log(window.location.href);
-    var itemId = $('#id').val();
-    var imgId = $('#imgId').val(); // $.trim($("#imgId").val());
-    console.log("imgId="+ imgId);
+function deleteImg(imgId) {
+    var id = $('#id').val();
+    var imgId = $('#imgId').val();
+
+    console.log("imgId=" + imgId);
 
     $.ajax({
-                url : "/items/" + itemId +"/img/" + imgId,
-                type : "delete",
-                dataType : 'json',
-                contentType : false,
-                processData : false,
-                success : function(data) {
-                   alert("삭제되었습니다.")
-                },
-                error : function(error){
-                    console.log("imgId="+ imgId);
-                    alert(JSON.stringify(error));
-                }
+        url: "/items/" + id + "/img/" + imgId, // 이미지 삭제 요청을 처리할 엔드포인트 URL을 지정합니다.
+
+        type: "DELETE", // HTTP DELETE 요청을 사용합니다.
+        dataType: 'json',
+        success: function (data) {
+            alert("삭제되었습니다.");
+            // 이미지 삭제 성공 후 추가적인 작업을 수행하세요 (예: 테이블에서 해당 이미지 행 삭제).
+        },
+        error: function (error) {
+            console.error("Error deleting image: " + JSON.stringify(error));
+            alert("이미지 삭제 중 오류가 발생했습니다.");
+        }
     });
 }

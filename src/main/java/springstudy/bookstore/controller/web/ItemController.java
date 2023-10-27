@@ -1,4 +1,4 @@
-package springstudy.bookstore.controller.api.web;
+package springstudy.bookstore.controller.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +8,15 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
+import springstudy.bookstore.controller.api.dto.sort.PageDto;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetDetailItemResponse;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
-import springstudy.bookstore.controller.api.dto.sort.PageDto;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemType;
 import springstudy.bookstore.service.ItemService;
@@ -50,8 +53,8 @@ public class ItemController {
     }
 
     // (상품 수정 중) 상품 이미지 삭제
-    @DeleteMapping("/items/{itemId}/img/{imgId}")
-    public void deleteItemImg(@PathVariable("itemId") Long itemId, @PathVariable("imgId") Long imgId) {
+    @DeleteMapping("/items/{id}/img/{imgId}")
+    public void deleteItemImg(@PathVariable("id") Long itemId, @PathVariable("imgId") Long imgId) {
         itemService.deleteImg(itemId, imgId);
     }
 
@@ -65,6 +68,7 @@ public class ItemController {
         model.addAttribute("user", user);
         return "product/productInfo";
     }
+
 
     // 상품 카테고리별 정렬 페이지
     @GetMapping("/items/category/{code}")

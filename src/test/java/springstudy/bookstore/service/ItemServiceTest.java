@@ -15,6 +15,7 @@ import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.controller.dto.ItemSortParam;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
+import springstudy.bookstore.domain.dto.sales.GetSalesResponse;
 import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 import springstudy.bookstore.domain.entity.Item;
@@ -38,6 +39,7 @@ class ItemServiceTest {
     @Autowired ItemService itemService;
     @Autowired ItemImgRepository imgRepository;
     @Autowired UserService userService;
+    @Autowired SalesService salesService;
 
     List<MultipartFile> createMultipartFiles() {
         List<MultipartFile> multipartFileList = new ArrayList<>();
@@ -103,6 +105,11 @@ class ItemServiceTest {
         assertEquals(dto.getName(), item.getName());
         assertThat(item.getCategoryType()).isEqualTo(CategoryType.enumOf(dto.getCategoryType()));
         assertEquals(multipartFiles.get(0).getOriginalFilename(), itemImgList.get(0).getOriginImgName());
+
+        log.info("itemId={}", itemId);
+        for (ItemImg itemImg : itemImgList) {
+            log.info("img Id= {}", itemImg.getId());
+        }
     }
 
 
@@ -148,12 +155,11 @@ class ItemServiceTest {
     @DisplayName("사용자별 판매상품 리스트보기 테스트")
     void sortByUser_유저별판매제품테스트() {
         // given :  회원 "test4"가 판매하는 상품을 조회하려고 한다.
-        User user = userService.findByLoginId("test4");
-        List<GetUserItemResponse> itemDto = userService.findItemsByUser(user.getLoginId());
+        GetSalesResponse dto = salesService.findItemByUserLoginId("test4");
 
         // then : 해당 회원이 판매하는 상품 개수가 13개가 맞는지?
-        assertThat(itemDto.size() == 13);
-        for (GetUserItemResponse userMainItemDto : itemDto) {
+        assertThat(dto.getItemList().size() == 13);
+        for (GetUserItemResponse userMainItemDto : dto.getItemList()) {
             log.info("userMainItemDto.toString() = {}", userMainItemDto.toString());
         }
     }

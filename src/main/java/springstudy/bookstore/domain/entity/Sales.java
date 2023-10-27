@@ -1,10 +1,9 @@
 package springstudy.bookstore.domain.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import springstudy.bookstore.domain.enums.OrderStatus;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +21,9 @@ public class Sales {
     @OneToMany(mappedBy = "sales", cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    @OneToMany(mappedBy = "sales", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItemList = new ArrayList<>();
+
 
     /*
       비지니스 로직 ;
@@ -33,17 +33,18 @@ public class Sales {
      */
     public void uploadItem(Item item) {
         itemList.add(item);
-        this.orderStatus = OrderStatus.NONE;
     }
 
-    public void takeOrder(int orderPrice) {
-        this.orderStatus = OrderStatus.ORDER;
-        totalRevenue += orderPrice;
+    public void takeOrder(OrderItem orderItem) {
+        orderItem.orderRequest();
+        orderItemList.add(orderItem);
+        totalRevenue += orderItem.getOrderPrice();
     }
 
-    public void cancelOrder(int orderPrice) {
-        totalRevenue -= orderPrice;
-        this.orderStatus = OrderStatus.CANCEL;
+    public void cancelOrder(OrderItem orderItem) {
+        orderItem.cancelRequest();
+        orderItemList.remove(orderItem);
+        totalRevenue -= orderItem.getOrderPrice();
     }
 
 

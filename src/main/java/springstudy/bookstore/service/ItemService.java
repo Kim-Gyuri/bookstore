@@ -9,10 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.controller.dto.ItemSortParam;
-import springstudy.bookstore.domain.dto.item.CreateItemRequest;
-import springstudy.bookstore.domain.dto.item.GetDetailItemResponse;
-import springstudy.bookstore.domain.dto.item.GetPreViewItemResponse;
-import springstudy.bookstore.domain.dto.item.UpdateItemRequest;
+import springstudy.bookstore.domain.dto.item.*;
 import springstudy.bookstore.domain.dto.itemImg.CreateImgRequest;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.ItemImg;
@@ -49,7 +46,7 @@ public class ItemService {
 
         validateImgFiles(multipartFileList); // 필수로 이미지 1개를 업로드 했는지?
 
-       getThumbnailImage(multipartFileList, item);   // 상품 이미지 저장 (# pick thumbnail)
+        getThumbnailImage(multipartFileList, item);   // 상품 이미지 저장 (# pick thumbnail)
 
         user.uploadItem(item); // 판매자 상품 업로드
         return id;  // 상품 id 반환
@@ -73,7 +70,7 @@ public class ItemService {
             else
                 itemInfo.setYN(IsMainImg.N);
 
-           itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
+            itemImgService.saveItemImg(itemInfo, multipartFileList.get(i));
         }
     }
 
@@ -97,6 +94,12 @@ public class ItemService {
     public GetDetailItemResponse getItemDetail(Long itemId) {
         Item item = findById(itemId);
         return new GetDetailItemResponse(item);
+    }
+
+    // 유저가 등록한 상품정보 조회
+    @Transactional(readOnly = true)
+    public List<GetUserItemResponse> findItemsByUser(String uploaderId) {
+        return itemRepository.sortByUser(uploaderId);
     }
 
     // 페이징; 상품 이름으로 검색 기능 추가됨
@@ -147,7 +150,7 @@ public class ItemService {
 
         Item findItem = findById(itemId); // 상품 엔티티를 꺼내고
         validateImg(findItem); // 상품 엔티티에 이미지 파일이 존재하는지 확인한다. (대표 이미지 1개라도 있어야 한다.)
-                                // -> "delete icon" 으로 지울 수도 있으니까
+        // -> "delete icon" 으로 지울 수도 있으니까
 
         // 상품 정보 수정 (이름/가격/수량 수정가능하다.)
         if (form != null) {

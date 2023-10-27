@@ -1,11 +1,9 @@
 package springstudy.bookstore.domain.dto.user;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import springstudy.bookstore.domain.entity.Address;
 import springstudy.bookstore.domain.entity.User;
-
-import javax.validation.constraints.NotNull;
-
 @Data
 public class CreateUserRequest {
 

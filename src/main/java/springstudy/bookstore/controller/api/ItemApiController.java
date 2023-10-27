@@ -22,6 +22,7 @@ import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.service.ItemService;
 import springstudy.bookstore.service.SalesService;
 import springstudy.bookstore.service.UserService;
+import springstudy.bookstore.util.exception.item.ViolationItemException;
 import springstudy.bookstore.util.validation.argumentResolver.Login;
 import springstudy.bookstore.util.validation.dto.SessionUser;
 
@@ -72,11 +73,15 @@ public class ItemApiController {
     }
 
     // 상품 삭제
-    @ResponseStatus(HttpStatus.OK)
+    //@ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public DeleteItemResponse delete(@PathVariable("id") Long id) {
-        itemService.delete(id);
-        return new DeleteItemResponse(Boolean.TRUE, "상품이 삭제되었습니다.");
+        try {
+            itemService.delete(id);
+            return new DeleteItemResponse(Boolean.TRUE, "상품이 삭제되었습니다.");
+        } catch (ViolationItemException e) {
+            return new DeleteItemResponse(Boolean.FALSE, "주문요청을 받은 상품을 삭제할 수 없습니다.");
+        }
     }
 
     // 카테고리 페이지, +이름 검색조회도 가능

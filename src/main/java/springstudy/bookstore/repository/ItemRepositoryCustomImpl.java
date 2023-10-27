@@ -3,6 +3,7 @@ package springstudy.bookstore.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -15,7 +16,6 @@ import springstudy.bookstore.domain.dto.item.QGetUserItemResponse;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static springstudy.bookstore.domain.entity.QItem.item;
@@ -239,7 +239,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return content;
     }
-
 
 
     private BooleanExpression itemNameContains(String itemName) {

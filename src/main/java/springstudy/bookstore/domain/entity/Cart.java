@@ -1,9 +1,8 @@
 package springstudy.bookstore.domain.entity;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +20,10 @@ public class Cart {
 
     public void addOrderItem(OrderItem orderItem) {
         orderItemList.add(orderItem);
+    }
+
+    public void cancelOrderItem(OrderItem orderItem) {
+        orderItemList.remove(orderItem);
     }
 
 

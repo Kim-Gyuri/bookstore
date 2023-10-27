@@ -2,9 +2,7 @@ package springstudy.bookstore.domain.dto.item;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+import jakarta.validation.constraints.*;
 @Data
 public class UpdateItemRequest {
     @NotBlank

@@ -4,17 +4,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
 import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.dto.user.LoginRequest;
 import springstudy.bookstore.domain.entity.Cart;
 import springstudy.bookstore.domain.entity.Sales;
 import springstudy.bookstore.domain.entity.User;
-import springstudy.bookstore.repository.*;
+import springstudy.bookstore.repository.CartRepository;
+import springstudy.bookstore.repository.ItemRepository;
+import springstudy.bookstore.repository.SalesRepository;
+import springstudy.bookstore.repository.UserRepository;
 import springstudy.bookstore.util.exception.user.DuplicateLoginIdException;
 import springstudy.bookstore.util.exception.user.NotFoundUserException;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -77,11 +78,6 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundUserException("존재하지 않는 사용자입니다."));
     }
 
-    // 유저가 등록한 상품정보 조회
-    @Transactional(readOnly = true)
-    public List<GetUserItemResponse> findItemsByUser(String uploaderId) {
-        return itemRepository.sortByUser(uploaderId);
-    }
 
 
 }

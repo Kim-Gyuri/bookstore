@@ -10,7 +10,6 @@ import springstudy.bookstore.util.validation.interceptor.LogInterceptor;
 import springstudy.bookstore.util.validation.interceptor.LoginCheckInterceptor;
 
 import java.util.List;
-
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -20,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/shop/css/**", "/*.ico", "/shop/assets/**", "/shop/js/**");
+        // "/swagger-resources","/swagger-resources/**", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html"
 
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(2)
@@ -28,11 +28,11 @@ public class WebConfig implements WebMvcConfigurer {
                                      "/users/login", "/api/users/login",
                                      "/api/users/logout",
                                      "/shop/css/**", "/*.ico", "/shop/assets/**", "/shop/js/**", "/error");
+
     }
-
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new LoginUserArgumentResolver());
     }
+
 }

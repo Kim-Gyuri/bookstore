@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header.html :: header"/>
-<body>
+<body class="sb-nav-fixed">
 <!-- Navigation menu bar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
@@ -26,80 +26,281 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="/users/info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/api/users/sales" type="button" onclick="getSalesSubmit()"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
+                        <li><a class="dropdown-item" href="/sales" type="button"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
                         <li><a class="dropdown-item" href="/items/add"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
                         <li><a class="dropdown-item" href="/api/cart" type="button" onclick="getCart()"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
-                        <li> <input type="hidden" id="loginId" th:value="${user.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
+                        <li> <input type="hidden" id="loginId" th:value="${users.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_content">
+        <main>
+            <div>
+                <div class="container">
+                    <br><br>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-1"></i>
+                                    판매액 차트
+                                </div>
+                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                            </div>
+                        </div>
 
-
-<!-- product info Section-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="card-body">
-                <!-- sale revenue-->
-                <h3 class="h4 mb-0" th:text="#{label.sales.totalRevenue}">판매액 조회</h3>
-                <div class="row">
-                    <div class="col">
-                        <h3><a th:text="${products.totalRevenue}"/><label th:text="#{label.item.price.unit}">단위(원)</label></h3>
+                        <div class="col-xl-6">
+                            <div class="card-body">
+                                <div class="col">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        이번 달 총 판매액</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a th:text="${revenuePerMonth_result}"></a></div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="card-body">
+                                <div class="col">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        올해 총 판매액
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a th:text="${totalRevenue_result}" ></a></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- -->
 
-                <br><br>
-                <!-- a list of product on sale-->
-                <div class="row gx-5 bg-white">
-                    <h3 class="h4 mb-0" th:text="#{page.items}">전체 상품</h3>
-                    <hr class="my-4">
-                    <div>
-                        <table class="table mb-0 table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col" th:text="#{label.item.image}">image</th>
-                                <th scope="col" th:text="#{label.item}">Name</th>
-                                <th scope="col" th:text="#{label.item.quantity}">quantity</th>
-                                <th scope="col" th:text="#{label.item.price}">Price</th>
-                                <th scope="col" th:text="#{button.delete}">삭제</th>
-                                <th scope="col" th:text="#{button.edit}">수정</th>
-                            </tr>
-                            </thead>
-                            <tbody>
 
-                            <tr th:each="item : ${products.itemList}">
-                                <input id="id" type="hidden" th:value="${item.itemId}">
-                                <td class="align-middle"><img class="card-img-fake" th:src="|${item.imgUrl}|"></td>
-                                <td class="align-middle" th:text="${item.itemName}"></td>
-                                <td class="align-middle" th:text="${item.quantity}"></td>
-                                <td class="align-middle" th:text="${item.price}"></td>
-                                <td class="align-middle"><a th:href="@{/api/items/{id} (id=${item.itemId})}" type="button" onclick="deleteItem()"><img src="/shop/assets/delete.PNG"/></a></td>
-                                <td class="align-middle"><a th:href="@{/items/{id}/edit (id=${item.itemId})}" type="button"><img src="/shop/assets/edit.PNG"/></a></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="card mb-4">
+                        <div class="card-header"><i class="fas fa-table me-1"></i>판매 상품 조회</div>
+
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <div class="container px-4 px-lg-5">
+                                <div class="card-body">
+                                    <div>
+                                        <form th:object="${itemSearch}" class="form-inline">
+                                            <div class="form-group mx-sm-1 mb-2">
+                                                <select th:field="*{itemStatus}" class="form-control">
+                                                    <option value="">판매 상태</option>
+                                                    <option th:each="status : ${T(springstudy.bookstore.domain.enums.ItemSellStatus).values()}"
+                                                            th:value="${status}"
+                                                            th:text="${status}">option
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2">검색</button>
+                                        </form>
+                                    </div>
+
+                                    <table class="table mb-0 table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" th:text="#{label.item.image}">image</th>
+                                            <th scope="col" th:text="#{label.item}">Name</th>
+                                            <th scope="col" th:text="#{label.item.restQuantity}">quantity</th>
+                                            <th scope="col" th:text="#{label.item.price}">Price</th>
+                                            <!--<th scope="col" th:text="#{button.delete}">삭제</th>-->
+                                            <th scope="col" th:text="#{button.edit}">수정</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tbody th:if="${products.empty}"><tr><td colspan="4">검색 결과가 없습니다.</td></tr></tbody>
+
+                                        <tbody>
+                                        <tr th:each="item : ${products}">
+                                            <td class="align-middle"><img class="card-img-fake" th:src="|${item.imgUrl}|"></td>
+                                            <td class="align-middle" id="itemName" th:value="${item.itemName}"></td>
+                                            <td class="align-middle" th:text="${item.quantity}"></td>
+                                            <td class="align-middle" th:text="${item.price}"></td>
+                                            <!--<td class="align-middle"><a th:onclick="deleteItem(this)" type="button" th:attr="data-item-id=${item.itemId}"><img src="/shop/assets/delete.PNG"/></a></td>-->
+                                            <td class="align-middle"><a th:href="@{/items/{id}/edit (id=${item.itemId})}" type="button"><img src="/shop/assets/edit.PNG"/></a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <br> <br>
+                                    <!-- Page navigation -->
+                                    <div class="container">
+                                        <ul class="pagination">
+                                            <li th:if="${page.isPrev()}" class="page-item"><a th:href="@{/sales?&page={page}&sellStatus={sellStatus}(page = ${page.getCurPage()-1},sellStatus= ${itemSearch.itemStatus})}" class="page-link" href="#">Prev</a></li>
+                                            <li th:unless="${page.isPrev()}" class="page-item disabled"><a class="page-link">Prev</a></li>
+                                            <li class="page-item" th:each="num, index: ${#numbers.sequence(page.getStartPage(), page.getEndPage())}">
+                                                <a th:href="@{/sales?page={page}&sellStatus={sellStatus}(page = ${index.current-1}, sellStatus= ${itemSearch.itemStatus})}" th:text="${num}" class="page-link" href="">1</a>
+                                            </li>
+                                            <li th:if="${page.isNext()}" class="page-item"><a th:href="@{/sales?page={page}&sellStatus={sellStatus}(page = ${page.getCurPage()+1},sellStatus= ${itemSearch.itemStatus})}" class="page-link" href="#">Next</a></li>
+                                            <li th:unless="${page.isNext()}" class="page-item disabled"><a class="page-link">Next</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+
+
+
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- 주문 상품 조회 페이지 -->
+            <div th:fragment="orderItemPage">
+                <div class="container">
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            주문 상품 조회
+                        </div>
+
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <div class="container px-4 px-lg-5">
+
+                                <div class="card-body">
+
+                                    <div>
+                                        <form th:object="${itemSearch}" class="form-inline">
+                                            <div class="form-group mx-sm-1 mb-2">
+                                                <select th:field="*{orderStatus}" class="form-control">
+                                                    <option value="">주문상태</option>
+                                                    <option th:each="status : ${T(springstudy.bookstore.domain.enums.OrderStatus).values()}"
+                                                            th:value="${status}"
+                                                            th:text="${status}">option
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2">검색</button>
+                                        </form>
+                                    </div>
+
+                                    <table class="table mb-0 table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" th:text="#{label.item.image}">image</th>
+                                            <th scope="col" th:text="#{label.item}">Name</th>
+                                            <th scope="col" th:text="#{label.item.orderQuantity}">quantity</th>
+                                            <th scope="col" th:text="#{label.item.pay}">Price</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+
+                                        <tbody th:if="${orderItems.empty}"><tr><td colspan="4">검색 결과가 없습니다.</td></tr></tbody>
+
+                                        <tbody>
+                                        <tr th:each="item : ${orderItems}">
+                                            <td class="align-middle"><img class="card-img-fake" th:src="|${item.savePath}|"></td>
+                                            <td class="align-middle"  id = "orderItemName" th:value="${item.name}" th:text="${item.name}"></td>
+                                            <td class="align-middle" th:text="${item.count}"></td>
+                                            <td class="align-middle" th:text="${item.orderPrice}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <br> <br>
+
+                                    <!-- page navigation -->
+                                    <div class="container">
+                                        <ul class="pagination">
+                                            <li th:if="${orderItemPage.isPrev()}" class="page-item"><a th:href="@{/sales?&page={page}&orderStatus={orderStatus}(page = ${orderItemPage.getCurPage()-1}, orderStatus= ${itemSearch.orderStatus})}" class="page-link" href="#">Prev</a></li>
+                                            <li th:unless="${page.isPrev()}" class="page-item disabled"><a class="page-link">Prev</a></li>
+                                            <li class="page-item" th:each="num, index: ${#numbers.sequence(orderItemPage.getStartPage(), orderItemPage.getEndPage())}">
+                                                <a th:href="@{/sales?page={page}&orderStatus={orderStatus}(page = ${index.current-1}, orderStatus= ${itemSearch.orderStatus})}" th:text="${num}" class="page-link" href="">1</a>
+                                            </li>
+                                            <li th:if="${orderItemPage.isNext()}" class="page-item"><a th:href="@{/sales?page={page}&orderStatus={orderStatus}(page = ${orderItemPage.getCurPage()+1}, orderStatus= ${itemSearch.orderStatus})}" class="page-link" href="#">Next</a></li>
+                                            <li th:unless="${orderItemPage.isNext()}" class="page-item disabled"><a class="page-link">Next</a></li>
+                                        </ul>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
-</section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script th:inline="javascript">
+    var salesChats = [[${salesChats}]];
 
+    var revenuePerMonth = salesChats.map(function(chat) {
+        return chat.revenuePerMonth;
+    });
 
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
-<!--JS-->
+    var orderDates = salesChats.map(function(chat) {
+        return chat.orderDate;
+    });
+
+    var months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]; // 월별 레이블을 직접 설정
+
+    var ctx = document.getElementById('myBarChart').getContext('2d');
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: months, // 직접 설정한 months 배열을 x 축의 레이블로 사용
+            datasets: [{
+                label: 'Monthly Revenue',
+                data: revenuePerMonth,
+                backgroundColor: 'rgba(2, 117, 216, 1)'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: {
+                        offset: true // x 축 레이블을 막대 바 중간에 위치시킴
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script th:inline="javascript">
+    function deleteItem(element) {
+        var id = $(element).attr('data-item-id');
+        console.log(id);
+
+        var itemName = $('#itemName').val();
+        var orderItemName = $('#orderItemName').val();
+
+        if (itemName == orderItemName) {
+            alert("주문요청을 받은 상품을 삭제할 수 없습니다.");
+            window.location.replace('/sales');
+        } else {
+            $.ajax({
+                url : "/api/items/" + id,
+                type : "delete",
+                dataType : 'json',
+                contentType : false,
+                processData : false,
+                success : function(data) {
+                    alert("상품이 삭제되었습니다.");
+                    window.location.replace('/sales');
+                },
+                error : function(error){
+                    alert("상품 삭제 중 오류가 발생했습니다.");
+                    window.location.replace('/sales');
+                }
+            });
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<!-- JS-->
 <script src="/shop/js/item/deleteItem.js"></script>
 <script src="/shop/js/users/logout.js"></script>
 <script src="/shop/js/cart/getCart.js"></script>
-<script src="/shop/js/sales/getSales.js"></script>
-<script src="/shop/js/item/categoryPage.js"></script>
 </body>
 </html>

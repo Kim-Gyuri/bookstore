@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemType;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -31,8 +33,8 @@ class CartTest {
         userB.uploadItem(item1);
         userB.uploadItem(item2);
 
-        OrderItem orderItem1 = new OrderItem(userA.getCart(), item1, 5);
-        OrderItem orderItem2 = new OrderItem(userA.getCart(), item2, 2);
+        OrderItem orderItem1 = new OrderItem(userA.getCart(), item1, 5, LocalDate.now());
+        OrderItem orderItem2 = new OrderItem(userA.getCart(), item2, 2, LocalDate.now());
 
         // when :
         // "userA" 회원이 상품을 장바구니에 담았을 때,

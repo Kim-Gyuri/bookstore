@@ -1,5 +1,7 @@
 package springstudy.bookstore.domain.entity;
 
+
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +11,6 @@ import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
 import springstudy.bookstore.util.exception.item.NotEnoughStockException;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import static springstudy.bookstore.util.constant.Constants.THUMBNAIL_INDEX;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long id;
 

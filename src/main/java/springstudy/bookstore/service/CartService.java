@@ -14,6 +14,7 @@ import springstudy.bookstore.repository.OrderItemRepository;
 import springstudy.bookstore.util.exception.cart.DuplicateOrderItemException;
 import springstudy.bookstore.util.exception.cart.NotFoundOrderItemException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,14 +52,14 @@ public class CartService {
 
         User seller = userService.findByLoginId(item.getSellerId());
 
-        OrderItem orderItem = orderItemRepository.save(new OrderItem(buyer.getCart(), item, count)); // (장바구니에 담길 상품정보)
+        OrderItem orderItem = orderItemRepository.save(new OrderItem(buyer.getCart(), item, count, LocalDate.now())); // (장바구니에 담길 상품정보)
 
         if (buyer.checkOrderItemDuplicate(orderItem)) {
             throw new DuplicateOrderItemException("중복된 장바구니입니다.");
         }
 
         buyer.addCartItem(orderItem); // 장바구니에 추가
-        seller.searchSales().takeOrder(orderItem.getOrderPrice());
+        seller.searchSales().takeOrder(orderItem);
     }
 
     // 장바구니에 담긴 상품 삭제
@@ -70,7 +71,7 @@ public class CartService {
         orderItem.getItem().cancelCart(orderItem.getCount()); // 장바구니 있는 상품 취소요청 보냄
 
         User seller = userService.findByLoginId(orderItem.getItem().getSellerId()); // (판매자가 환불을 해줘야 한다.)
-        seller.getSales().cancelOrder(orderItem.getOrderPrice()); // 주문 취소요청 받음
+        seller.getSales().cancelOrder(orderItem); // 주문 취소요청 받음
 
         orderItemRepository.delete(orderItem); // 장바구니에서 해당 상품 삭제
     }

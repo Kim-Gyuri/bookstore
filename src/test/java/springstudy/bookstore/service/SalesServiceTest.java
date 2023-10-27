@@ -5,16 +5,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springstudy.bookstore.controller.api.dto.sort.ItemSearch;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
+import springstudy.bookstore.domain.dto.item.GetUserItemResponse;
+import springstudy.bookstore.domain.dto.sales.SalesChat;
 import springstudy.bookstore.domain.dto.user.CreateUserRequest;
 import springstudy.bookstore.domain.entity.Item;
 import springstudy.bookstore.domain.entity.OrderItem;
+import springstudy.bookstore.domain.entity.Sales;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
+import springstudy.bookstore.domain.enums.ItemSellStatus;
 import springstudy.bookstore.domain.enums.ItemType;
+import springstudy.bookstore.domain.enums.OrderStatus;
+import springstudy.bookstore.repository.ItemRepository;
+import springstudy.bookstore.repository.SalesRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 public class SalesServiceTest {
+
+    @Autowired SalesRepository salesRepository;
+    @Autowired ItemRepository itemRepository;
 
     @Autowired SalesService salesService;
     @Autowired UserService userService;
@@ -80,6 +94,17 @@ public class SalesServiceTest {
         dto.setItemType(ItemType.BEST.getCode());
         dto.setPrice(10000);
         dto.setStockQuantity(100);
+        return dto;
+    }
+
+    public ItemSearch createItemSearch() {
+        ItemSearch dto = new ItemSearch();
+        dto.setItemStatus(ItemSellStatus.SELL);
+        return dto;
+    }
+    public ItemSearch createItemSearch_order() {
+        ItemSearch dto = new ItemSearch();
+        dto.setOrderStatus(OrderStatus.ORDER);
         return dto;
     }
 
@@ -157,5 +182,72 @@ public class SalesServiceTest {
         cartService.deleteWishList(orderItem.getId());
     }
 
+    @Test
+    @DisplayName("월별 판매분석")
+    public void getSalesChat() {
+        List<SalesChat> content = salesRepository.findByOrderDate("test2");
+        for (SalesChat salesChat : content) {
+            log.info("month-{} -> revenue-{}", salesChat.getOrderDate(), salesChat.getRevenuePerMonth());
+        }
+    }
+
+    @Test
+    @DisplayName("등록한 상품 판매조회")
+    public void getSalesList() {
+        Pageable pageable = PageRequest.of(0, 4);
+
+        Page<GetUserItemResponse> results = salesService.searchItemByUserAndItemStatus("test2", createItemSearch(), pageable);
+
+        for (GetUserItemResponse result : results) {
+            log.info("item info={}", result.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("주문 상품 판매조회")
+    public void getSalesList_v2() {
+        Pageable pageable = PageRequest.of(0, 4);
+
+        //Page<GetUserItemResponse> results = salesService.searchOrderItemByUserAndItemName("test2", createItemSearch_order(), pageable);
+
+        User user = userService.findByLoginId("test2");
+        Sales sales = user.searchSales();
+        //      sales.getTotalRevenue();
+       // log.info("total revenue= {}", sales.getTotalRevenue());
+        for (OrderItem item : sales.getOrderItemList()) {
+            log.info("user sell item info={}", item.toString());
+        }
+        //assertEquals(2, results.getTotalElements());
+    }
+
+
+    @Test
+    @DisplayName("구매요청을 받은 경우-> 판매자 검색조회")
+    void takeOrder_test() throws IOException {
+        // given : 회원 Customer 주어졌을 때 장바구니에 상품을 10개 담으려고 한다.
+        User seller = createUserTest();
+        User buyer = createCustomerTest();
+
+        // (등록할 상품 정보: 이미지파일, 상품 정보를 담은 dto)
+        List<MultipartFile> multipartFiles = createMultipartFiles();
+        CreateItemRequest dto = createRequestItemDto();
+
+        // when : 상품 등록 로직을 실행했을 때
+        salesService.uploadItem(seller, dto, multipartFiles);
+        Item item = seller.getSales().getItemList().get(0);
+
+        // when : 상품 담기 로직 실행, 10개를 주문한다.
+        int orderCount = 10;
+        cartService.addWishList(buyer.getLoginId(), item.getId(), orderCount);
+
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<GetUserItemResponse> result = salesRepository.searchOrderByUserAndItemName(seller.getLoginId(), createItemSearch(), pageable);
+        for (GetUserItemResponse getUserItemResponse : result.getContent()) {
+            assertEquals("테스트 상품명",getUserItemResponse.getItemName());
+
+        }
+
+        assertEquals(ItemSellStatus.SELL, item.getStatus());
+    }
 
 }

@@ -1,5 +1,7 @@
 package springstudy.bookstore.util;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -10,8 +12,8 @@ import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.IsMainImg;
 import springstudy.bookstore.domain.enums.ItemType;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
+import java.time.LocalDate;
+
 
 @Slf4j
 @Profile("local")
@@ -150,18 +152,21 @@ public class InitData {
                     .cart(userA.getCart())
                     .item(item1)
                     .count(5)
+                    .orderDate(LocalDate.of(2023,9,10))
                     .build();
 
             OrderItem orderItem2 = OrderItem.orderItemBuilder()
                     .cart(userA.getCart())
                     .item(item2)
                     .count(2)
+                    .orderDate(LocalDate.of(2023,7, 22))
                     .build();
 
             userA.addCartItem(orderItem1); //"userA" 회원이 장바구니에 상품을 담는다.
             userA.addCartItem(orderItem2);
-            userB.searchSales().takeOrder(orderItem1.getOrderPrice()); // "userB"회원은 상품 구매에 대해 판매액 업데이트
-            userB.searchSales().takeOrder(orderItem2.getOrderPrice());
+
+            userB.searchSales().takeOrder(orderItem1); // "userB"회원은 상품 구매에 대해 판매액 업데이트
+            userB.searchSales().takeOrder(orderItem2);
         }
 
         private void sellBook(User user) {

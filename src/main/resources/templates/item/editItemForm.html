@@ -26,7 +26,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="/users/info"><label th:text="#{label.user.info}">개인정보 보러가기 버튼</label></a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/api/users/sales" type="button" onclick="getSalesSubmit()"><label th:text="#{label.user.product}">등록한 상품 보러가기 버튼</label></a></li>
+                        <li><a class="dropdown-item" href="/sales" type="button"><label th:text="#{label.user.product}">판매관리</label></a></li>
                         <li><a class="dropdown-item" href="/items/add"><label th:text="#{label.user.addItem}">상품 등록하러 가기 버튼</label></a></li>
                         <li><a class="dropdown-item" href="/api/cart" type="button" onclick="getCart()"><label th:text="#{label.user.cart}">장바구니 이동버튼</label></a></li>
                         <li> <input type="hidden" id="loginId" th:value="${user.loginId}"><a class="dropdown-item" type="button" href="/api/users/logout" onclick="logoutSubmit()"><label th:text="#{label.user.logout}">로그아웃 버튼</label></a></li>
@@ -125,8 +125,6 @@
 
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/shop/js/scripts.js"></script>
 <!--JS-->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="/shop/js/item/editItem.js"></script>

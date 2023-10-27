@@ -3,6 +3,7 @@ package springstudy.bookstore.controller.api.dto.sort;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
+import springstudy.bookstore.domain.enums.ItemSellStatus;
 
 @Data
 public class PageDto {
@@ -14,6 +15,7 @@ public class PageDto {
     private boolean prev, next;
 
     private String sortParam;
+    private ItemSellStatus sellStatus;
     private long total;
 
     @Builder
@@ -39,6 +41,26 @@ public class PageDto {
     public PageDto(long total, String sortParam, Pageable pageable) {
         this.total = total;
         this.sortParam = sortParam;
+        this.curPage = pageable.getPageNumber();
+        this.pageSize = pageable.getPageSize();
+
+        this.endPage = (int) (Math.ceil((curPage+1) / 10.0)) * 10; // 일단 endPage를 10단위로 세팅, view는 1부터 시작이므로 curPage+1
+        this.startPage = this.endPage - (PAGENUM - 1); // 10단위 endPage에서 9를 빼면 시작페이지 구할 수 있음
+
+        int realEnd = (int) (Math.ceil((total * 1.0) / pageSize));
+
+        if (realEnd < this.endPage) { // 페이지가 10단위로 나누어 떨어지지 않을때 real endPage
+            this.endPage = realEnd;
+        }
+
+        this.prev = (curPage+1) > 1; // view에서는 1부터 시작이므로
+        this.next = (curPage+1) < realEnd; // view에서는 1부터 시작이므로
+    }
+
+    @Builder
+    public PageDto(long total, ItemSellStatus status, Pageable pageable) {
+        this.total = total;
+        this.sellStatus = status;
         this.curPage = pageable.getPageNumber();
         this.pageSize = pageable.getPageSize();
 

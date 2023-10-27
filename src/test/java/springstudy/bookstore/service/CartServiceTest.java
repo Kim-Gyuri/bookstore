@@ -11,9 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 import springstudy.bookstore.domain.dto.item.CreateItemRequest;
 import springstudy.bookstore.domain.dto.orderItem.GetOrderItemResponse;
 import springstudy.bookstore.domain.dto.user.CreateUserRequest;
+import springstudy.bookstore.domain.entity.OrderItem;
 import springstudy.bookstore.domain.entity.User;
 import springstudy.bookstore.domain.enums.CategoryType;
 import springstudy.bookstore.domain.enums.ItemType;
+import springstudy.bookstore.domain.enums.OrderStatus;
+import springstudy.bookstore.repository.OrderItemRepository;
 import springstudy.bookstore.util.exception.cart.DuplicateOrderItemException;
 
 import java.io.IOException;
@@ -27,7 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 class CartServiceTest {
-
+    @Autowired
+    OrderItemRepository orderItemRepository;
     @Autowired CartService cartService;
     @Autowired ItemService itemService;
     @Autowired UserService userService;
@@ -153,6 +157,56 @@ class CartServiceTest {
         for (GetOrderItemResponse info : wishList) {
             log.info("wish item info={}", info.toString());
         }
+        List<GetOrderItemResponse> result = orderItemRepository.findAllBySellerId(seller.getLoginId());
+        for (GetOrderItemResponse getOrderItemResponse : result) {
+            log.info("테스트중", getOrderItemResponse.getName());
+        }
+    }
+
+    @Test
+    @DisplayName("장바구니 조회 테스트")
+    public void getCartsss() throws IOException {
+        // given : 회원 "seller"는 상품을 등록했고, 회원 "buyer"는 해당 상품 10개를 장바구니에 담았다.
+        User buyer = createBuyerTest(); // 구매자
+        User seller = createSellerTest(); // 판매자
+
+        CreateItemRequest dto = createItemTest();
+        List<MultipartFile> multipartFiles = createMultipartFiles();
+        Long itemId = itemService.saveItem(seller, dto, multipartFiles);// 판매자가 상품 등록
+
+        //when : 회원 "buyer" 장바구니를 조회해보면, 상품이 잘 담겼는지?
+        cartService.addWishList(buyer.getLoginId(), itemId, 2);
+
+        List<GetOrderItemResponse> result = orderItemRepository.findAllBySellerId(seller.getLoginId());
+        for (GetOrderItemResponse getOrderItemResponse : result) {
+            log.info("테스트중", getOrderItemResponse.getName());
+        }
+        log.info("판매 ={}", result.get(0).getName());
+        log.info("판매개수 ={}", result.get(0).getCount());
+    }
+
+    @Test
+    @DisplayName("장바구니 조회 테스트 - 주문취소")
+    public void getCartsss_cancel() throws IOException {
+        // given : 회원 "seller"는 상품을 등록했고, 회원 "buyer"는 해당 상품 10개를 장바구니에 담았다.
+        User buyer = createBuyerTest(); // 구매자
+        User seller = createSellerTest(); // 판매자
+
+        CreateItemRequest dto = createItemTest();
+        List<MultipartFile> multipartFiles = createMultipartFiles();
+        Long itemId = itemService.saveItem(seller, dto, multipartFiles);// 판매자가 상품 등록
+
+        //when : 회원 "buyer" 장바구니를 조회해보면, 상품이 잘 담겼는지?
+        cartService.addWishList(buyer.getLoginId(), itemId, 2);
+
+        // cancel->
+        OrderItem orderItem = buyer.getCart().getOrderItemList().get(0);
+        cartService.deleteWishList(orderItem.getId());
+
+        //then?
+        List<GetOrderItemResponse> results = orderItemRepository.findAllBySellerId(seller.getLoginId());
+        assertThat(results.get(0).getName()).isEqualTo(orderItem.getItem().getName());
+        assertThat(results.get(0).getOrderStatus()).isEqualTo(OrderStatus.CANCEL);
 
     }
 

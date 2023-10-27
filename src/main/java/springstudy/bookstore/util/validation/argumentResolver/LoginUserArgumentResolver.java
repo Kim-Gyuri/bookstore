@@ -1,5 +1,6 @@
 package springstudy.bookstore.util.validation.argumentResolver;
 
+import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -10,8 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import springstudy.bookstore.util.validation.consts.SessionConst;
 import springstudy.bookstore.util.validation.dto.SessionUser;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Slf4j
 @RequiredArgsConstructor

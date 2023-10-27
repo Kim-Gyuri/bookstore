@@ -9,7 +9,7 @@ public class CreateImgRequest {
     private IsMainImg YN;
     private Item item;
 
-   public CreateImgRequest(Item itemEntity) {
+    public CreateImgRequest(Item itemEntity) {
         YN = IsMainImg.N;
         item = itemEntity;
     }

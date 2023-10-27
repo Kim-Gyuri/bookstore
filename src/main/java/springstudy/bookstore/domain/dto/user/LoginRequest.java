@@ -1,11 +1,9 @@
 package springstudy.bookstore.domain.dto.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @NoArgsConstructor
 public class LoginRequest {

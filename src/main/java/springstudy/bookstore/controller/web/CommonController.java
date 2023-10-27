@@ -1,4 +1,4 @@
-package springstudy.bookstore.controller.api.web;
+package springstudy.bookstore.controller.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +42,7 @@ public class CommonController {
         } else {
             results = itemService.itemPriceSort(code, pageable);
         }
+
         pageDto = new PageDto(results.getTotalElements(), code, pageable);
 
         log.info("itemName={}", itemSearch.getItemName());

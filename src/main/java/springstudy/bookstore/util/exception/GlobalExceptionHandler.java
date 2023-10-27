@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import springstudy.bookstore.util.exception.cart.DuplicateOrderItemException;
 import springstudy.bookstore.util.exception.cart.NotFoundOrderItemException;
-import springstudy.bookstore.util.exception.item.DuplicateItemException;
-import springstudy.bookstore.util.exception.item.NotEnoughStockException;
-import springstudy.bookstore.util.exception.item.NotFoundImgFileException;
-import springstudy.bookstore.util.exception.item.NotFoundItemException;
+import springstudy.bookstore.util.exception.item.*;
 import springstudy.bookstore.util.exception.sales.NotFoundSalesException;
 import springstudy.bookstore.util.exception.user.DuplicateLoginIdException;
 import springstudy.bookstore.util.exception.user.NotFoundUserException;
@@ -18,6 +15,11 @@ import springstudy.bookstore.util.exception.user.NotFoundUserException;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ViolationItemException.class)
+    public final ResponseEntity<String> checkViolationItemException(ViolationItemException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(DuplicateLoginIdException.class)
     public final ResponseEntity<String> checkDuplicateLoginIdException(DuplicateLoginIdException exception) {

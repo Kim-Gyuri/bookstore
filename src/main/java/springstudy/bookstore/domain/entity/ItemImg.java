@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import springstudy.bookstore.domain.enums.IsMainImg;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +30,7 @@ public class ItemImg {
         this.imgName = imgName;
         this.savePath = savePath;
         this.isMainImg = isMainImg;
-        this.item = item;
+       this.item = item;
     }
 
     @Override
