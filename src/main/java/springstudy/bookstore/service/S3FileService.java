@@ -1,13 +1,29 @@
 package springstudy.bookstore.service;
 
 
-//@Slf4j
-//@RequiredArgsConstructor
-//@Component
-//@Service
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import springstudy.bookstore.domain.dto.file.CreateFileResponse;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
+
+@Slf4j
+@RequiredArgsConstructor
+@Component
+@Service
 public class S3FileService {
 
-   /*
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -15,15 +31,15 @@ public class S3FileService {
 
 
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
-    public FileInfoDto upload(MultipartFile multipartFile, String dirName) throws IOException {
+    public CreateFileResponse upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
 
         return upload(multipartFile, dirName, uploadFile);
     }
 
-    private FileInfoDto upload(MultipartFile multipartFile, String dirName, File uploadFile) {
-        FileInfoDto fileInfoDto = new FileInfoDto();
+    private CreateFileResponse upload(MultipartFile multipartFile, String dirName, File uploadFile) {
+        CreateFileResponse fileInfoDto = new CreateFileResponse();
 
         String originFileName = multipartFile.getOriginalFilename(); // 올리려는 파일이름
         String fileName = createStoreFileName(dirName, multipartFile.getOriginalFilename()); // s3에 저장될 파일 이름
@@ -51,15 +67,15 @@ public class S3FileService {
 
 
 
-    * uuid 파일명 생성 메서드
+    // uuid 파일명 생성 메서드
     private String createStoreFileName(String dirName, String originalName) {
         return dirName + "/" + UUID.randomUUID() + originalName;
     }
 
-     *
+     /**
      * convert() 메소드에서 로컬 프로젝트에 사진 파일이 생성되지만,
      * removeNewFile()을 통해서 바로 지워준다.
-     *
+     */
     private void removeNewFile(File targetFile) {
         if(targetFile.delete()) {
             log.info("파일이 삭제되었습니다.");
@@ -78,5 +94,4 @@ public class S3FileService {
         }
         return Optional.empty();
     }
-    */
 }

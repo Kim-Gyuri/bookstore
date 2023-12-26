@@ -139,10 +139,12 @@ public class ItemService {
     // 상품 이미지 삭제 (해당 상품의 이미지 번호가 imgId인 이미지 삭제)
     public void deleteImg(Long itemId, Long imgId) {
         ItemImg imgEntity = itemImgService.findByImgId(imgId);
-        Item item = findById(itemId);
 
-        itemImgService.delete(imgEntity);
-        item.deleteItemImg(imgEntity);
+        if (imgEntity.getIsMainImg() == IsMainImg.N) {
+            itemImgService.delete(imgEntity);
+            Item item = findById(itemId);
+            item.deleteItemImg(imgEntity);
+        }
     }
 
     // 상품 정보 수정

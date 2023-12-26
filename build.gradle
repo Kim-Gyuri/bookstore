@@ -74,6 +74,11 @@ dependencies {
 	// javax.annotation.meta.When 프로젝트 런타임에서 열거형을 사용할 수 없기 때문에 발생한다.
 	//이 경고를 수정하려면 JSR305 구현을 가져와야 한다.
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+	// aws s3
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'
+	// build.gradle (Groovy DSL, AWS RDS)
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.1'
 }
 
 // Querydsl 설정부
