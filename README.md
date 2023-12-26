@@ -44,47 +44,89 @@ git branches는 다음과 같이 사용하였습니다. <br>
 <br>
 
 ## gif
-`로그인` <br> <br>
-![aladin - 중고 거래 사이트 외 페이지 1개 - 프로필 1 - Microsoft_ Edge 2023-07-18 17-43-21 (online-video-cutter com)](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/280ca6f0-71e3-4f06-8171-5a4fc7ce0dbf)
+`로그인` <br>
+> 로그인을 하면, 메인 페이지로 이동된다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/80b0f3bc-9a64-407c-a839-067ffd362c45
 
 <br> <br> <br>
 
-`카테고리 페이지로 이동하기`  <br> <br>
-![카테고리](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/328f53e5-89ac-45df-bf81-333b0e97795f)
+`상품 검색` <br>
+> 상품명을 입력하여 상품을 조회할 수 있다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/dd90c731-e47d-40aa-87ca-8554fabec35b
+
+<br> <br> <br>
+
+`상품 가격필터 조건` <br>
+> 가격(낮은 가격순/높은 가격순)으로 필터조건을 통해 상품을 조회할 수 있다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/94ecfa28-7572-4e60-bc06-bfe99cdabd29
 
 <br> <br> <br>
 
 `drop menu` 
-> 메뉴(개인정보/등록한 상품/상품 등록하기/ 장바구니/로그아웃)를 볼 수 있다.
+> 메뉴(개인정보/판매자 관리 페이지/상품 등록하기/ 장바구니/로그아웃)를 볼 수 있다.
 
-<br>
-
-![로그아웃_메뉴_AdobeExpress_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/cddf4667-a138-4920-8fd2-86a85932711c)
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/9bb93254-44af-4268-88f6-999bd865647c
 
 <br> <br> <br>
 
-`구매` <br><br>
-![장바구니 (online-video-cutter com)](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/f01fc0db-8b47-4962-ab71-8e991b207770)
+`상품 등록` <br>
+> drop menu에서 (상품 등록하기)를 클릭하여, 상품 정보를 입력하면 등록할 수 있다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/f35c16b5-f9e7-4b24-9389-1273563d01db
 
 <br> <br> <br>
 
-`상품 등록` <br><br>
-![상품등록 (online-video-cutter com)](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/ac51dcd4-21f1-4029-b508-ba715047ae63)
+`상품 수정` <br>
+> drop menu에서 (판매 관리)를 클릭하여 판매 관리 페이지로 들어가면, 해당 상품 정보(상품명/가격/수량/이미지)를 수정할 수 있다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/4a7ccea6-0987-43c5-a1c8-d4ca631c5a19
 
 <br> <br> <br>
 
-`가격순 필터` <br>
+`카테고리 페이지로 이동하기`  <br>
+> 상단에 있는 상품 카테고리(책/음반/문구류)를 클릭하면, 카테고리별로 상품을 조회할 수 있다.
 
-![가격필터_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/105dbd44-cc7e-4322-bc98-819bd29c78ad)
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/4a112988-b471-416c-aabb-1fc03a0af363
 
 <br> <br> <br>
 
-`검색` <br>
-> 메인/카테고리 페이지에서 검색하기
+`판매자 관리자 페이지` <br>
+> 판매자 관리자 페이지를 들어가면 (월별 판매액 조회, 주문조회, 판매상품 조회)을 확인할 수 있다. <br>
 
-<br>
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/0d8478cd-eaf0-466b-924a-607bdf560ee6
 
-![검색_AdobeExpress](https://github.com/Kim-Gyuri/Improved-SpringBoot-Online-Shopping-Store/assets/57389368/7a789c47-024c-4a0c-bf17-aad8044186d7)
+<br> <br> <br>
+
+### 주문처리
+> 주뭄을 요청/취소 했을 때 어떻게 구현했는지 확인하는 동작영상입니다.
+
+`구매` <br>
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/abfb369a-b4f7-4b23-ae4c-554bb0facebd
+
+<br> <br> <br>
+
+`판매자가 주문을 확인할 때` <br>
+> 피터팬 책 구매요청을 받았을 때, 판매자 관리 페이지에서 확인할 수 있다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/1d62007a-63da-48bb-81c5-1ff736714496
+
+<br> <br> <br>
+
+`구매자가 해당 주문을 취소했을 때` <br>
+> 장바구니에서 주문을 취소하고 싶은 상품을 삭제한다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/d75ba47e-b52f-43ff-b76a-f3443185e897
+
+<br> <br> <br>
+
+`판매자가 주문취소를 확인할 때` <br>
+> cancel 필터로 검색하여, 주문취소를 확인한다.
+
+https://github.com/Kim-Gyuri/bookstore/assets/57389368/56642636-96a1-4889-8337-a5bb0e4021bd
 
 <br> <br> <br>
 
