@@ -1,20 +1,43 @@
 # :pushpin: Improved-SpringBoot-Online-Shopping-Store
-> [이전 프로젝트](https://github.com/Kim-Gyuri/SpringBoot-Online-Shopping-Store)를 개선한 버전의 프로젝트다.
 
+## 소개
+Aladin | 회원끼리 물건을 팔 수 있는 중고 거래 서비스 
+> 개발기간 (2023.06.02 ~2023.08.02) <br>
+> 1명 (개인 프로젝트) <br>
+>  [이전 프로젝트](https://github.com/Kim-Gyuri/SpringBoot-Online-Shopping-Store)를 개선한 버전의 프로젝트다.
+
+
+## 브랜치
 git branches는 다음과 같이 사용하였습니다. <br>
 - main : 프로젝트 하면서 기록한 노트
 - master : 이전 프로젝트 V1 버전을 복사한 것 (개선하기 전 코드)
 - improve : 개선 버전! (sales 테이블 추가, V1 문제점을 개선한다.)
-## Features
-+ MVC  - 로그인 처리(based 쿠키, 세션, 인터셉터), 파일 업로드(상품 이미지 등록)
-+ Querydsl - 페이징처리( 모든상품 정렬/ 카테고리 정렬/ 상품명 검색)
-+ CRUD
-  + 회원등록, 회원수정, 회원조회
-  + 상품등록
-  + 상품조회 ( 회원ID로 조회, 카테고리별 조회,  상품 검색)
-  + 로그인, 로그아웃 
-  + 상품구매, 장바구니
   
+## 주요 기능
++ 회원관리
+  + 회원가입, 로그인, 로그아웃
++ 상품관리
+  + 상품 등록/수정/삭제
++ 주문
+  + 구입/구매취소/주문조회
+
+## 핵심성과
++ Restful API 구현
++ 모든 서비스에 대한 Unit 테스트 코드 작성
++ AWS 배포
+  + EC2 서버 배포, RDS(MariaDB) 설정, S3를 활용한 상품 이미지 업로드
++ SALES 테이블 추가
+  + 판매 상품 관리 및 주문 정보와 판매액 조회
++ 상품 검색 기능
+  + 가격, 카테고리, 상품명 기준으로 검색
++ 페이지 구현
+  + 메인 페이지, 상품 등록, 장바구니, 판매자 페이지
++ 주문 상품 조회 시 쿼리 수 최적화
+  + N+1 문제 해결을 위해 Fetch Join을 사용한 QueryDsl로 단일 쿼리로 조회
++ 커스텀 예외 처리
+  + 사용자 정의 예외를 통해 예외 처리 로직 구현
+
+
 ## Technology Stacks
 ` Backend`
 + Java 11
@@ -34,6 +57,10 @@ git branches는 다음과 같이 사용하였습니다. <br>
 + Thymeleaf
 <br>
 
+## User Flow
+![image](https://github.com/user-attachments/assets/a3ec1cf9-cb7c-4d48-a286-7744d29ebc93)
+
+
 ## Database Schema
 ![erd 제출용](https://github.com/Kim-Gyuri/bookstore/assets/57389368/0627e85d-5a00-4fca-bc88-f6afa91e2625)
 
@@ -41,6 +68,16 @@ git branches는 다음과 같이 사용하였습니다. <br>
 ![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1)
 
 <br>
+
+## 화면 캡처
+### 상품 판매
+![image](https://github.com/user-attachments/assets/ff6c08f1-b3c7-4190-bea2-dec1bcf104d0) <br>
+![image](https://github.com/user-attachments/assets/6bbcbb4b-a9ba-47dc-9012-8b6c466a0f78) <br><br>
+
+### 상품 구매 
+![image](https://github.com/user-attachments/assets/ce377f88-5edf-47a9-a896-cd65575d6ab4) <br>
+![image](https://github.com/user-attachments/assets/f3985b40-bcac-4734-835a-a54bd43d89ee)
+
 
 ## gif
 `로그인` <br>
