@@ -1,5 +1,3 @@
-# :pushpin: Improved-SpringBoot-Online-Shopping-Store
-
 ## 소개
 Aladin | 회원끼리 물건을 팔 수 있는 중고 거래 서비스 
 > 개발기간 (2023.06.02 ~2023.08.02) <br>
@@ -61,8 +59,8 @@ git branches는 다음과 같이 사용하였습니다. <br>
 ![image](https://github.com/user-attachments/assets/a3ec1cf9-cb7c-4d48-a286-7744d29ebc93)
 
 
-## Database Schema
-![erd 제출용](https://github.com/Kim-Gyuri/bookstore/assets/57389368/0627e85d-5a00-4fca-bc88-f6afa91e2625)
+## ERD
+![book](https://github.com/user-attachments/assets/a4dc1c7d-97bd-431c-8f5c-aadc4dde0772)
 
 ## Server Architecture
 ![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1) <br>
