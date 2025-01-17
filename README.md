@@ -65,7 +65,25 @@ git branches는 다음과 같이 사용하였습니다. <br>
 ![erd 제출용](https://github.com/Kim-Gyuri/bookstore/assets/57389368/0627e85d-5a00-4fca-bc88-f6afa91e2625)
 
 ## Server Architecture
-![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1)
+![image](https://github.com/Kim-Gyuri/bookstore/assets/57389368/821c9e9a-17ff-4a74-b4a1-32d8e675b3b1) <br>
+
+AWS 인프라 관련 설정은 다음과 같다. <br>
++ AWS EC2 인스턴스 생성
++ AWS RDS 데이터베이스 생성
++ EC2와 RDS 간 연동
++ AWS EC2 서비스에 스프링 부트 프로젝트를 배포 (deploy 배포 스크립트)
++ 스프링 부트 프로젝트와 AWS RDS 연동
++ S3 연동하여 이미지 업로드
+
+### EC2 
+Amazon Linux 2 프리티어 선택
+
+### RDS
+MariaDB 프리티어 선택
+> `로컬PC에서 RDS 접근 확인` :로컬PC에서 RDS 접근 확인하기 위해 Mysql workbench를 사용한다.
+
+###  AWS S3
+회원이 상품등록할 때 첨부하는 상품이미지를 관리하기 위해 AWS S3를 사용한다.
 
 <br>
 
